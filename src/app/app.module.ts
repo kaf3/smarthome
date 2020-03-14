@@ -10,8 +10,7 @@ import { StoreDevtoolsModule} from '@ngrx/store-devtools';
 import { RouterModule } from '@angular/router';
 import { RoomListModule } from './room-list/room-list.module';
 import { appRoutes } from './routing/app.routes';
-import { DataPersistence } from '@nrwl/angular';
-/* import { AppRouterStateSerializer } from './router/app-router-state-serializer'; */
+import { AppRouterStateSerializer } from './router/app-router-state-serializer';
 
 
 @NgModule({
@@ -24,11 +23,11 @@ import { DataPersistence } from '@nrwl/angular';
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot([]),
-     StoreRouterConnectingModule.forRoot({stateKey: 'router', /* serializer: AppRouterStateSerializer */}),
+     StoreRouterConnectingModule.forRoot({stateKey: 'router',  /* serializer: AppRouterStateSerializer */}),
     StoreDevtoolsModule.instrument(),
 
   ],
-  providers: [DataPersistence],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

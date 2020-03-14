@@ -30,4 +30,4 @@ export class AppRouterStateSerializer implements RouterStateSerializer<AppRoute>
       const currentData = route.data;
       const primaryChild = route.children.find(c => c.outlet === 'primary') || route.firstChild;
       return {...currentData, ...mergeRouteData(primaryChild)};
-    }
+    } 
