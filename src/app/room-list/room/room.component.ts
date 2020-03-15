@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { IRoom } from 'src/models/iroom';
-import {RoomListStoreSelectors, RootStoreState} from 'src/app/root-store';
+import {RoomStoreSelectors, RootStoreState} from 'src/app/root-store';
 
 @Component({
   selector: 'app-room',
@@ -15,7 +15,8 @@ export class RoomComponent implements OnInit {
   room: IRoom | undefined;
 
   ngOnInit(): void {
-    //this.store.pipe(select(RoomListStoreSelectors.selectRoomList)).subscribe(room => this.room = room);
+    this.store.pipe(select(RoomStoreSelectors.selectRoom))
+      .subscribe(room => this.room = room);
   }
 
 }
