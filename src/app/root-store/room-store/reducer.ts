@@ -1,6 +1,5 @@
-
-import { RoomUnion, roomActions } from '../actions/room.actions';
-import { initialRoomState, RoomState } from '../state/room.state';
+import { RoomUnion, roomActions } from './actions';
+import { initialRoomState, RoomState } from './state';
 
 
 export function roomReducer(state = initialRoomState, action: RoomUnion): RoomState {

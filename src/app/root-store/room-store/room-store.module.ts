@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {StoreModule} from '@ngrx/store';
-import {roomsReducer} from './reducer';
+import {roomReducer} from './reducer';
 import {EffectsModule} from '@ngrx/effects';
-import {RoomsEffects} from './effects';
+import {RoomEffects} from './effects';
 
 
 
@@ -11,8 +11,8 @@ import {RoomsEffects} from './effects';
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature('room-list', roomsReducer),
-    EffectsModule.forFeature([RoomsEffects]),
+    StoreModule.forFeature('room', roomReducer),
+    EffectsModule.forFeature([RoomEffects]),
   ]
 })
-export class RoomListStoreModule { }
+export class RoomStoreModule { }

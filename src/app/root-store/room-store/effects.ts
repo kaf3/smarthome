@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType, createEffect } from '@ngrx/effects';
-import { roomActions, GetRoomSucces, GetRoom } from '../actions/room.actions';
+import { roomActions, GetRoomSucces, GetRoom } from './actions';
 import { switchMap, map } from 'rxjs/operators';
 import { Store} from '@ngrx/store';
 import { of } from 'rxjs';
 import { navigation} from '@nrwl/angular'
-import { RoomComponent } from '../../room/room.component';
+import { RoomComponent } from '../../room-list/room/room.component';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import {AppState} from '../../../root-store/state';
-import {RoomListStoreSelectors} from '../../../root-store/room-list-store';
+import {AppState} from '../state';
+import {RoomListStoreSelectors} from '../room-list-store';
+import {RoomState} from './state';
 
 @Injectable()
 export class RoomEffects {
@@ -33,7 +34,7 @@ export class RoomEffects {
     ))
 
 
-    constructor(private actions$: Actions, private store: Store<AppState>,
+    constructor(private actions$: Actions, private store: Store<RoomState>,
         ) {}
 
 }

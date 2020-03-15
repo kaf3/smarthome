@@ -1,7 +1,5 @@
-import {initialRoomListState, RoomListState, roomsAdapter, RoomsAndRoomState} from './state'
+import {initialRoomListState, RoomListState, roomsAdapter } from './state'
 import { roomsUnion, roomsActions } from './actions';
-import { roomReducer } from '../../room-list/store/reducers/room.reducer';
-import { ActionReducerMap} from '@ngrx/store';
 
 
 export function roomsReducer(state = initialRoomListState, action: roomsUnion): RoomListState {
@@ -14,11 +12,5 @@ export function roomsReducer(state = initialRoomListState, action: roomsUnion): 
         }
         default: return state;
     }
-}
-
-
-export const roomsAndRoomReducer: ActionReducerMap<RoomsAndRoomState, any> = {
-    roomState: roomReducer,
-    roomListState: roomsReducer
 }
 
