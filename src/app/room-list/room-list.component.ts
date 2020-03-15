@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { loadRooms } from './store/actions/rooms.action';
-import { selectRooms } from './store/selectors/rooms.selector';
-import { RoomsState } from './store/state/rooms.state';
+import { LoadRooms } from '../root-store/room-list-store/actions';
 import { IRoom } from '../../models/iroom';
 import { filter } from 'rxjs/operators';
+import {RoomListStoreSelectors, RoomListStoreState} from '../root-store/room-list-store';
 
 @Component({
   selector: 'app-room-list',
@@ -15,15 +14,15 @@ export class RoomListComponent implements OnInit {
 
   rooms : IRoom[] = [];
 
-  constructor(private store: Store<RoomsState>) {}
+  constructor(private store: Store<RoomListStoreState.RoomListState>) {}
 
   ngOnInit() {
-    this.store.dispatch(new loadRooms());
+    this.store.dispatch(new LoadRooms());
 
     this.store.pipe(
-      select(selectRooms),
+      select(RoomListStoreSelectors.selectRoomList),
       filter(rooms => !!rooms.length),
-    ).subscribe(rooms => this.rooms = rooms)
+    ).subscribe(rooms => this.rooms = rooms);
   }
 
 }

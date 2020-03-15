@@ -1,6 +1,6 @@
 import { ActionReducerMap} from '@ngrx/store';
-import { AppState } from '../state/app.state';
 import { routerReducer } from '@ngrx/router-store';
+import {AppState} from './state';
 
 
 export const appReducers: Partial<ActionReducerMap<AppState, any>> = {

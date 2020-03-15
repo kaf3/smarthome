@@ -7,18 +7,18 @@ export enum roomsActions {
     loadRoomsError = '[Rooms list] Load Rooms Error'
 }
 
-export class loadRooms implements Action {
-    readonly type = roomsActions.loadRooms
+export class LoadRooms implements Action {
+    readonly type = roomsActions.loadRooms;
 }
 
-export class loadRoomsSucces implements Action {
+export class LoadRoomsSucces implements Action {
     readonly type = roomsActions.loadRoomsSucces;
 
     constructor(public payload: {rooms: IRoom[]}) {}
 }
 
-export class loadRoomsError implements Action {
-    readonly type = roomsActions.loadRoomsError
+export class LoadRoomsError implements Action {
+    readonly type = roomsActions.loadRoomsError;
 }
 
-export type roomsUnion = loadRooms | loadRoomsSucces | loadRoomsError;
+export type roomsUnion = LoadRooms | LoadRoomsSucces | LoadRoomsError;
