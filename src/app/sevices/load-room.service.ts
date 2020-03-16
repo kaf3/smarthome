@@ -3,7 +3,9 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { IRoom } from '../../models/iroom';
-import { IEquipsDB } from '../../models/iequipsdb';
+import {IEquipmentDTO} from '../../models/iequipmentDTO';
+import {EquipmentPartitionService} from './equipment-partition.service';
+import {IRoomsDTO} from '../../models/iroomsDTO';
 
 
 @Injectable({
@@ -11,24 +13,29 @@ import { IEquipsDB } from '../../models/iequipsdb';
 })
 export class LoadRoomService {
 
-  constructor(private http: HttpClient) { }
-
-  testMethod(str: string): string {
-      return str;
-  }
+  constructor(private http: HttpClient, private equipmentPartion: EquipmentPartitionService) { }
 
   loadRoom(): Observable<IRoom[]> {
-    return this.http.get(`assets/db.json`).pipe(
-        map(rooms =>
+    return this.http.get<IRoomsDTO>(`assets/db.json`).pipe(
+        map((rooms: IRoomsDTO) =>
             Object.entries(rooms).map(
-                ([roomName, equipsdb]: [string, IEquipsDB], index) =>
-                  ({
-                        id: index,
-                        roomName,
-                        equipsdb,
-                    } as IRoom),
+                ([roomName, equipment]: [keyof IRoomsDTO, IRoomsDTO[keyof IRoomsDTO]], index) => {
+                  equipment = this.withoutName(equipment);
+                  return ({
+                    id: index,
+                    roomName,
+                    equipment: this.equipmentPartion.partition(equipment),
+                  } as IRoom);
+                },
             ),
         ),
     );
-}
+  };
+
+  withoutName(equipment: IEquipmentDTO): IEquipmentDTO {
+    Object.defineProperty(equipment, 'r_name', {
+      enumerable: false,
+    });
+    return equipment;
+  }
 }
