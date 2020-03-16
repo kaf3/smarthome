@@ -17,17 +17,16 @@ export class LoadRoomService {
       return str;
   }
 
-  loadRoom() : Observable<IRoom[]> {
+  loadRoom(): Observable<IRoom[]> {
     return this.http.get(`assets/db.json`).pipe(
-        
         map(rooms =>
             Object.entries(rooms).map(
                 ([roomName, equipsdb]: [string, IEquipsDB], index) =>
-                    <IRoom>{
-                        id : index,
-                        roomName: roomName,
-                        equipsdb: equipsdb,
-                    },
+                  ({
+                        id: index,
+                        roomName,
+                        equipsdb,
+                    } as IRoom),
             ),
         ),
     );

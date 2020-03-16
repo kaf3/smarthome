@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RoomComponent} from './room.component';
-import {RoomStoreModule} from '../../root-store/room-store';
+import {RoomStoreModule} from 'src/app/root-store/room-store/room-store.module';
 
 
 
