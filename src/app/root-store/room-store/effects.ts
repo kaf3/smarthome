@@ -25,7 +25,6 @@ export class RoomEffects {
         navigation(
         RoomComponent, {
             run: (routerSnap: ActivatedRouteSnapshot) => {
-                console.log(routerSnap);
                 return of(new GetRoom({id: routerSnap.params.id}));
             }
 

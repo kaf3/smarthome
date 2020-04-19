@@ -8,7 +8,7 @@ export interface RoomState {
 const initialRoom: IRoom = {
     id: -1,
     roomName: '',
-    equipsdb: {r_name: ''}
+    equipment: [],
 }
 
 export const initialRoomState: RoomState = {

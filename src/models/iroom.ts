@@ -1,7 +1,7 @@
-import { IEquipsDB } from './iequipsdb';
+import {IEquipment} from './iequipment';
 
 export interface IRoom {
     id: number;
     roomName: string;
-    equipsdb: IEquipsDB;
+    equipment: IEquipment[];
 }
