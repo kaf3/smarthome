@@ -1,10 +1,10 @@
-import {IEquipment} from 'src/models/iequipment';
+import {Equipment} from 'src/models/equipment';
 
 export interface EquipmentState {
-    equipment: IEquipment;
+    equipment: Equipment;
 }
 
-const initialEquipment: IEquipment = {
+const initialEquipment: Equipment = {
     name: '',
     value: false,
     type: '',

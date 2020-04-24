@@ -5,7 +5,7 @@ import {switchMap} from 'rxjs/operators';
 
 import {of} from 'rxjs';
 import {LoadRoomService} from '../../sevices/load-room.service';
-import {IRoom} from '../../../models/iroom';
+import {Room} from '../../../models/room';
 
 @Injectable()
 export class RoomsEffects {
@@ -14,7 +14,7 @@ export class RoomsEffects {
         ofType<LoadRooms>(roomsActions.loadRooms),
 
         switchMap(() => this.loadRoomService.loadRoom()),
-        switchMap((rooms: IRoom[]) => of(new LoadRoomsSucces({rooms}))),
+        switchMap((rooms: Room[]) => of(new LoadRoomsSucces({rooms}))),
     );
 
     constructor(

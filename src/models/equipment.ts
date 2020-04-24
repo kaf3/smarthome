@@ -1,4 +1,4 @@
-export interface IEquipment {
+export interface Equipment {
     name: string;
     mac?: string;
     value: string | number | boolean;

@@ -1,6 +1,10 @@
 import {Injectable} from '@angular/core';
-import {IEquipmentDTO} from '../../models/iequipmentDTO';
-import {IEquipment} from '../../models/iequipment';
+import {EquipmentDTO} from '../../models/equipmentDTO';
+import {Equipment} from '../../models/equipment';
+
+export type EquipmentId = string;
+export type EquipmentProp = string;
+export type EquipmentValueProp = string;
 
 @Injectable({
     providedIn: 'root',
@@ -8,36 +12,47 @@ import {IEquipment} from '../../models/iequipment';
 export class EquipmentPartitionService {
     constructor() {}
 
-    partition(equipment: IEquipmentDTO): IEquipment[] {
+    partition(equipment: EquipmentDTO): Equipment[] {
         // array of array of 3 elems : name of equip, key of props, value of props
-        // какое устройство, какое его поле, какое занчение поля
-        const slices = Object.entries(equipment).map(([key, value]: [string, string]) => [
-            key.slice(2),
-            key.slice(0, 1),
-            value,
-        ]);
+        // какое устройство, какое его поле, какое значение поля
+        const slices: [EquipmentId, EquipmentProp, EquipmentValueProp][] = Object.entries(
+            equipment,
+        ).map(([key, value]: [string, string]) => [key.slice(2), key.slice(0, 1), value]);
 
-        const equipmentRestruct = [];
+        const equipmentAccumulator = [];
 
-        slices.forEach(([key, prop, value]: [string, string, string], index) => {
-            let ind = equipmentRestruct.findIndex(item => item.id === key);
+        slices.forEach(
+            (
+                [equipmentId, prop, value]: [
+                    EquipmentId,
+                    EquipmentProp,
+                    EquipmentValueProp,
+                ],
+                index,
+            ) => {
+                let ind = equipmentAccumulator.findIndex(item => item.id === equipmentId);
 
-            const newProp = this.switcherProp(prop);
+                const newProp = EquipmentPartitionService.getPropertyName(prop);
 
-            if (ind !== -1) {
-                equipmentRestruct[ind][newProp] = value;
-            } else {
-                equipmentRestruct.push({id: key, [newProp]: value});
-                ind = equipmentRestruct.length - 1;
-            }
+                if (ind !== -1) {
+                    equipmentAccumulator[ind][newProp] = value;
+                } else {
+                    equipmentAccumulator.push({id: equipmentId, [newProp]: value});
+                    ind = equipmentAccumulator.length - 1;
+                }
 
-            if (prop === 's' || prop === 'd') {
-                equipmentRestruct[ind].group = this.getGroup(prop);
-            }
+                if (prop === 's' || prop === 'd') {
+                    equipmentAccumulator[ind].group = EquipmentPartitionService.getGroup(
+                        prop,
+                    );
+                }
 
-            equipmentRestruct[ind].type = this.getType(key);
-        });
-        equipmentRestruct.forEach(item => {
+                equipmentAccumulator[ind].type = EquipmentPartitionService.getType(
+                    equipmentId,
+                );
+            },
+        );
+        equipmentAccumulator.forEach(item => {
             item.name =
                 item.name ||
                 `${item.id
@@ -55,11 +70,11 @@ export class EquipmentPartitionService {
             });
         });
 
-        return equipmentRestruct as IEquipment[]; // массив объектов каждый из которых устройство
+        return equipmentAccumulator as Equipment[]; // массив объектов каждый из которых устройство
         // а его поля это его свойства
     }
 
-    private getGroup(property: string) {
+    private static getGroup(property: 's' | 'd'): Equipment['group'] {
         const switcher = {
             s: 'sensor',
             d: 'device',
@@ -68,7 +83,7 @@ export class EquipmentPartitionService {
         return switcher[property];
     }
 
-    private getType(key: string) {
+    private static getType(key: string): Equipment['type'] {
         const switcher = {
             humi: 'humidity',
             temp: 'temperature',
@@ -80,7 +95,7 @@ export class EquipmentPartitionService {
         return switcher[key.slice(0, 4)];
     }
 
-    private switcherProp(property: string) {
+    private static getPropertyName(property: string): keyof Equipment {
         const switcher = {
             s: 'value',
             d: 'value',

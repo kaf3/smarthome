@@ -6,7 +6,7 @@ import {
     EquipmentListStoreState,
 } from 'src/app/root-store';
 import {filter} from 'rxjs/operators';
-import {IEquipment} from '../../../../models/iequipment';
+import {Equipment} from '../../../../models/equipment';
 
 @Component({
     selector: 'app-equipment-list',
@@ -14,7 +14,7 @@ import {IEquipment} from '../../../../models/iequipment';
     styleUrls: ['./equipment-list.component.css'],
 })
 export class EquipmentListComponent implements OnInit {
-    equipmentList: IEquipment[] = [];
+    equipmentList: Equipment[] = [];
 
     constructor(public store: Store<EquipmentListStoreState.EquipmentListState>) {}
 
@@ -23,10 +23,10 @@ export class EquipmentListComponent implements OnInit {
         this.store
             .pipe(
                 select(EquipmentListStoreSelectors.selectEquipmentList),
-                filter((equipmentList: IEquipment[]) => !!equipmentList.length),
+                filter((equipmentList: Equipment[]) => !!equipmentList.length),
             )
             .subscribe(
-                (equipmentList: IEquipment[]) => (this.equipmentList = equipmentList),
+                (equipmentList: Equipment[]) => (this.equipmentList = equipmentList),
             );
     }
 }

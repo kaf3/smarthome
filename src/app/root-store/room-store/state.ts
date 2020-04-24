@@ -1,10 +1,10 @@
-import {IRoom} from 'src/models/iroom';
+import {Room} from 'src/models/room';
 
 export interface RoomState {
-    room: IRoom;
+    room: Room;
 }
 
-const initialRoom: IRoom = {
+const initialRoom: Room = {
     id: -1,
     roomName: '',
     equipment: [],

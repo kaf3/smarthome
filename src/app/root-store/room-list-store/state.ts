@@ -1,10 +1,10 @@
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {IRoom} from 'src/models/iroom';
+import {Room} from 'src/models/room';
 
-export interface RoomListState extends EntityState<IRoom> {}
+export interface RoomListState extends EntityState<Room> {}
 
-export const roomsAdapter: EntityAdapter<IRoom> = createEntityAdapter<IRoom>({
-    selectId: (room: IRoom) => room.id,
+export const roomsAdapter: EntityAdapter<Room> = createEntityAdapter<Room>({
+    selectId: (room: Room) => room.id,
     sortComparer: false,
 });
 

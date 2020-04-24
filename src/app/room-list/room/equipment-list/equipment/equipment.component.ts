@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {EquipmentStoreSelectors, EquipmentStoreState} from 'src/app/root-store';
-import {IEquipment} from '../../../../../models/iequipment';
+import {Equipment} from '../../../../../models/equipment';
 
 @Component({
     selector: 'app-equipment',
@@ -9,13 +9,13 @@ import {IEquipment} from '../../../../../models/iequipment';
     styleUrls: ['./equipment.component.css'],
 })
 export class EquipmentComponent implements OnInit {
-    equipment: IEquipment;
+    equipment: Equipment;
 
     constructor(public store: Store<EquipmentStoreState.EquipmentState>) {}
 
     ngOnInit(): void {
         this.store
             .pipe(select(EquipmentStoreSelectors.selectEquipment))
-            .subscribe((equipment: IEquipment) => (this.equipment = equipment));
+            .subscribe((equipment: Equipment) => (this.equipment = equipment));
     }
 }

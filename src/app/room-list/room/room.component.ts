@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {IRoom} from 'src/models/iroom';
+import {Room} from 'src/models/room';
 import {RoomStoreSelectors, RoomStoreState} from 'src/app/root-store';
 
 @Component({
@@ -9,7 +9,7 @@ import {RoomStoreSelectors, RoomStoreState} from 'src/app/root-store';
     styleUrls: ['./room.component.css'],
 })
 export class RoomComponent implements OnInit {
-    room: IRoom | undefined;
+    room: Room | undefined;
 
     constructor(private readonly store: Store<RoomStoreState.RoomState>) {}
 

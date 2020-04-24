@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {IEquipment} from '../../../models/iequipment';
+import {Equipment} from '../../../models/equipment';
 
 export enum EquipmentListActions {
     loadEquipmentList = '[EquipmentList list] Load EquipmentList',
@@ -14,7 +14,7 @@ export class LoadEquipmentList implements Action {
 export class LoadEquipmentListSuccess implements Action {
     readonly type = EquipmentListActions.loadEquipmentListSuccess;
 
-    constructor(public payload: {equipmentList: IEquipment[]}) {}
+    constructor(public payload: {equipmentList: Equipment[]}) {}
 }
 
 export class LoadEquipmentListError implements Action {

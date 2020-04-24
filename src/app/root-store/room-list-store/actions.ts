@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {IRoom} from 'src/models/iroom';
+import {Room} from 'src/models/room';
 
 export enum roomsActions {
     loadRooms = '[Rooms list] Load Rooms',
@@ -14,7 +14,7 @@ export class LoadRooms implements Action {
 export class LoadRoomsSucces implements Action {
     readonly type = roomsActions.loadRoomsSucces;
 
-    constructor(public payload: {rooms: IRoom[]}) {}
+    constructor(public payload: {rooms: Room[]}) {}
 }
 
 export class LoadRoomsError implements Action {

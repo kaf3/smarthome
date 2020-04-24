@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 
-import {IRoom} from 'src/models/iroom';
+import {Room} from 'src/models/room';
 import {filter} from 'rxjs/operators';
 import {
     RoomListStoreActions,
@@ -15,7 +15,7 @@ import {
     styleUrls: ['./room-list.component.css'],
 })
 export class RoomListComponent implements OnInit {
-    rooms: IRoom[] = [];
+    rooms: Room[] = [];
 
     constructor(private readonly store: Store<RoomListStoreState.RoomListState>) {}
 

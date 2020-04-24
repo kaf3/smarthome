@@ -14,7 +14,7 @@ import {ActivatedRouteSnapshot} from '@angular/router';
 import {of} from 'rxjs';
 import {catchError, filter, map, switchMap} from 'rxjs/operators';
 import {EquipmentListStoreSelectors} from '../equipment-list-store';
-import {IEquipment} from '../../../models/iequipment';
+import {Equipment} from '../../../models/equipment';
 
 @Injectable()
 export class EquipmentEffects {
@@ -26,7 +26,7 @@ export class EquipmentEffects {
                 this.store
                     .select(EquipmentListStoreSelectors.selectEquipmentList)
                     .pipe(
-                        map((equipmentList: IEquipment[]) =>
+                        map((equipmentList: Equipment[]) =>
                             equipmentList.find(equipment => equipment.id === id),
                         ),
                     ),
