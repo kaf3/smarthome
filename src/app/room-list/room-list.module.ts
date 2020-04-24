@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { RoomListComponent } from './room-list.component';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+import {RoomListComponent} from './room-list.component';
+import {RouterModule} from '@angular/router';
 import {RoomListStoreModule} from '../root-store';
 import {RoomModule} from './room/room.module';
 import {MatCardModule} from '@angular/material/card';
@@ -24,4 +24,5 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatGridListModule
   ]
 })
-export class RoomListModule { }
+export class RoomListModule {
+}

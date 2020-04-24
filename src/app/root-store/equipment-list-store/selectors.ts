@@ -3,4 +3,4 @@ import {equipmentListAdapter, EquipmentListState} from './state';
 
 const selectEquipmentListState = createFeatureSelector<EquipmentListState>('equipment-list');
 
-export const selectEquipmentList = equipmentListAdapter.getSelectors(selectEquipmentListState).selectAll
+export const selectEquipmentList = equipmentListAdapter.getSelectors(selectEquipmentListState).selectAll;

@@ -1,8 +1,6 @@
-import {initialRoomListState} from './room-list-store/state';
 import {RouterReducerState} from '@ngrx/router-store';
 import {RoomListStoreState} from './room-list-store';
 import {RoomStoreState} from './room-store';
-import {initialRoomState} from './room-store/state';
 import {EquipmentListStoreState} from './equipment-list-store';
 import {EquipmentStoreState} from './equipment-store';
 
@@ -19,4 +17,4 @@ export const initialAppState: AppState = { //что делать с началь
   RoomState: RoomStoreState.initialRoomState,
   EquipmentListState: EquipmentListStoreState.initialEquipmentListState,
   EquipmentState: EquipmentStoreState.initialEquipmentState
-}
+};

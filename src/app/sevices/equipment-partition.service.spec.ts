@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { EquipmentPartitionService } from './equipment-partition.service';
+import {EquipmentPartitionService} from './equipment-partition.service';
 
 describe('EquipmentPartitionService', () => {
   let service: EquipmentPartitionService;

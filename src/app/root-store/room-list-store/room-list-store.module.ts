@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {StoreModule} from '@ngrx/store';
 import {roomsReducer} from './reducer';
 import {EffectsModule} from '@ngrx/effects';
 import {RoomsEffects} from './effects';
-
 
 
 @NgModule({
@@ -15,4 +14,5 @@ import {RoomsEffects} from './effects';
     EffectsModule.forFeature([RoomsEffects]),
   ]
 })
-export class RoomListStoreModule { }
+export class RoomListStoreModule {
+}

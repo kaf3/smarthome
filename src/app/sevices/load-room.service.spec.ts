@@ -1,7 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule,
-  HttpTestingController } from '@angular/common/http/testing';
-import { LoadRoomService } from './load-room.service';
+import {TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {LoadRoomService} from './load-room.service';
 
 describe('LoadRoomService', () => {
   let service: LoadRoomService;
@@ -22,7 +21,7 @@ describe('LoadRoomService', () => {
 
   it('loadRoom have been called', () => {
     const methodSpy = spyOn(service, 'testMethod');
-    methodSpy.and.returnValue("wow");
+    methodSpy.and.returnValue('wow');
 
-  })
+  });
 });

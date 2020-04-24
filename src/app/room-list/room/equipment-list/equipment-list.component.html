@@ -1,9 +1,6 @@
-
-
-
 <div class="equip-list">
-  <a [routerLink]="[equipment.id]"
-     *ngFor="let equipment of equipmentList"
+  <a *ngFor="let equipment of equipmentList"
+     [routerLink]="[equipment.id]"
   >
     <mat-card class="equip-card">
       <mat-card-header>
@@ -17,9 +14,6 @@
     </mat-card>
   </a>
 </div>
-
-
-
 
 
 <router-outlet></router-outlet>

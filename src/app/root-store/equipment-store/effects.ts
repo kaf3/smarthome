@@ -6,7 +6,7 @@ import {EquipmentActions, GetEquipment, GetEquipmentError, GetEquipmentSuccess} 
 import {navigation} from '@nrwl/angular';
 import {EquipmentComponent} from '../../room-list/room/equipment-list/equipment/equipment.component';
 import {ActivatedRouteSnapshot} from '@angular/router';
-import { of } from 'rxjs';
+import {of} from 'rxjs';
 import {catchError, filter, map, switchMap} from 'rxjs/operators';
 import {EquipmentListStoreSelectors} from '../equipment-list-store';
 import {IEquipment} from '../../../models/iequipment';
@@ -19,7 +19,7 @@ export class EquipmentEffects {
     map(action => action.payload.id),
     switchMap(id => this.store.select(
       EquipmentListStoreSelectors.selectEquipmentList).pipe(
-        map((equipmentList: IEquipment[]) => equipmentList.find(equipment => equipment.id === id))
+      map((equipmentList: IEquipment[]) => equipmentList.find(equipment => equipment.id === id))
     )),
     filter(equipment => !!equipment),
     switchMap(equipment => of(new GetEquipmentSuccess({equipment}))),
@@ -34,7 +34,8 @@ export class EquipmentEffects {
         }
       }
     )
-  ))
+  ));
 
-  constructor(private actions$: Actions, private store: Store<EquipmentState>) {}
+  constructor(private actions$: Actions, private store: Store<EquipmentState>) {
+  }
 }

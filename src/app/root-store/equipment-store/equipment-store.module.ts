@@ -13,4 +13,5 @@ import {EquipmentEffects} from './effects';
     EffectsModule.forFeature([EquipmentEffects]),
   ]
 })
-export class EquipmentStoreModule { }
+export class EquipmentStoreModule {
+}

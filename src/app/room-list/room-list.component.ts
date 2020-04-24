@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import {Component, OnInit} from '@angular/core';
+import {select, Store} from '@ngrx/store';
 
-import { IRoom } from 'src/models/iroom';
-import { filter } from 'rxjs/operators';
+import {IRoom} from 'src/models/iroom';
+import {filter} from 'rxjs/operators';
 import {RoomListStoreActions, RoomListStoreSelectors, RoomListStoreState} from 'src/app/root-store';
 
 @Component({
@@ -14,7 +14,8 @@ export class RoomListComponent implements OnInit {
 
   rooms: IRoom[] = [];
 
-  constructor(private store: Store<RoomListStoreState.RoomListState>) {}
+  constructor(private store: Store<RoomListStoreState.RoomListState>) {
+  }
 
   ngOnInit() {
     this.store.dispatch(new RoomListStoreActions.LoadRooms());

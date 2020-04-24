@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {IEquipmentDTO} from '../../models/iequipmentDTO';
 import {IEquipment} from '../../models/iequipment';
 
@@ -7,7 +7,8 @@ import {IEquipment} from '../../models/iequipment';
 })
 export class EquipmentPartitionService {
 
-  constructor() { }
+  constructor() {
+  }
 
   partition(equipment: IEquipmentDTO): IEquipment[] {
     // array of array of 3 elems : name of equip, key of props, value of props

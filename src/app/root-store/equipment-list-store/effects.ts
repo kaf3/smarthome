@@ -20,5 +20,7 @@ export class EquipmentListEffects {
     switchMap((equipmentList: IEquipment[]) => of(new LoadEquipmentListSuccess({equipmentList}))),
     catchError(() => of(new LoadEquipmentListError()))
   ));
-  constructor(private actions$: Actions, private store: Store<EquipmentListState>) {}
+
+  constructor(private actions$: Actions, private store: Store<EquipmentListState>) {
+  }
 }

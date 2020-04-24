@@ -3,14 +3,14 @@
   </ul>
 <h3>Room </h3>-->
 
-        <nav mat-tab-nav-bar color="primary" mat-align-tabs="center">
-          <a mat-tab-link *ngFor="let room of rooms"
-             [routerLink]="[room.id]"
-             routerLinkActive #rla="routerLinkActive"
-             [routerLinkActiveOptions]="{exact: false}"
-             [active]="rla.isActive"
-          > {{room?.roomName}}</a>
-        </nav>
+<nav color="primary" mat-align-tabs="center" mat-tab-nav-bar>
+  <a #rla="routerLinkActive" *ngFor="let room of rooms"
+     [active]="rla.isActive"
+     [routerLinkActiveOptions]="{exact: false}" [routerLink]="[room.id]"
+     mat-tab-link
+     routerLinkActive
+  > {{room?.roomName}}</a>
+</nav>
 
 <router-outlet></router-outlet>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {EquipmentStoreSelectors, EquipmentStoreState} from 'src/app/root-store';
 import {IEquipment} from '../../../../../models/iequipment';
@@ -12,7 +12,8 @@ export class EquipmentComponent implements OnInit {
 
   equipment: IEquipment;
 
-  constructor(public store: Store<EquipmentStoreState.EquipmentState>) { }
+  constructor(public store: Store<EquipmentStoreState.EquipmentState>) {
+  }
 
   ngOnInit(): void {
     this.store.pipe(select(EquipmentStoreSelectors.selectEquipment))

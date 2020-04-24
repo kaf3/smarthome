@@ -14,7 +14,8 @@ export class LoadEquipmentList implements Action {
 export class LoadEquipmentListSuccess implements Action {
   readonly type = EquipmentListActions.loadEquipmentListSuccess;
 
-  constructor(public payload: {equipmentList: IEquipment[]}) {}
+  constructor(public payload: { equipmentList: IEquipment[] }) {
+  }
 }
 
 export class LoadEquipmentListError implements Action {

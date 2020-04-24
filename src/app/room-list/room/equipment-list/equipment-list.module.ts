@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { EquipmentListComponent } from './equipment-list.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {EquipmentListComponent} from './equipment-list.component';
 import {EquipmentListStoreModule} from '../../../root-store/equipment-list-store';
 import {RouterModule} from '@angular/router';
 import {EquipmentModule} from './equipment/equipment.module';
 import {MatCardModule} from '@angular/material/card';
-
 
 
 @NgModule({
@@ -19,4 +18,5 @@ import {MatCardModule} from '@angular/material/card';
     MatCardModule
   ]
 })
-export class EquipmentListModule { }
+export class EquipmentListModule {
+}

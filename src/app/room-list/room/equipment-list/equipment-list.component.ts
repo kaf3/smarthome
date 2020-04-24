@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {Store} from '@ngrx/store';
+import {Component, OnInit} from '@angular/core';
+import {select, Store} from '@ngrx/store';
 import {EquipmentListStoreAction, EquipmentListStoreSelectors, EquipmentListStoreState} from 'src/app/root-store';
-import {select} from '@ngrx/store';
 import {filter} from 'rxjs/operators';
 import {IEquipment} from '../../../../models/iequipment';
 
@@ -13,7 +12,8 @@ import {IEquipment} from '../../../../models/iequipment';
 export class EquipmentListComponent implements OnInit {
   equipmentList: IEquipment[] = [];
 
-  constructor(public store: Store<EquipmentListStoreState.EquipmentListState>) { }
+  constructor(public store: Store<EquipmentListStoreState.EquipmentListState>) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch(new EquipmentListStoreAction.LoadEquipmentList());
