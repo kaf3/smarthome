@@ -6,16 +6,14 @@ import {RouterModule} from '@angular/router';
 import {EquipmentListModule} from './equipment-list/equipment-list.module';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
-
 @NgModule({
-  declarations: [RoomComponent],
-  imports: [
-    CommonModule,
-    RoomStoreModule,
-    EquipmentListModule,
-    RouterModule.forChild([]),
-    MatToolbarModule,
-  ]
+    declarations: [RoomComponent],
+    imports: [
+        CommonModule,
+        RoomStoreModule,
+        EquipmentListModule,
+        RouterModule.forChild([]),
+        MatToolbarModule,
+    ],
 })
-export class RoomModule {
-}
+export class RoomModule {}

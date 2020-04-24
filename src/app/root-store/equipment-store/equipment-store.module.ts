@@ -6,12 +6,11 @@ import {equipmentReducer} from './reducer';
 import {EquipmentEffects} from './effects';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    StoreModule.forFeature('equipment', equipmentReducer),
-    EffectsModule.forFeature([EquipmentEffects]),
-  ]
+    declarations: [],
+    imports: [
+        CommonModule,
+        StoreModule.forFeature('equipment', equipmentReducer),
+        EffectsModule.forFeature([EquipmentEffects]),
+    ],
 })
-export class EquipmentStoreModule {
-}
+export class EquipmentStoreModule {}

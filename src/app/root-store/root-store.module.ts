@@ -6,16 +6,14 @@ import {EffectsModule} from '@ngrx/effects';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
-
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    StoreModule.forRoot(appReducers),
-    EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
-    StoreDevtoolsModule.instrument(),
-  ]
+    declarations: [],
+    imports: [
+        CommonModule,
+        StoreModule.forRoot(appReducers),
+        EffectsModule.forRoot([]),
+        StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
+        StoreDevtoolsModule.instrument(),
+    ],
 })
-export class RootStoreModule {
-}
+export class RootStoreModule {}

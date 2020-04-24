@@ -7,36 +7,42 @@ import {IEquipmentDTO} from '../../models/iequipmentDTO';
 import {EquipmentPartitionService} from './equipment-partition.service';
 import {IRoomsDTO} from '../../models/iroomsDTO';
 
-
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class LoadRoomService {
+    constructor(
+        private http: HttpClient,
+        private equipmentPartion: EquipmentPartitionService,
+    ) {}
 
-  constructor(private http: HttpClient, private equipmentPartion: EquipmentPartitionService) {
-  }
+    loadRoom(): Observable<IRoom[]> {
+        return this.http.get<IRoomsDTO>(`assets/db.json`).pipe(
+            map((rooms: IRoomsDTO) =>
+                Object.entries(rooms).map(
+                    (
+                        [roomName, equipment]: [
+                            keyof IRoomsDTO,
+                            IRoomsDTO[keyof IRoomsDTO],
+                        ],
+                        index,
+                    ) => {
+                        equipment = this.withoutName(equipment);
+                        return {
+                            id: index,
+                            roomName,
+                            equipment: this.equipmentPartion.partition(equipment),
+                        } as IRoom;
+                    },
+                ),
+            ),
+        );
+    }
 
-  loadRoom(): Observable<IRoom[]> {
-    return this.http.get<IRoomsDTO>(`assets/db.json`).pipe(
-      map((rooms: IRoomsDTO) =>
-        Object.entries(rooms).map(
-          ([roomName, equipment]: [keyof IRoomsDTO, IRoomsDTO[keyof IRoomsDTO]], index) => {
-            equipment = this.withoutName(equipment);
-            return ({
-              id: index,
-              roomName,
-              equipment: this.equipmentPartion.partition(equipment),
-            } as IRoom);
-          },
-        ),
-      ),
-    );
-  };
-
-  withoutName(equipment: IEquipmentDTO): IEquipmentDTO {
-    Object.defineProperty(equipment, 'r_name', {
-      enumerable: false,
-    });
-    return equipment;
-  }
+    withoutName(equipment: IEquipmentDTO): IEquipmentDTO {
+        Object.defineProperty(equipment, 'r_name', {
+            enumerable: false,
+        });
+        return equipment;
+    }
 }

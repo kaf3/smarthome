@@ -1,10 +1,10 @@
 export interface IEquipment {
-  name: string;
-  mac?: string;
-  value: string | number | boolean;
-  type: string;
-  group: string;
-  update?: Date;
-  id: string;
-  location: string;
+    name: string;
+    mac?: string;
+    value: string | number | boolean;
+    type: string;
+    group: string;
+    update?: Date;
+    id: string;
+    location: string;
 }

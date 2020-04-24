@@ -7,18 +7,15 @@ import {of} from 'rxjs';
 import {LoadRoomService} from '../../sevices/load-room.service';
 import {IRoom} from '../../../models/iroom';
 
-
 @Injectable()
 export class RoomsEffects {
-  @Effect()
-  loadRooms$ = this.actions$.pipe(
-    ofType<LoadRooms>(roomsActions.loadRooms),
+    @Effect()
+    loadRooms$ = this.actions$.pipe(
+        ofType<LoadRooms>(roomsActions.loadRooms),
 
-    switchMap(() => this.loadRoomService.loadRoom()),
-    switchMap((rooms: IRoom[]) => of(new LoadRoomsSucces({rooms})))
-  );
+        switchMap(() => this.loadRoomService.loadRoom()),
+        switchMap((rooms: IRoom[]) => of(new LoadRoomsSucces({rooms}))),
+    );
 
-  constructor(private actions$: Actions,
-              private loadRoomService: LoadRoomService) {
-  }
+    constructor(private actions$: Actions, private loadRoomService: LoadRoomService) {}
 }

@@ -5,8 +5,8 @@ import * as RoomListStoreState from './state';
 import {RoomListStoreModule} from './room-list-store.module';
 
 export {
-  RoomListStoreActions,
-  RoomListStoreSelectors,
-  RoomListStoreState,
-  RoomListStoreModule
+    RoomListStoreActions,
+    RoomListStoreSelectors,
+    RoomListStoreState,
+    RoomListStoreModule,
 };

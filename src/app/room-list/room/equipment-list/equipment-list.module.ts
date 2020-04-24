@@ -6,17 +6,15 @@ import {RouterModule} from '@angular/router';
 import {EquipmentModule} from './equipment/equipment.module';
 import {MatCardModule} from '@angular/material/card';
 
-
 @NgModule({
-  declarations: [EquipmentListComponent],
-  exports: [EquipmentListComponent],
-  imports: [
-    CommonModule,
-    EquipmentListStoreModule,
-    RouterModule.forChild([]),
-    EquipmentModule,
-    MatCardModule
-  ]
+    declarations: [EquipmentListComponent],
+    exports: [EquipmentListComponent],
+    imports: [
+        CommonModule,
+        EquipmentListStoreModule,
+        RouterModule.forChild([]),
+        EquipmentModule,
+        MatCardModule,
+    ],
 })
-export class EquipmentListModule {
-}
+export class EquipmentListModule {}

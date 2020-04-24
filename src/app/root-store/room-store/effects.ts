@@ -12,29 +12,31 @@ import {RoomState} from './state';
 
 @Injectable()
 export class RoomEffects {
+    getRoom$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType<GetRoom>(RoomActions.getRoom),
+            map(action => action.payload.id),
+            switchMap(id =>
+                this.store
+                    .select(RoomListStoreSelectors.selectRoomList)
+                    .pipe(map(rooms => rooms[id])),
+            ),
+            switchMap(room => of(new GetRoomSuccess({room}))),
+        ),
+    );
 
-  getRoom$ = createEffect(() => this.actions$.pipe(
-    ofType<GetRoom>(RoomActions.getRoom),
-    map(action => action.payload.id),
-    switchMap((id) => this.store.select(RoomListStoreSelectors.selectRoomList)
-      .pipe(map(rooms => rooms[id]))),
-    switchMap(room => of(new GetRoomSuccess({room})))
-  ));
+    navigationRoom = createEffect(() =>
+        this.actions$.pipe(
+            navigation(RoomComponent, {
+                run: (routerSnap: ActivatedRouteSnapshot) => {
+                    return of(new GetRoom({id: routerSnap.params.id}));
+                },
+            }),
+        ),
+    );
 
-
-  navigationRoom = createEffect(() => this.actions$.pipe(
-    navigation(
-      RoomComponent, {
-        run: (routerSnap: ActivatedRouteSnapshot) => {
-          return of(new GetRoom({id: routerSnap.params.id}));
-        }
-
-      })
-  ));
-
-
-  constructor(private actions$: Actions, private store: Store<RoomState>,
-  ) {
-  }
-
+    constructor(
+        private readonly actions$: Actions,
+        private readonly store: Store<RoomState>,
+    ) {}
 }

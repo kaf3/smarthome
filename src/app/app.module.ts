@@ -8,22 +8,17 @@ import {RootStoreModule} from './root-store/root-store.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
-
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    RoomListModule,
-    RouterModule.forRoot(appRoutes),
-    RootStoreModule,
-    BrowserAnimationsModule,
-    MatToolbarModule
-
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        RoomListModule,
+        RouterModule.forRoot(appRoutes),
+        RootStoreModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

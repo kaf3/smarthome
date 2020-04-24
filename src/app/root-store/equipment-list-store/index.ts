@@ -5,8 +5,8 @@ import * as EquipmentListStoreState from './state';
 import {EquipmentListStoreModule} from './equipment-list-store.module';
 
 export {
-  EquipmentListStoreAction,
-  EquipmentListStoreSelectors,
-  EquipmentListStoreState,
-  EquipmentListStoreModule
+    EquipmentListStoreAction,
+    EquipmentListStoreSelectors,
+    EquipmentListStoreState,
+    EquipmentListStoreModule,
 };

@@ -5,14 +5,12 @@ import {roomsReducer} from './reducer';
 import {EffectsModule} from '@ngrx/effects';
 import {RoomsEffects} from './effects';
 
-
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    StoreModule.forFeature('room-list', roomsReducer),
-    EffectsModule.forFeature([RoomsEffects]),
-  ]
+    declarations: [],
+    imports: [
+        CommonModule,
+        StoreModule.forFeature('room-list', roomsReducer),
+        EffectsModule.forFeature([RoomsEffects]),
+    ],
 })
-export class RoomListStoreModule {
-}
+export class RoomListStoreModule {}

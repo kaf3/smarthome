@@ -9,20 +9,18 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatGridListModule} from '@angular/material/grid-list';
 
-
 @NgModule({
-  declarations: [RoomListComponent],
-  exports: [RoomListComponent],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule.forChild([]),
-    RoomListStoreModule,
-    RoomModule,
-    MatCardModule,
-    MatTabsModule,
-    MatGridListModule
-  ]
+    declarations: [RoomListComponent],
+    exports: [RoomListComponent],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        RouterModule.forChild([]),
+        RoomListStoreModule,
+        RoomModule,
+        MatCardModule,
+        MatTabsModule,
+        MatGridListModule,
+    ],
 })
-export class RoomListModule {
-}
+export class RoomListModule {}

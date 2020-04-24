@@ -6,10 +6,12 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "run-p prettier lint:ts",
     "e2e": "ng e2e",
-    "eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx src",
-    "eslint:dump": "eslint --print-config ./.eslintrc.json",
+    "prettier": "prettier --list-different \"src/**/*{.ts,.js,.json}\"",
+    "prettier:fix": "npm run prettier -- --write",
+    "lint:es": "eslint --fix \"src/**/*.{ts,js}\"",
+    "lint:es:ci": "eslint --format ./node_modules/eslint-teamcity/index.js \"src/**/*.{ts,js}\"",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
   "private": true,
@@ -43,11 +45,10 @@
     "@angular/compiler-cli": "~9.0.2",
     "@angular/language-service": "~9.0.2",
     "@nrwl/workspace": "9.0.3",
-    "@tinkoff/linters": "^0.6.0",
+    "@tinkoff/linters": "^1.0.0-rc.5",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
-    "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "codelyzer": "^5.1.2",
     "eslint": "^6.8.0",
@@ -61,6 +62,7 @@
     "prettier": "1.18.2",
     "protractor": "~5.4.3",
     "ts-node": "~8.3.0",
+    "tslint": "^6.1.1",
     "typescript": "~3.7.5"
   }
 }
