@@ -5,6 +5,7 @@ import {RoomStoreModule} from 'src/app/root-store/room-store/room-store.module';
 import {RouterModule} from '@angular/router';
 import {EquipmentListModule} from './equipment-list/equipment-list.module';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {RoomRoutingModule} from './room.routing.module';
 
 @NgModule({
     declarations: [RoomComponent],
@@ -12,8 +13,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
         CommonModule,
         RoomStoreModule,
         EquipmentListModule,
-        RouterModule.forChild([]),
+        RoomRoutingModule,
         MatToolbarModule,
     ],
+    exports: [RouterModule],
 })
 export class RoomModule {}

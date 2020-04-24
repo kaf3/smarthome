@@ -8,6 +8,7 @@ import {RoomModule} from './room/room.module';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {RoomListRoutingModule} from './room-list.routing.module';
 
 @NgModule({
     declarations: [RoomListComponent],
@@ -15,7 +16,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     imports: [
         CommonModule,
         HttpClientModule,
-        RouterModule.forChild([]),
+        RoomListRoutingModule,
         RoomListStoreModule,
         RoomModule,
         MatCardModule,

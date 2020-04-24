@@ -5,6 +5,7 @@ import {EquipmentListStoreModule} from '../../../root-store/equipment-list-store
 import {RouterModule} from '@angular/router';
 import {EquipmentModule} from './equipment/equipment.module';
 import {MatCardModule} from '@angular/material/card';
+import {EquipmentListRoutingModule} from './equipment-list.routing.module';
 
 @NgModule({
     declarations: [EquipmentListComponent],
@@ -12,7 +13,7 @@ import {MatCardModule} from '@angular/material/card';
     imports: [
         CommonModule,
         EquipmentListStoreModule,
-        RouterModule.forChild([]),
+        EquipmentListRoutingModule,
         EquipmentModule,
         MatCardModule,
     ],
