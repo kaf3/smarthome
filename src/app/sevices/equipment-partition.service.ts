@@ -6,8 +6,7 @@ import {IEquipment} from '../../models/iequipment';
     providedIn: 'root',
 })
 export class EquipmentPartitionService {
-    constructor() {
-    }
+    constructor() {}
 
     partition(equipment: IEquipmentDTO): IEquipment[] {
         // array of array of 3 elems : name of equip, key of props, value of props
@@ -65,6 +64,7 @@ export class EquipmentPartitionService {
             s: 'sensor',
             d: 'device',
         };
+
         return switcher[property];
     }
 
@@ -76,6 +76,7 @@ export class EquipmentPartitionService {
             kett: 'kettle',
             toas: 'toaster',
         };
+
         return switcher[key.slice(0, 4)];
     }
 
@@ -88,6 +89,7 @@ export class EquipmentPartitionService {
             r: 'nameOfRoom',
             n: 'name',
         };
+
         return switcher[property];
     }
 }

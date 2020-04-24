@@ -32,5 +32,8 @@ export class EquipmentListEffects {
         ),
     );
 
-    constructor(private actions$: Actions, private store: Store<EquipmentListState>) {}
+    constructor(
+        private readonly actions$: Actions,
+        private readonly store: Store<EquipmentListState>,
+    ) {}
 }

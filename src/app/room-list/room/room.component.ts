@@ -11,7 +11,7 @@ import {RoomStoreSelectors, RoomStoreState} from 'src/app/root-store';
 export class RoomComponent implements OnInit {
     room: IRoom | undefined;
 
-    constructor(private store: Store<RoomStoreState.RoomState>) {}
+    constructor(private readonly store: Store<RoomStoreState.RoomState>) {}
 
     ngOnInit(): void {
         this.store

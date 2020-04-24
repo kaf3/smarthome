@@ -7,7 +7,8 @@ export function equipmentReducer(
 ): EquipmentState {
     switch (action.type) {
         case EquipmentActions.getEquipmentSuccess: {
-            const equipment = action.payload.equipment;
+            const {equipment} = action.payload;
+
             return {...state, equipment};
         }
         case EquipmentActions.getEquipmentError: {

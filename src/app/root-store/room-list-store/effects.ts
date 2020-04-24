@@ -17,5 +17,8 @@ export class RoomsEffects {
         switchMap((rooms: IRoom[]) => of(new LoadRoomsSucces({rooms}))),
     );
 
-    constructor(private actions$: Actions, private loadRoomService: LoadRoomService) {}
+    constructor(
+        private readonly actions$: Actions,
+        private readonly loadRoomService: LoadRoomService,
+    ) {}
 }

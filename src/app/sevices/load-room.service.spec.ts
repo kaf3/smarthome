@@ -23,6 +23,7 @@ describe('LoadRoomService', () => {
 
     it('loadRoom have been called', () => {
         const methodSpy = spyOn(service, 'testMethod');
+
         methodSpy.and.returnValue('wow');
     });
 });

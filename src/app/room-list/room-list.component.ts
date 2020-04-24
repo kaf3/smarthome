@@ -17,7 +17,7 @@ import {
 export class RoomListComponent implements OnInit {
     rooms: IRoom[] = [];
 
-    constructor(private store: Store<RoomListStoreState.RoomListState>) {}
+    constructor(private readonly store: Store<RoomListStoreState.RoomListState>) {}
 
     ngOnInit() {
         this.store.dispatch(new RoomListStoreActions.LoadRooms());

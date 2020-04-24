@@ -12,8 +12,8 @@ import {IRoomsDTO} from '../../models/iroomsDTO';
 })
 export class LoadRoomService {
     constructor(
-        private http: HttpClient,
-        private equipmentPartion: EquipmentPartitionService,
+        private readonly http: HttpClient,
+        private readonly equipmentPartion: EquipmentPartitionService,
     ) {}
 
     loadRoom(): Observable<IRoom[]> {
@@ -28,6 +28,7 @@ export class LoadRoomService {
                         index,
                     ) => {
                         equipment = this.withoutName(equipment);
+
                         return {
                             id: index,
                             roomName,
@@ -43,6 +44,7 @@ export class LoadRoomService {
         Object.defineProperty(equipment, 'r_name', {
             enumerable: false,
         });
+
         return equipment;
     }
 }
