@@ -1,0 +1,25 @@
+
+
+
+<div class="equip-list">
+  <a [routerLink]="[equipment.id]"
+     *ngFor="let equipment of equipmentList"
+  >
+    <mat-card class="equip-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{equipment.name}}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{equipment.type}}
+        </mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </a>
+</div>
+
+
+
+
+
+<router-outlet></router-outlet>

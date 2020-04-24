@@ -7,15 +7,18 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.0.2",
+    "@angular/cdk": "^9.2.1",
     "@angular/common": "~9.0.2",
     "@angular/compiler": "~9.0.2",
     "@angular/core": "~9.0.2",
     "@angular/forms": "~9.0.2",
+    "@angular/material": "^9.2.1",
     "@angular/platform-browser": "~9.0.2",
     "@angular/platform-browser-dynamic": "~9.0.2",
     "@angular/router": "~9.0.2",
@@ -25,11 +28,12 @@
     "@ngrx/router-store": "^8.6.0",
     "@ngrx/store": "^8.6.0",
     "@ngrx/store-devtools": "^8.6.0",
+    "@nrwl/angular": "9.0.3",
     "@nrwl/workspace": "^9.0.3",
     "rxjs": "~6.5.4",
+    "rxjs-compat": "^6.5.5",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2",
-    "@nrwl/angular": "9.0.3"
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.900.3",

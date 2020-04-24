@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType, createEffect } from '@ngrx/effects';
-import { roomActions, GetRoomSucces, GetRoom } from './actions';
+import { RoomActions, GetRoomSuccess, GetRoom } from './actions';
 import { switchMap, map } from 'rxjs/operators';
 import { Store} from '@ngrx/store';
 import { of } from 'rxjs';
@@ -14,14 +14,14 @@ import {RoomState} from './state';
 export class RoomEffects {
 
     getRoom$ = createEffect( () => this.actions$.pipe(
-        ofType<GetRoom>(roomActions.getRoom),
+        ofType<GetRoom>(RoomActions.getRoom),
         map(action => action.payload.id),
         switchMap((id) => this.store.select(RoomListStoreSelectors.selectRoomList).pipe(map(rooms => rooms[id]))),
-        switchMap(room => of(new GetRoomSucces({ room }) ))
-    ))
+        switchMap(room => of(new GetRoomSuccess({ room }) ))
+    ));
 
 
-    navigation = createEffect( () => this.actions$.pipe(
+    navigationRoom = createEffect( () => this.actions$.pipe(
         navigation(
         RoomComponent, {
             run: (routerSnap: ActivatedRouteSnapshot) => {
@@ -29,7 +29,7 @@ export class RoomEffects {
             }
 
         })
-    ))
+    ));
 
 
     constructor(private actions$: Actions, private store: Store<RoomState>,

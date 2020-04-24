@@ -1,7 +1,5 @@
-<p>room works!</p>
-<p>{{room?.roomName}}</p>
-<ul>
-  <li *ngFor="let equipment of room?.equipment">
-    <a [routerLink]="['/', equipment.name]">{{equipment.name}}</a>
-  </li>
-</ul>
+<mat-toolbar>
+  {{room?.roomName}}
+</mat-toolbar>
+
+<app-equipment-list></app-equipment-list>

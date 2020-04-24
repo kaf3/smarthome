@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { RoomComponent } from '../room-list/room/room.component';
-import {EquipmentComponent} from '../room-list/room/equipment/equipment.component';
+import {EquipmentComponent} from '../room-list/room/equipment-list/equipment/equipment.component';
 
 
 export const appRoutes: Routes = [
@@ -10,7 +10,7 @@ export const appRoutes: Routes = [
         component: RoomComponent,
         children: [
             {
-              path: ':id/:detail',
+              path: ':detail',
               component: EquipmentComponent
             }
         ]

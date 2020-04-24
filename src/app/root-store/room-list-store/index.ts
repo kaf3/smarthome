@@ -10,4 +10,3 @@ export {
   RoomListStoreState,
   RoomListStoreModule
 };
-

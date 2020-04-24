@@ -1,5 +1,17 @@
-<ul>
+<!--<ul>
     <li *ngFor="let room of rooms"><a [routerLink]="['/', room.id]">{{room?.roomName}}</a></li>
   </ul>
-<h3>Room </h3>
+<h3>Room </h3>-->
+
+        <nav mat-tab-nav-bar color="primary" mat-align-tabs="center">
+          <a mat-tab-link *ngFor="let room of rooms"
+             [routerLink]="[room.id]"
+             routerLinkActive #rla="routerLinkActive"
+             [routerLinkActiveOptions]="{exact: false}"
+             [active]="rla.isActive"
+          > {{room?.roomName}}</a>
+        </nav>
+
 <router-outlet></router-outlet>
+
+

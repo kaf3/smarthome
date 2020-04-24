@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { IRoom } from 'src/models/iroom';
-import {RoomStoreSelectors, RootStoreState} from 'src/app/root-store';
+import {RoomStoreSelectors, RoomStoreState } from 'src/app/root-store';
 
 @Component({
   selector: 'app-room',
@@ -10,7 +10,7 @@ import {RoomStoreSelectors, RootStoreState} from 'src/app/root-store';
 })
 export class RoomComponent implements OnInit {
 
-  constructor(private store: Store<RootStoreState.AppState>) { }
+  constructor(private store: Store<RoomStoreState.RoomState>) { }
 
   room: IRoom | undefined;
 

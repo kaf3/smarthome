@@ -5,6 +5,9 @@ import { RoomListComponent } from './room-list.component';
 import { RouterModule } from '@angular/router';
 import {RoomListStoreModule} from '../root-store';
 import {RoomModule} from './room/room.module';
+import {MatCardModule} from '@angular/material/card';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 
 @NgModule({
@@ -15,7 +18,10 @@ import {RoomModule} from './room/room.module';
     HttpClientModule,
     RouterModule.forChild([]),
     RoomListStoreModule,
-    RoomModule
+    RoomModule,
+    MatCardModule,
+    MatTabsModule,
+    MatGridListModule
   ]
 })
 export class RoomListModule { }
