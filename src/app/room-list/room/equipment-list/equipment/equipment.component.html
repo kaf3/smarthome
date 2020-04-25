@@ -1,5 +1,5 @@
 <ul>
-  <li>Name: {{equipment?.name}}</li>
-  <li>Type: {{equipment?.type}}</li>
+  <li>Name: {{(equipment$ | async)?.name}}</li>
+  <li>Type: {{(equipment$ | async)?.type}}</li>
 </ul>
 

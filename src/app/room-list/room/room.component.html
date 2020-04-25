@@ -1,5 +1,5 @@
 <mat-toolbar>
-  {{room?.roomName}}
+  {{(room$ | async)?.roomName}}
 </mat-toolbar>
 
 <router-outlet></router-outlet>

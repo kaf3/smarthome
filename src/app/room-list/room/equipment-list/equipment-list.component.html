@@ -1,17 +1,26 @@
 <div class="equip-list">
-  <a *ngFor="let equipment of equipmentList"
+  <a *ngFor="let equipment of equipmentList$ | async"
      [routerLink]="[equipment.id]"
   >
-    <mat-card class="equip-card">
-      <mat-card-header>
-        <mat-card-title>
-          {{equipment.name}}
-        </mat-card-title>
-        <mat-card-subtitle>
-          {{equipment.type}}
-        </mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
+          <mat-card class="equip-card" matRipple>
+
+                  <mat-card-header>
+                      <mat-card-title>
+                          {{equipment.name}}
+                      </mat-card-title>
+                      <mat-card-subtitle>
+                          {{equipment.group}}
+                      </mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-content class="equip-card-content">
+            <span class="mat-body-strong">
+                <ng-container *ngIf="equipment.group === 'sensor'">
+                    level of
+                </ng-container>
+                {{equipment.type}}: {{equipment.value}}</span>
+                  </mat-card-content>
+          </mat-card>
+
   </a>
 </div>
 

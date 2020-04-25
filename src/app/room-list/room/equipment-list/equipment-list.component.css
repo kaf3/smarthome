@@ -1,8 +1,6 @@
 .equip-card {
   width: 200px;
-  height: 100px;
   margin: 16px;
-
 }
 
 .equip-list {
@@ -10,8 +8,13 @@
   flex-wrap: wrap;
   justify-content: center;
   background-color: #f5f5f5;
+    align-items: center;
 }
 
 .equip-list a {
   text-decoration: none;
+}
+
+.equip-card-content {
+    margin-bottom: 0;
 }

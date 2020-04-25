@@ -8,6 +8,7 @@ import {
     RoomListStoreSelectors,
     RoomListStoreState,
 } from 'src/app/root-store';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-room-list',
@@ -15,18 +16,16 @@ import {
     styleUrls: ['./room-list.component.css'],
 })
 export class RoomListComponent implements OnInit {
-    rooms: Room[] = [];
+    rooms$: Observable<Room[]>;
 
     constructor(private readonly store: Store<RoomListStoreState.RoomListState>) {}
 
     ngOnInit() {
         this.store.dispatch(new RoomListStoreActions.LoadRooms());
 
-        this.store
-            .pipe(
-                select(RoomListStoreSelectors.selectRoomList),
-                filter(rooms => !!rooms.length),
-            )
-            .subscribe(rooms => (this.rooms = rooms));
+        this.rooms$ = this.store.pipe(
+            select(RoomListStoreSelectors.selectRoomList),
+            filter(rooms => !!rooms.length),
+        );
     }
 }

@@ -7,6 +7,7 @@ import {
 } from 'src/app/root-store';
 import {filter} from 'rxjs/operators';
 import {Equipment} from '../../../../models/equipment';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-equipment-list',
@@ -14,19 +15,14 @@ import {Equipment} from '../../../../models/equipment';
     styleUrls: ['./equipment-list.component.css'],
 })
 export class EquipmentListComponent implements OnInit {
-    equipmentList: Equipment[] = [];
-
+    equipmentList$: Observable<Equipment[]>;
     constructor(public store: Store<EquipmentListStoreState.EquipmentListState>) {}
 
     ngOnInit(): void {
         this.store.dispatch(new EquipmentListStoreAction.LoadEquipmentList());
-        this.store
-            .pipe(
-                select(EquipmentListStoreSelectors.selectEquipmentList),
-                filter((equipmentList: Equipment[]) => !!equipmentList.length),
-            )
-            .subscribe(
-                (equipmentList: Equipment[]) => (this.equipmentList = equipmentList),
-            );
+        this.equipmentList$ = this.store.pipe(
+            select(EquipmentListStoreSelectors.selectEquipmentList),
+            filter((equipmentList: Equipment[]) => !!equipmentList.length),
+        );
     }
 }

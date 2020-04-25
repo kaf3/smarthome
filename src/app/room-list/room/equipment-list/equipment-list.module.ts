@@ -2,10 +2,10 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EquipmentListComponent} from './equipment-list.component';
 import {EquipmentListStoreModule} from '../../../root-store/equipment-list-store';
-import {RouterModule} from '@angular/router';
 import {EquipmentModule} from './equipment/equipment.module';
 import {MatCardModule} from '@angular/material/card';
 import {EquipmentListRoutingModule} from './equipment-list.routing.module';
+import {MatRippleModule} from '@angular/material/core';
 
 @NgModule({
     declarations: [EquipmentListComponent],
@@ -16,6 +16,7 @@ import {EquipmentListRoutingModule} from './equipment-list.routing.module';
         EquipmentListRoutingModule,
         EquipmentModule,
         MatCardModule,
+        MatRippleModule,
     ],
 })
 export class EquipmentListModule {}

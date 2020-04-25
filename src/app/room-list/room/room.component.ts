@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Room} from 'src/models/room';
 import {RoomStoreSelectors, RoomStoreState} from 'src/app/root-store';
+import {Observable} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
+import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
 
 @Component({
     selector: 'app-room',
@@ -9,13 +12,14 @@ import {RoomStoreSelectors, RoomStoreState} from 'src/app/root-store';
     styleUrls: ['./room.component.css'],
 })
 export class RoomComponent implements OnInit {
-    room: Room | undefined;
+    room$: Observable<Room>;
 
     constructor(private readonly store: Store<RoomStoreState.RoomState>) {}
 
     ngOnInit(): void {
-        this.store
-            .pipe(select(RoomStoreSelectors.selectRoom))
-            .subscribe(room => (this.room = room));
+        this.room$ = this.store.pipe(
+            select(RoomStoreSelectors.selectRoom),
+            filter(room => !!room),
+        );
     }
 }
