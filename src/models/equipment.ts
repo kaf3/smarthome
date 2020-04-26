@@ -7,4 +7,5 @@ export interface Equipment {
     update?: Date;
     id: string;
     location: string;
+    working: boolean;
 }

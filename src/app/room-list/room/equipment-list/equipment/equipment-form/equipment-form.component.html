@@ -1,0 +1,19 @@
+<div class="equip-form">
+    <form [ngrxFormState]="(formState$ | async)">
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input
+                type="text"
+                matInput
+                placeholder="custom name for your device"
+                [ngrxFormControlState]="(formState$ | async)?.controls.name">
+        </mat-form-field>
+            <mat-slide-toggle
+                class="form-toggle"
+                [ngrxFormControlState]="(formState$ | async)?.controls.value"
+            ></mat-slide-toggle>
+        <button mat-button>Save</button>
+    </form>
+</div>
+
+
