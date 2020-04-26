@@ -1,6 +1,13 @@
+@import 'layout';
+@import 'theming';
+
 .equip-card {
-  width: 200px;
-  margin: 16px;
+  width: 232px;
+  margin: $layout03;
+}
+
+.equip-link-active .equip-card-active{
+    color: $primary;
 }
 
 .equip-list {

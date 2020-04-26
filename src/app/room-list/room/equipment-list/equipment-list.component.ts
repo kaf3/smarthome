@@ -12,7 +12,7 @@ import {Observable} from 'rxjs';
 @Component({
     selector: 'app-equipment-list',
     templateUrl: './equipment-list.component.html',
-    styleUrls: ['./equipment-list.component.css'],
+    styleUrls: ['./equipment-list.component.scss'],
 })
 export class EquipmentListComponent implements OnInit {
     equipmentList$: Observable<Equipment[]>;

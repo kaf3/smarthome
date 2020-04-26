@@ -1,9 +1,10 @@
 <div class="equip-list">
   <a *ngFor="let equipment of equipmentList$ | async"
+     class="equip-card"
      [routerLink]="[equipment.id]"
+     routerLinkActive="equip-link-active"
   >
-          <mat-card class="equip-card" matRipple>
-
+          <mat-card  matRipple class="equip-card-active">
                   <mat-card-header>
                       <mat-card-title>
                           {{equipment.name}}
