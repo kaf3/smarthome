@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {EquipmentDTO} from '../../models/equipmentDTO';
+import {RoomDTO} from '../../models/roomDTO';
 import {Equipment} from '../../models/equipment';
 
 export type EquipmentId = string;
@@ -12,11 +12,19 @@ export type EquipmentValueProp = string;
 export class EquipmentPartitionService {
     constructor() {}
 
-    partition(equipment: EquipmentDTO): Equipment[] {
+    public withoutName(roomDTO: RoomDTO): RoomDTO {
+        Object.defineProperty(roomDTO, 'r_name', {
+            enumerable: false,
+        });
+
+        return roomDTO;
+    }
+
+    public partition(roomDTO: RoomDTO): Equipment[] {
         // array of array of 3 elems : name of equip, key of props, value of props
         // какое устройство, какое его поле, какое значение поля
         const slices: [EquipmentId, EquipmentProp, EquipmentValueProp][] = Object.entries(
-            equipment,
+            roomDTO,
         ).map(([key, value]: [string, string]) => [key.slice(2), key.slice(0, 1), value]);
 
         const equipmentAccumulator = [];
@@ -53,13 +61,8 @@ export class EquipmentPartitionService {
             },
         );
         equipmentAccumulator.forEach(item => {
-            item.name =
-                item.name ||
-                `${item.id
-                    .slice(5)
-                    .split('_')
-                    .join(' ')} (${item.type})`;
-            item.location = equipment.r_name;
+            item.name = item.name || `${item.type} (${item.id.slice(5)})`;
+            item.location = roomDTO.r_name;
 
             Object.defineProperty(item, 'location', {
                 enumerable: false,

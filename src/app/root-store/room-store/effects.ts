@@ -15,11 +15,11 @@ export class RoomEffects {
     getRoom$ = createEffect(() =>
         this.actions$.pipe(
             ofType<GetRoom>(RoomActions.getRoom),
-            map(action => action.payload.id),
-            switchMap(id =>
+            map(action => action.payload.roomName),
+            switchMap(roomName =>
                 this.store
-                    .select(RoomListStoreSelectors.selectRoomList)
-                    .pipe(map(rooms => rooms[id])),
+                    .select(RoomListStoreSelectors.selectRoomListEntities)
+                    .pipe(map(roomEntities => roomEntities[roomName])),
             ),
             switchMap(room => of(new GetRoomSuccess({room}))),
         ),
@@ -29,7 +29,7 @@ export class RoomEffects {
         this.actions$.pipe(
             navigation(RoomComponent, {
                 run: (routerSnap: ActivatedRouteSnapshot) => {
-                    return of(new GetRoom({id: routerSnap.params.id}));
+                    return of(new GetRoom({roomName: routerSnap.params.id}));
                 },
             }),
         ),

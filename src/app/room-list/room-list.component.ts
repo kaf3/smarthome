@@ -18,9 +18,7 @@ import {Observable} from 'rxjs';
 export class RoomListComponent implements OnInit {
     rooms$: Observable<Room[]>;
 
-    constructor(private readonly store: Store<RoomListStoreState.RoomListState>) {}
-
-    ngOnInit() {
+    constructor(private readonly store: Store<RoomListStoreState.RoomListState>) {
         this.store.dispatch(new RoomListStoreActions.LoadRooms());
 
         this.rooms$ = this.store.pipe(
@@ -28,4 +26,6 @@ export class RoomListComponent implements OnInit {
             filter(rooms => !!rooms.length),
         );
     }
+
+    ngOnInit() {}
 }

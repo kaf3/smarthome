@@ -4,7 +4,7 @@ import {Room} from 'src/models/room';
 export interface RoomListState extends EntityState<Room> {}
 
 export const roomsAdapter: EntityAdapter<Room> = createEntityAdapter<Room>({
-    selectId: (room: Room) => room.id,
+    selectId: (room: Room) => room.roomName,
     sortComparer: false,
 });
 

@@ -14,7 +14,7 @@ import {of} from 'rxjs';
 import {MarkAsSubmittedAction} from 'ngrx-forms';
 import {selectEquipmentFormState} from './selectors';
 import {EquipmentStoreSelectors} from '../equipment-store';
-import {EquipmentSerializeService} from '../../sevices/equipment-serialize.service';
+import {EquipmentListStoreActions} from '../equipment-list-store';
 
 @Injectable()
 export class EquipmentFormEffects {
@@ -37,32 +37,32 @@ export class EquipmentFormEffects {
         ),
     );
 
-    /*    submitEquipmentForm$ = createEffect(() => {
+    submitEquipmentForm$ = createEffect(() =>
         this.actions$.pipe(
             ofType<MarkAsSubmittedAction>(MarkAsSubmittedAction.TYPE),
             switchMap(() =>
                 this.store
                     .select(selectEquipmentFormState)
-                    .pipe(map((state: EquipmentFormState) => state.value))
+                    .pipe(map((state: EquipmentFormState) => state.value)),
             ),
             switchMap((formValue: EquipmentFormValue) =>
-                this.store
-                    .select(EquipmentStoreSelectors.selectEquipment)
-                    .pipe(map((equipment: Equipment) => {
+                this.store.select(EquipmentStoreSelectors.selectEquipment).pipe(
+                    map((equipment: Equipment) => {
                         equipment.name = formValue.name;
                         equipment.value = formValue.value;
-                        return equipment
-                    }))
+
+                        return equipment;
+                    }),
+                ),
             ),
-            switchMap((equipment: Equipment) => of(this.serializeService.serialize(equipment)))
-
-
-        )
-    }))*/
+            switchMap((equipment: Equipment) =>
+                of(new EquipmentListStoreActions.UpsertOneEquipment({equipment})),
+            ),
+        ),
+    );
 
     constructor(
         private readonly actions$: Actions,
         private readonly store: Store<EquipmentFormState>,
-        private readonly serializeService: EquipmentSerializeService,
     ) {}
 }

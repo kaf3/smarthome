@@ -1,33 +1,38 @@
 import {Injectable} from '@angular/core';
 import {Equipment} from '../../models/equipment';
-import {EquipmentDTO} from '../../models/equipmentDTO';
+import {RoomDTO} from '../../models/roomDTO';
 
 @Injectable({
     providedIn: 'root',
 })
-export class EquipmentSerializeService {
+export class SerializeService {
     constructor() {}
 
-    public serialize(equipment: Equipment): EquipmentDTO {
-        let equipmentDTO: EquipmentDTO = {
+    public serializeEquipment(equipment: Equipment): RoomDTO {
+        const equipmentDTO: RoomDTO = {
             r_name: equipment.location,
         };
-        const type = EquipmentSerializeService.getTypeDTO(equipment.type);
+        const type = SerializeService.getTypeDTO(equipment.type);
         const id = equipment.id;
-        const group = EquipmentSerializeService.getGroupDTO(equipment.group);
+        const group = SerializeService.getGroupDTO(equipment.group);
 
         const body: string = type + '_' + id;
 
-        let key: keyof EquipmentDTO = group + '_' + body;
+        let key: keyof RoomDTO = group + '_' + body;
+
         equipmentDTO[key] = equipment.value;
         key = 'n' + '_' + body;
         equipmentDTO[key] = equipment.name;
         key = 'u' + '_' + body;
-        equipmentDTO[key] = equipment.update.toDateString();
+        equipmentDTO[key] = equipment.update ? equipment.update.toDateString() : '';
         key = 'm' + '_' + body;
         equipmentDTO[key] = equipment.mac;
 
         return equipmentDTO;
+    }
+
+    public serializeRoom(equipmentDTO: RoomDTO, roomDTO: RoomDTO): RoomDTO {
+        return Object.assign(roomDTO, equipmentDTO);
     }
 
     private static getTypeDTO(key: Equipment['type']) {

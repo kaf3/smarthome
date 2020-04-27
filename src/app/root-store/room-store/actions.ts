@@ -10,7 +10,7 @@ export enum RoomActions {
 export class GetRoom implements Action {
     readonly type = RoomActions.getRoom;
 
-    constructor(public payload: {id: number}) {}
+    constructor(public payload: {roomName: Room['roomName']}) {}
 }
 
 export class GetRoomSuccess implements Action {

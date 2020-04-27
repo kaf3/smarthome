@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {
-    EquipmentListStoreAction,
+    EquipmentListStoreActions,
     EquipmentListStoreSelectors,
     EquipmentListStoreState,
 } from 'src/app/root-store';
@@ -19,7 +19,7 @@ export class EquipmentListComponent implements OnInit {
     constructor(public store: Store<EquipmentListStoreState.EquipmentListState>) {}
 
     ngOnInit(): void {
-        this.store.dispatch(new EquipmentListStoreAction.LoadEquipmentList());
+        this.store.dispatch(new EquipmentListStoreActions.LoadEquipmentList());
         this.equipmentList$ = this.store.pipe(
             select(EquipmentListStoreSelectors.selectEquipmentList),
             filter((equipmentList: Equipment[]) => !!equipmentList.length),

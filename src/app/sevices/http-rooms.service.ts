@@ -3,9 +3,12 @@ import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {Room} from '../../models/room';
-import {EquipmentDTO} from '../../models/equipmentDTO';
+import {RoomDTO} from '../../models/roomDTO';
 import {EquipmentPartitionService} from './equipment-partition.service';
 import {RoomsDTO} from '../../models/roomsDTO';
+import {environment} from '../../environments/environment';
+
+const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 
 @Injectable({
     providedIn: 'root',
@@ -15,21 +18,23 @@ export class HttpRoomsService {
         private readonly http: HttpClient,
         private readonly equipmentPartition: EquipmentPartitionService,
     ) {}
+    public loadRoomsDTO(): Observable<RoomsDTO> {
+        return this.http.get<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`);
+    }
 
     public loadRooms(): Observable<Room[]> {
-        return this.http.get<RoomsDTO>(`assets/db.json`).pipe(
+        return this.http.get<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`).pipe(
             map((rooms: RoomsDTO) =>
                 Object.entries(rooms).map(
                     (
-                        [roomName, equipment]: [keyof RoomsDTO, RoomsDTO[keyof RoomsDTO]],
+                        [roomName, roomDTO]: [keyof RoomsDTO, RoomsDTO[keyof RoomsDTO]],
                         index,
                     ) => {
-                        equipment = this.withoutName(equipment);
+                        roomDTO = this.equipmentPartition.withoutName(roomDTO);
 
                         return {
-                            id: index,
                             roomName,
-                            equipment: this.equipmentPartition.partition(equipment),
+                            equipment: this.equipmentPartition.partition(roomDTO),
                         } as Room;
                     },
                 ),
@@ -37,15 +42,20 @@ export class HttpRoomsService {
         );
     }
 
-    public patchRoom(roomName: RoomsDTO['roomName']) {
-        return this.http.patch(`assets/db/${roomName}.json`);
-    }
+    public patchRoom(roomName: keyof RoomsDTO, roomDTO: RoomDTO): Observable<Room> {
+        return this.http
+            .patch<RoomDTO>(`${FIREBASE_DATABASE_URL}/.json`, {
+                roomName: roomDTO,
+            })
+            .pipe(
+                map((roomDTO: RoomDTO) => {
+                    roomDTO = this.equipmentPartition.withoutName(roomDTO);
 
-    withoutName(equipment: EquipmentDTO): EquipmentDTO {
-        Object.defineProperty(equipment, 'r_name', {
-            enumerable: false,
-        });
-
-        return equipment;
+                    return {
+                        roomName,
+                        equipment: this.equipmentPartition.partition(roomDTO),
+                    } as Room;
+                }),
+            );
     }
 }

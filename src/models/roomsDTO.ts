@@ -1,5 +1,5 @@
-import {EquipmentDTO} from './equipmentDTO';
+import {RoomDTO} from './roomDTO';
 
 export interface RoomsDTO {
-    [roomName: string]: EquipmentDTO;
+    [roomName: string]: RoomDTO;
 }

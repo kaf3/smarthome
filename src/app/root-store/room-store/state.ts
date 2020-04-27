@@ -5,7 +5,6 @@ export interface RoomState {
 }
 
 const initialRoom: Room = {
-    id: -1,
     roomName: '',
     equipment: [],
 };
