@@ -1,0 +1,32 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Edit
+        </mat-card-title>
+    </mat-card-header>
+    <form [ngrxFormState]="(formState$ | async)">
+        <mat-card-content>
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input
+                type="text"
+                matInput
+                placeholder="custom name for your device"
+                [ngrxFormControlState]="(formState$ | async)?.controls.name">
+        </mat-form-field>
+        <mat-slide-toggle
+            class="form-toggle"
+            [ngrxFormControlState]="(formState$ | async)?.controls.value"
+        ></mat-slide-toggle>
+        </mat-card-content>
+        <mat-card-footer>
+            <button mat-button type="submit">Save</button>
+
+        </mat-card-footer>
+    </form>
+</mat-card>
+
+
+
+
+

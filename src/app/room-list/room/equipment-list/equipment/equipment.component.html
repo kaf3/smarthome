@@ -1,27 +1,36 @@
-<mat-card class="equip-detail" >
-    <mat-card-header>
-        <mat-card-title>
-            {{(equipment$ | async)?.name}}
-        </mat-card-title>
-        <mat-card-subtitle>
-            {{(equipment$  | async)?.group}}
-        </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <mat-list>
-            <mat-list-item>
-                {{(equipment$ | async)?.value}}
-            </mat-list-item>
-            <mat-divider></mat-divider>
-            <mat-list-item>
-                {{(equipment$ | async)?.location}}
-            </mat-list-item>
-            <mat-divider></mat-divider>
-            <mat-list-item>
-                {{(equipment$ | async)?.update}}
-            </mat-list-item>
-            <mat-divider></mat-divider>
-        </mat-list>
-    </mat-card-content>
-</mat-card>
+<div class="equip-container">
+    <mat-toolbar>{{(equipment$ | async)?.name}}</mat-toolbar>
+    <div class="equip">
+        <mat-card class="equip-detail">
+            <mat-card-header>
+                <mat-card-title>
+                    {{(equipment$ | async)?.name}}
+                </mat-card-title>
+                <mat-card-subtitle>
+                    {{(equipment$  | async)?.group}}
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        {{(equipment$ | async)?.value}}
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item>
+                        {{(equipment$ | async)?.location}}
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item>
+                        {{(equipment$ | async)?.update}}
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                </mat-list>
+
+            </mat-card-content>
+        </mat-card>
+                <app-equipment-form></app-equipment-form>
+    </div>
+</div>
+
+
 

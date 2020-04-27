@@ -10,13 +10,13 @@ import {RoomsDTO} from '../../models/roomsDTO';
 @Injectable({
     providedIn: 'root',
 })
-export class LoadRoomService {
+export class HttpRoomsService {
     constructor(
         private readonly http: HttpClient,
         private readonly equipmentPartition: EquipmentPartitionService,
     ) {}
 
-    loadRoom(): Observable<Room[]> {
+    public loadRooms(): Observable<Room[]> {
         return this.http.get<RoomsDTO>(`assets/db.json`).pipe(
             map((rooms: RoomsDTO) =>
                 Object.entries(rooms).map(
@@ -35,6 +35,10 @@ export class LoadRoomService {
                 ),
             ),
         );
+    }
+
+    public patchRoom(roomName: RoomsDTO['roomName']) {
+        return this.http.patch(`assets/db/${roomName}.json`);
     }
 
     withoutName(equipment: EquipmentDTO): EquipmentDTO {

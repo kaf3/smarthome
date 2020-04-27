@@ -7,4 +7,6 @@ export interface Equipment {
     update?: Date;
     id: string;
     location: string;
+    working: boolean; ///doesnt work yet
+    frequencyUpdating: number[]; ///doesnt work yet
 }
