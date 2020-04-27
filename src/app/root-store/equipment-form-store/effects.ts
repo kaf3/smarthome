@@ -7,19 +7,24 @@ import {
     LoadEquipmentForm,
     LoadEquipmentFormSuccess,
 } from './actions';
-import {switchMap} from 'rxjs/operators';
-import {selectEquipment} from '../equipment-store/selectors';
+import {map, switchMap} from 'rxjs/operators';
 import {filter} from 'rxjs/operators';
 import {Equipment} from '../../../models/equipment';
 import {of} from 'rxjs';
+import {MarkAsSubmittedAction} from 'ngrx-forms';
+import {selectEquipmentFormState} from './selectors';
+import {EquipmentStoreSelectors} from '../equipment-store';
+import {EquipmentSerializeService} from '../../sevices/equipment-serialize.service';
 
 @Injectable()
 export class EquipmentFormEffects {
-    loadEquipmentForm = createEffect(() =>
+    loadEquipmentForm$ = createEffect(() =>
         this.actions$.pipe(
             ofType<LoadEquipmentForm>(EquipmentFormActions.loadEquipmentForm),
             switchMap(() =>
-                this.store.select(selectEquipment).pipe(filter(equipment => !!equipment)),
+                this.store
+                    .select(EquipmentStoreSelectors.selectEquipment)
+                    .pipe(filter(equipment => !!equipment)),
             ),
             switchMap((equipment: Equipment) =>
                 of(
@@ -32,8 +37,32 @@ export class EquipmentFormEffects {
         ),
     );
 
+    /*    submitEquipmentForm$ = createEffect(() => {
+        this.actions$.pipe(
+            ofType<MarkAsSubmittedAction>(MarkAsSubmittedAction.TYPE),
+            switchMap(() =>
+                this.store
+                    .select(selectEquipmentFormState)
+                    .pipe(map((state: EquipmentFormState) => state.value))
+            ),
+            switchMap((formValue: EquipmentFormValue) =>
+                this.store
+                    .select(EquipmentStoreSelectors.selectEquipment)
+                    .pipe(map((equipment: Equipment) => {
+                        equipment.name = formValue.name;
+                        equipment.value = formValue.value;
+                        return equipment
+                    }))
+            ),
+            switchMap((equipment: Equipment) => of(this.serializeService.serialize(equipment)))
+
+
+        )
+    }))*/
+
     constructor(
         private readonly actions$: Actions,
         private readonly store: Store<EquipmentFormState>,
+        private readonly serializeService: EquipmentSerializeService,
     ) {}
 }

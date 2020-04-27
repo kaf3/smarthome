@@ -12,6 +12,7 @@ const initialEquipment: Equipment = {
     id: '',
     location: '',
     working: false,
+    frequencyUpdating: [],
 };
 
 export const initialEquipmentState: EquipmentState = {

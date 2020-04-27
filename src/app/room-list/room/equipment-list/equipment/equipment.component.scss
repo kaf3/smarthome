@@ -8,13 +8,12 @@
 
 .equip {
     display: flex;
+    flex-wrap: wrap;
     background-color: $app-bar;
     border-bottom: 1px solid $border-light;
 }
 
-.equip-form {
-    margin: $layout03;
-}
+
 
 .equip-container {
     border-top: 1px solid $border-light;

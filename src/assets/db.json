@@ -5,7 +5,8 @@
         "s_humi_humidity_in_room": 747,
         "s_co2-_sensorCo2": 23,
         "d_toas_toaster_on_kitchen": true,
-        "d_kett_kettle_OMM": false
+        "d_kett_kettle_OMM": false,
+        "m_temp_temperature_on_the_window": 1221112
     },
     "Bedroom": {
         "r_name": "Bedroom",

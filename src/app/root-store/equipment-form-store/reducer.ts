@@ -1,4 +1,10 @@
-import {Actions, formGroupReducer, setValue} from 'ngrx-forms';
+import {
+    Actions,
+    ALL_NGRX_FORMS_ACTION_TYPES,
+    formGroupReducer,
+    setValue,
+    MarkAsSubmittedAction,
+} from 'ngrx-forms';
 import {EquipmentFormState, EquipmentFormValue, initialEquipmentFormState} from './state';
 import {EquipmentFormActions, EquipmentFormUnion} from './actions';
 
@@ -14,6 +20,8 @@ export const equipmentFormReducer = function(
         }
         case EquipmentFormActions.loadEquipmentFormError: {
             return state;
+        }
+        case MarkAsSubmittedAction.TYPE: {
         }
     }
 

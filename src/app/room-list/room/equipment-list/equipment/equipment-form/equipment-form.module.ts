@@ -7,6 +7,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {NgrxFormsModule} from 'ngrx-forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
     declarations: [EquipmentFormComponent],
@@ -19,6 +20,7 @@ import {MatButtonModule} from '@angular/material/button';
         MatSlideToggleModule,
         NgrxFormsModule,
         MatButtonModule,
+        MatCardModule,
     ],
 })
 export class EquipmentFormModule {}
