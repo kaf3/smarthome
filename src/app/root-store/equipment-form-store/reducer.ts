@@ -1,9 +1,9 @@
 import {
     Actions,
-    ALL_NGRX_FORMS_ACTION_TYPES,
     formGroupReducer,
-    setValue,
     MarkAsSubmittedAction,
+    reset,
+    setValue,
 } from 'ngrx-forms';
 import {EquipmentFormState, EquipmentFormValue, initialEquipmentFormState} from './state';
 import {EquipmentFormActions, EquipmentFormUnion} from './actions';
@@ -22,8 +22,15 @@ export const equipmentFormReducer = function(
             return state;
         }
         case MarkAsSubmittedAction.TYPE: {
+            return reset(state);
         }
+        case EquipmentFormActions.submitEquipmentForm: {
+            return reset(state);
+        }
+        case EquipmentFormActions.submitEquipmentFormSuccess: {
+            return reset(state);
+        }
+        default:
+            return state;
     }
-
-    return state;
 };

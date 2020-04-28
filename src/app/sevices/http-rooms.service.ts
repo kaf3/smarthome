@@ -60,4 +60,21 @@ export class HttpRoomsService {
                 }),
             );
     }
+
+    public postRooms(roomsDTO: RoomsDTO): Observable<Room[]> {
+        return this.http.put<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`, roomsDTO).pipe(
+            map((rooms: RoomsDTO) =>
+                Object.entries(rooms).map(
+                    ([roomName, roomDTO]: [keyof RoomsDTO, RoomDTO]) => {
+                        roomDTO = this.equipmentPartition.withoutName(roomDTO);
+
+                        return {
+                            roomName,
+                            equipment: this.equipmentPartition.partition(roomDTO),
+                        } as Room;
+                    },
+                ),
+            ),
+        );
+    }
 }

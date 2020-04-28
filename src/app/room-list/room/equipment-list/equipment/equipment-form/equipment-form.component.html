@@ -4,26 +4,26 @@
             Edit
         </mat-card-title>
     </mat-card-header>
-    <form [ngrxFormState]="(formState$ | async)">
         <mat-card-content>
+            <form [ngrxFormState]="(formState$ | async)">
         <mat-form-field>
             <mat-label>Name</mat-label>
             <input
                 type="text"
                 matInput
                 placeholder="custom name for your device"
-                [ngrxFormControlState]="(formState$ | async)?.controls.name">
+                [ngrxFormControlState]="(formState$ | async)?.controls.name" ngrxUpdateOn="blur">
         </mat-form-field>
         <mat-slide-toggle
             class="form-toggle"
             [ngrxFormControlState]="(formState$ | async)?.controls.value"
         ></mat-slide-toggle>
-        </mat-card-content>
-        <mat-card-footer>
-            <button mat-button (click)="submitForm()">Save</button>
-
-        </mat-card-footer>
     </form>
+        </mat-card-content>
+    <mat-card-footer>
+    <button mat-button (click)="submitForm()">Save</button>
+
+</mat-card-footer>
 </mat-card>
 
 

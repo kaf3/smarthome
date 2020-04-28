@@ -7,6 +7,7 @@ export enum EquipmentFormActions {
     loadEquipmentFormError = '[Equipment Form] Load Form error',
     updateEquipmentForm = '[EquipmentForm Form] Update Form',
     submitEquipmentForm = '[EquipmentForm Form] Submit Form',
+    submitEquipmentFormSuccess = '[EquipmentForm Form] Submit Form Success',
 }
 
 export class LoadEquipmentForm implements Action {
@@ -30,9 +31,14 @@ export class SubmitEquipmentForm implements Action {
     readonly type = EquipmentFormActions.submitEquipmentForm;
 }
 
+export class SubmitEquipmentFormSuccess implements Action {
+    readonly type = EquipmentFormActions.submitEquipmentFormSuccess;
+}
+
 export type EquipmentFormUnion =
     | UpdateEquipmentForm
     | SubmitEquipmentForm
     | LoadEquipmentForm
     | LoadEquipmentFormError
-    | LoadEquipmentFormSuccess;
+    | LoadEquipmentFormSuccess
+    | SubmitEquipmentFormSuccess;
