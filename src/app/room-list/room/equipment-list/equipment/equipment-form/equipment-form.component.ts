@@ -25,4 +25,9 @@ export class EquipmentFormComponent implements OnInit {
     }
 
     ngOnInit(): void {}
+
+    public submitForm() {
+        this.store.dispatch(new EquipmentFormStoreActions.SubmitEquipmentForm());
+        console.log('wow');
+    }
 }

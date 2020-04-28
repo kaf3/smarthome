@@ -42,13 +42,15 @@ export class HttpRoomsService {
         );
     }
 
-    public patchRoom(roomName: keyof RoomsDTO, roomDTO: RoomDTO): Observable<Room> {
+    public patchRoom(roomName: RoomDTO['r_name'], roomDTO: RoomDTO): Observable<Room> {
         return this.http
-            .patch<RoomDTO>(`${FIREBASE_DATABASE_URL}/.json`, {
-                roomName: roomDTO,
+            .patch<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`, {
+                [roomName]: roomDTO,
             })
             .pipe(
-                map((roomDTO: RoomDTO) => {
+                map((roomsDTO: RoomsDTO) => {
+                    let roomDTO = roomsDTO[roomName];
+
                     roomDTO = this.equipmentPartition.withoutName(roomDTO);
 
                     return {

@@ -16,13 +16,13 @@ import {Observable} from 'rxjs';
 })
 export class EquipmentListComponent implements OnInit {
     equipmentList$: Observable<Equipment[]>;
-    constructor(public store: Store<EquipmentListStoreState.EquipmentListState>) {}
-
-    ngOnInit(): void {
+    constructor(public store: Store<EquipmentListStoreState.EquipmentListState>) {
         this.store.dispatch(new EquipmentListStoreActions.LoadEquipmentList());
         this.equipmentList$ = this.store.pipe(
             select(EquipmentListStoreSelectors.selectEquipmentList),
             filter((equipmentList: Equipment[]) => !!equipmentList.length),
         );
     }
+
+    ngOnInit(): void {}
 }

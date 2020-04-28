@@ -12,20 +12,18 @@ export class SerializeService {
         const equipmentDTO: RoomDTO = {
             r_name: equipment.location,
         };
-        const type = SerializeService.getTypeDTO(equipment.type);
-        const id = equipment.id;
+        //const type = SerializeService.getTypeDTO(equipment.type);
+        const {id} = equipment;
         const group = SerializeService.getGroupDTO(equipment.group);
 
-        const body: string = type + '_' + id;
-
-        let key: keyof RoomDTO = group + '_' + body;
+        let key: keyof RoomDTO = group + '_' + id;
 
         equipmentDTO[key] = equipment.value;
-        key = 'n' + '_' + body;
+        key = 'n' + '_' + id;
         equipmentDTO[key] = equipment.name;
-        key = 'u' + '_' + body;
+        key = 'u' + '_' + id;
         equipmentDTO[key] = equipment.update ? equipment.update.toDateString() : '';
-        key = 'm' + '_' + body;
+        key = 'm' + '_' + id;
         equipmentDTO[key] = equipment.mac;
 
         return equipmentDTO;
@@ -35,7 +33,7 @@ export class SerializeService {
         return Object.assign(roomDTO, equipmentDTO);
     }
 
-    private static getTypeDTO(key: Equipment['type']) {
+    private static getTypeDTO(key: Equipment['type']): string {
         const switcher = {
             humidity: 'humi',
             temperature: 'temp',
@@ -47,7 +45,7 @@ export class SerializeService {
         return switcher[key].slice(0, 4);
     }
 
-    private static getGroupDTO(key: Equipment['group']) {
+    private static getGroupDTO(key: Equipment['group']): string {
         const switcher = {
             sensor: 's',
             device: 'd',

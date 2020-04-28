@@ -6,6 +6,7 @@ import {
     EquipmentFormActions,
     LoadEquipmentForm,
     LoadEquipmentFormSuccess,
+    SubmitEquipmentForm,
 } from './actions';
 import {map, switchMap} from 'rxjs/operators';
 import {filter} from 'rxjs/operators';
@@ -13,7 +14,7 @@ import {Equipment} from '../../../models/equipment';
 import {of} from 'rxjs';
 import {MarkAsSubmittedAction} from 'ngrx-forms';
 import {selectEquipmentFormState} from './selectors';
-import {EquipmentStoreSelectors} from '../equipment-store';
+import {EquipmentStoreSelectors, EquipmentStoreActions} from '../equipment-store';
 import {EquipmentListStoreActions} from '../equipment-list-store';
 
 @Injectable()
@@ -39,24 +40,19 @@ export class EquipmentFormEffects {
 
     submitEquipmentForm$ = createEffect(() =>
         this.actions$.pipe(
-            ofType<MarkAsSubmittedAction>(MarkAsSubmittedAction.TYPE),
-            switchMap(() =>
-                this.store
-                    .select(selectEquipmentFormState)
-                    .pipe(map((state: EquipmentFormState) => state.value)),
-            ),
-            switchMap((formValue: EquipmentFormValue) =>
+            ofType<SubmitEquipmentForm>(EquipmentFormActions.submitEquipmentForm),
+            switchMap(() => this.store.select(selectEquipmentFormState)),
+            switchMap((formState: EquipmentFormState) =>
                 this.store.select(EquipmentStoreSelectors.selectEquipment).pipe(
                     map((equipment: Equipment) => {
-                        equipment.name = formValue.name;
-                        equipment.value = formValue.value;
+                        equipment.name = formState.value.name;
+                        equipment.value = formState.value.value;
 
-                        return equipment;
+                        return new EquipmentListStoreActions.UpsertOneEquipment({
+                            equipment,
+                        });
                     }),
                 ),
-            ),
-            switchMap((equipment: Equipment) =>
-                of(new EquipmentListStoreActions.UpsertOneEquipment({equipment})),
             ),
         ),
     );
