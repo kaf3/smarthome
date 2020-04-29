@@ -4,9 +4,9 @@ import {
     EquipmentListStoreActions,
     EquipmentListStoreSelectors,
     EquipmentListStoreState,
-} from 'src/app/root-store';
+} from '@store';
 import {filter} from 'rxjs/operators';
-import {Equipment} from '../../../../models/equipment';
+import {Equipment} from '@models';
 import {Observable} from 'rxjs';
 
 @Component({

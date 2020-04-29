@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {select, Store} from '@ngrx/store';
-import {EquipmentFormState, EquipmentFormValue} from './state';
+import {Store} from '@ngrx/store';
+import {EquipmentFormState} from './state';
 import {
     EquipmentFormActions,
     LoadEquipmentForm,
@@ -11,16 +11,13 @@ import {
 } from './actions';
 import {map, switchMap, take} from 'rxjs/operators';
 import {filter} from 'rxjs/operators';
-import {Equipment} from '../../../models/equipment';
+import {Equipment} from '@models';
 import {of} from 'rxjs';
-import {MarkAsSubmittedAction} from 'ngrx-forms';
 import {selectEquipmentFormState} from './selectors';
-import {EquipmentStoreSelectors, EquipmentStoreActions} from '../equipment-store';
-import {EquipmentListStoreActions} from '../equipment-list-store';
+import {EquipmentStoreSelectors} from '../equipment-store';
 import {HttpRoomsService} from '../../sevices/http-rooms.service';
 import {SerializeService} from '../../sevices/serialize.service';
-import {RoomDTO} from '../../../models/roomDTO';
-import {RoomListStoreActions} from '../room-list-store';
+import {RoomDTO} from '@models';
 
 @Injectable()
 export class EquipmentFormEffects {
@@ -68,7 +65,6 @@ export class EquipmentFormEffects {
                     equipmentDTO,
                     roomsDTO[equipmentDTO.r_name],
                 );
-                console.log(roomsDTO);
 
                 return this.httpRooms.postRooms(roomsDTO);
             }),

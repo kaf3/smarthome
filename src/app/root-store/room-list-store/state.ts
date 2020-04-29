@@ -1,5 +1,5 @@
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {Room} from 'src/models/room';
+import {Room} from '@models';
 
 export interface RoomListState extends EntityState<Room> {}
 

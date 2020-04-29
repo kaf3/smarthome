@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {EquipmentStoreSelectors, EquipmentStoreState} from 'src/app/root-store';
-import {Equipment} from '../../../../../models/equipment';
+import {EquipmentStoreSelectors, EquipmentStoreState} from '@store';
+import {Equipment} from '@models';
 import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
 

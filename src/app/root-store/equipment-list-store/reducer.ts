@@ -16,12 +16,6 @@ export function equipmentListReducer(
         case EquipmentListActions.loadEquipmentListError: {
             return state;
         }
-        case EquipmentListActions.upsertOneEquipmentSuccess: {
-            return equipmentListAdapter.upsertOne(action.payload.equipment, state);
-        }
-        case EquipmentListActions.upsertOneEquipmentError: {
-            return state;
-        }
         default:
             return state;
     }

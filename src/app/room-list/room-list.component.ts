@@ -3,11 +3,7 @@ import {select, Store} from '@ngrx/store';
 
 import {Room} from 'src/models/room';
 import {filter} from 'rxjs/operators';
-import {
-    RoomListStoreActions,
-    RoomListStoreSelectors,
-    RoomListStoreState,
-} from 'src/app/root-store';
+import {RoomListStoreActions, RoomListStoreSelectors, RoomListStoreState} from '@store';
 import {Observable} from 'rxjs';
 
 @Component({

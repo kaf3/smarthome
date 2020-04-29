@@ -1,0 +1,102 @@
+{
+    "users": {
+        "user_id": {
+            "name": "John",
+            "rooms": {
+                "room01": {
+                    "name": "Kitchen",
+                    "hardwareCollection": {
+                        "1234": {
+                            "mac": 1234,
+                            "name": "hardware1",
+                            "type": "meteo",
+                            "numberOfEquip": "3",
+                            "equipmentCollection": {
+                                "temp": {
+                                    "name": "",
+                                    "group": "sensor",
+                                    "type": "temp",
+                                    "value": "24",
+                                    "status": "true"
+                                },
+                                "humi": {
+                                    "name": "",
+                                    "group": "sensor",
+                                    "type": "humi",
+                                    "value": "747",
+                                    "status": "true"
+                                },
+                                "co2-": {
+                                    "name": "",
+                                    "group": "sensor",
+                                    "type": "co2-",
+                                    "value": "45",
+                                    "status": "true"
+                                }
+                            }
+                        }
+                    }
+                },
+                "room02": {
+                    "name": "Bedroom",
+                    "hardwareCollection": {
+                        "5678": {
+                            "mac": 5678,
+                            "name": "My meteo 2",
+                            "id": 56789,
+                            "type": "meteo",
+                            "numberOfEquip": 3,
+                            "equipmentCollection": {
+                                "temp": {
+                                    "name": "",
+                                    "group": "sensor",
+                                    "type": "temp",
+                                    "value": "24",
+                                    "status": "true"
+                                },
+                                "humi": {
+                                    "name": "",
+                                    "group": "sensor",
+                                    "type": "humi",
+                                    "value": "747",
+                                    "status": "true"
+                                },
+                                "co2-": {
+                                    "name": "",
+                                    "group": "sensor",
+                                    "type": "co2-",
+                                    "value": "45",
+                                    "status": "true"
+                                }
+                            }
+                        },
+                        "1012": {
+                            "mac": 1012,
+                            "name": "Toaster outlet",
+                            "id": 101213,
+                            "type": "outlet",
+                            "numberOfEquip": "2",
+                            "equipmentCollection": {
+                                "outl": {
+                                    "name": "",
+                                    "group": "device",
+                                    "type": "outl",
+                                    "value": "true",
+                                    "status": "true"
+                                },
+                                "powe": {
+                                    "name": "",
+                                    "group": "sensor",
+                                    "type": "powe",
+                                    "value": "1",
+                                    "status": "true"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "fcmid": {}
+        }
+    }
+}

@@ -12,12 +12,6 @@ export function roomsReducer(
         case RoomsActions.loadRoomsError: {
             return roomsAdapter.removeAll(state);
         }
-        case RoomsActions.upsertOneRoomSuccess: {
-            return roomsAdapter.upsertOne(action.payload.room, state);
-        }
-        case RoomsActions.upsertOneRoomError: {
-            return roomsAdapter.removeAll(state);
-        }
         default:
             return state;
     }

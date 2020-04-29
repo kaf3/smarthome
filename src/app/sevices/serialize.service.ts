@@ -10,9 +10,9 @@ export class SerializeService {
 
     public serializeEquipment(equipment: Equipment): RoomDTO {
         const equipmentDTO: RoomDTO = {
+            // eslint-disable-next-line @typescript-eslint/camelcase
             r_name: equipment.location,
         };
-        //const type = SerializeService.getTypeDTO(equipment.type);
         const {id} = equipment;
         const group = SerializeService.getGroupDTO(equipment.group);
 

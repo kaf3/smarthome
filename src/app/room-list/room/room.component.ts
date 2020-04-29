@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Room} from 'src/models/room';
-import {RoomStoreSelectors, RoomStoreState} from 'src/app/root-store';
+import {RoomStoreSelectors, RoomStoreState} from '@store';
 import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
 

@@ -4,7 +4,7 @@ import {
     EquipmentFormStoreActions,
     EquipmentFormStoreSelectors,
     EquipmentFormStoreState,
-} from 'src/app/root-store';
+} from '@store';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -21,6 +21,7 @@ export class EquipmentFormComponent implements OnInit {
         this.formState$ = this.store.pipe(
             select(EquipmentFormStoreSelectors.selectEquipmentFormState),
         );
+
         this.store.dispatch(new EquipmentFormStoreActions.LoadEquipmentForm());
     }
 
@@ -28,6 +29,5 @@ export class EquipmentFormComponent implements OnInit {
 
     public submitForm() {
         this.store.dispatch(new EquipmentFormStoreActions.SubmitEquipmentForm());
-        console.log('wow');
     }
 }
