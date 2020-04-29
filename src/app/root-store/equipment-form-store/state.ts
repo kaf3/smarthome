@@ -1,9 +1,9 @@
 import {createFormGroupState, FormGroupState} from 'ngrx-forms';
-import {Equipment} from '../../../models/equipment';
+import {Equipment} from '@models';
 
 export interface EquipmentFormValue {
     name: Equipment['name'] | null;
-    value: Equipment['value'] | null;
+    value?: Equipment['value'] | null;
 }
 
 export const initialEquipmentFormValue: EquipmentFormValue = {

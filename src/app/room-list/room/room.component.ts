@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Room} from 'src/models/room';
 import {RoomStoreSelectors, RoomStoreState} from '@store';
 import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
+import {Equipment} from '@models';
 
 @Component({
     selector: 'app-room',
@@ -11,12 +11,16 @@ import {filter} from 'rxjs/operators';
     styleUrls: ['./room.component.scss'],
 })
 export class RoomComponent implements OnInit {
-    room$: Observable<Room>;
+    roomName$: Observable<string>;
+    equipmentList$: Observable<Equipment[]>;
 
     constructor(private readonly store: Store<RoomStoreState.RoomState>) {
-        this.room$ = this.store.pipe(
-            select(RoomStoreSelectors.selectRoom),
-            filter(room => !!room),
+        this.roomName$ = this.store.pipe(
+            select(RoomStoreSelectors.selectRoomName),
+            filter(roomName => !!roomName),
+        );
+        this.equipmentList$ = this.store.pipe(
+            select(RoomStoreSelectors.selectAllEquipmentFromRoom),
         );
     }
 

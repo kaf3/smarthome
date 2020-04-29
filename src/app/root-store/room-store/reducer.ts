@@ -1,12 +1,15 @@
 import {RoomActions, RoomUnion} from './actions';
-import {initialRoomState, RoomState} from './state';
+import {initialRoomState, roomAdapter, RoomState} from './state';
 
 export function roomReducer(state = initialRoomState, action: RoomUnion): RoomState {
     switch (action.type) {
         case RoomActions.getRoomSuccess: {
-            const {room} = action.payload;
+            const {roomName} = action.payload.room;
 
-            return {...state, room};
+            return roomAdapter.addAll(action.payload.room.equipment, {
+                ...state,
+                roomName,
+            });
         }
         case RoomActions.getRoomError: {
             return state;

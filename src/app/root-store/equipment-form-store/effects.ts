@@ -25,16 +25,9 @@ export class EquipmentFormEffects {
         this.actions$.pipe(
             ofType<LoadEquipmentForm>(EquipmentFormActions.loadEquipmentForm),
             switchMap(() =>
-                this.store
-                    .select(EquipmentStoreSelectors.selectEquipment)
-                    .pipe(filter(equipment => !!equipment)),
-            ),
-            switchMap((equipment: Equipment) =>
-                of(
-                    new LoadEquipmentFormSuccess({
-                        name: equipment.name,
-                        value: equipment.value,
-                    }),
+                this.store.select(EquipmentStoreSelectors.selectEquipment).pipe(
+                    filter(equipment => !!equipment.id),
+                    map(equipment => new LoadEquipmentFormSuccess({equipment})),
                 ),
             ),
         ),

@@ -17,8 +17,7 @@ export class RoomEffects {
             ofType<GetRoom>(RoomActions.getRoom),
             map(action => action.payload.roomName),
             switchMap(roomName =>
-                this.store.select(RoomListStoreSelectors.selectRoomListEntities).pipe(
-                    map(roomEntities => roomEntities[roomName]),
+                this.store.select(RoomListStoreSelectors.selectRoomByName, roomName).pipe(
                     filter(room => !!room),
                     take(1),
                 ),

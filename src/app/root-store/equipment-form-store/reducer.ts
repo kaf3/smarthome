@@ -1,7 +1,9 @@
 import {
     Actions,
+    addGroupControl,
     formGroupReducer,
     MarkAsSubmittedAction,
+    removeGroupControl,
     reset,
     setValue,
 } from 'ngrx-forms';
@@ -16,7 +18,18 @@ export const equipmentFormReducer = function(
 
     switch (action.type) {
         case EquipmentFormActions.loadEquipmentFormSuccess: {
-            return setValue(action.payload)(state);
+            const {group, name, value} = action.payload.equipment;
+
+            if (!state.controls.value) {
+                state = addGroupControl(state, 'value', '');
+            }
+
+            if (group === 'device') {
+                return setValue(state, {name, value});
+            }
+            state = removeGroupControl(state, 'value');
+
+            return setValue(state, {name});
         }
         case EquipmentFormActions.loadEquipmentFormError: {
             return state;

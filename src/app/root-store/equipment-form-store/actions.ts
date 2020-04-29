@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {EquipmentFormValue} from './state';
+import {Equipment} from '@models';
 
 export enum EquipmentFormActions {
     loadEquipmentForm = '[Equipment Form] Load Form',
@@ -16,7 +16,7 @@ export class LoadEquipmentForm implements Action {
 
 export class LoadEquipmentFormSuccess implements Action {
     readonly type = EquipmentFormActions.loadEquipmentFormSuccess;
-    constructor(public payload: EquipmentFormValue) {}
+    constructor(public payload: {equipment: Equipment}) {}
 }
 
 export class LoadEquipmentFormError implements Action {

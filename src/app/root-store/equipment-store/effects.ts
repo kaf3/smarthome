@@ -9,12 +9,11 @@ import {
     GetEquipmentSuccess,
 } from './actions';
 import {navigation} from '@nrwl/angular';
-import {EquipmentComponent} from '../../room-list/room/equipment-list/equipment/equipment.component';
+import {EquipmentComponent} from '../../room-list/room/equipment/equipment.component';
 import {ActivatedRouteSnapshot} from '@angular/router';
 import {of} from 'rxjs';
 import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {EquipmentListStoreSelectors} from '../equipment-list-store';
-import {Equipment} from '../../../models/equipment';
+import {RoomStoreSelectors} from '@store';
 
 @Injectable()
 export class EquipmentEffects {
@@ -23,13 +22,7 @@ export class EquipmentEffects {
             ofType<GetEquipment>(EquipmentActions.getEquipment),
             map(action => action.payload.id),
             switchMap(id =>
-                this.store
-                    .select(EquipmentListStoreSelectors.selectEquipmentList)
-                    .pipe(
-                        map((equipmentList: Equipment[]) =>
-                            equipmentList.find(equipment => equipment.id === id),
-                        ),
-                    ),
+                this.store.select(RoomStoreSelectors.selectEquipmentByIdFromRoom, id),
             ),
             filter(equipment => !!equipment),
             switchMap(equipment => of(new GetEquipmentSuccess({equipment}))),

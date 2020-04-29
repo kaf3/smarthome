@@ -1,9 +1,25 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {RoomState} from './state';
+import {roomAdapter, RoomState} from './state';
+import {Dictionary} from '@ngrx/entity';
+import {Equipment} from '@models';
 
 const selectRoomState = createFeatureSelector<RoomState>('room');
 
-export const selectRoom = createSelector(
+const {selectIds, selectEntities, selectAll, selectTotal} = roomAdapter.getSelectors(
     selectRoomState,
-    (roomState: RoomState) => roomState.room,
+);
+
+export const selectEquipmentIdsFromRoom = selectIds;
+export const selectEquipmentEntitiesFromRoom = selectEntities;
+export const selectAllEquipmentFromRoom = selectAll;
+export const selectTotalEquipmentFromRoom = selectTotal;
+
+export const selectEquipmentByIdFromRoom = createSelector(
+    selectEquipmentEntitiesFromRoom,
+    (equipmentDict: Dictionary<Equipment>, id: string) => equipmentDict[id],
+);
+
+export const selectRoomName = createSelector(
+    selectRoomState,
+    state => state.roomName,
 );
