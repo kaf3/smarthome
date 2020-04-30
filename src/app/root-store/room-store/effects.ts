@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {GetRoom, GetRoomSuccess, RoomActions} from './actions';
+import {GetRoom, GetRoomError, GetRoomSuccess, RoomActions} from './actions';
 import {filter, map, switchMap, take} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {navigation} from '@nrwl/angular';
 import {RoomComponent} from 'src/app/room-list/room/room.component';
 import {ActivatedRouteSnapshot} from '@angular/router';
@@ -20,6 +20,11 @@ export class RoomEffects {
                 this.store.select(RoomListStoreSelectors.selectRoomByName, roomName).pipe(
                     filter(room => !!room),
                     take(1),
+                    map(x => {
+                        console.log(x);
+
+                        return x;
+                    }),
                 ),
             ),
             switchMap(room => of(new GetRoomSuccess({room}))),
@@ -31,6 +36,9 @@ export class RoomEffects {
             navigation(RoomComponent, {
                 run: (routerSnap: ActivatedRouteSnapshot) => {
                     return of(new GetRoom({roomName: routerSnap.params.id}));
+                },
+                onError(a: ActivatedRouteSnapshot, e: any): Observable<any> | any {
+                    return of(new GetRoomError());
                 },
             }),
         ),
