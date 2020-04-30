@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {RoomDTO} from '../../models/roomDTO';
-import {Equipment} from '../../models/equipment';
+import {RoomDTO} from '@models';
+import {Equipment} from '@models';
 
 export type EquipmentId = string;
 export type EquipmentProp = string;
@@ -63,14 +63,6 @@ export class EquipmentPartitionService {
         equipmentAccumulator.forEach(item => {
             item.name = item.name || `${item.type} (${item.id.slice(5)})`;
             item.location = roomDTO.r_name;
-
-            Object.defineProperty(item, 'location', {
-                enumerable: false,
-            });
-
-            Object.defineProperty(item, 'id', {
-                enumerable: false,
-            });
         });
 
         return equipmentAccumulator as Equipment[]; // массив объектов каждый из которых устройство

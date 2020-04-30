@@ -20,11 +20,6 @@ export class RoomEffects {
                 this.store.select(RoomListStoreSelectors.selectRoomByName, roomName).pipe(
                     filter(room => !!room),
                     take(1),
-                    map(x => {
-                        console.log(x);
-
-                        return x;
-                    }),
                 ),
             ),
             switchMap(room => of(new GetRoomSuccess({room}))),

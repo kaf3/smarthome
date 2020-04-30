@@ -1,17 +1,20 @@
 import {initialRoomListState, RoomListState, roomsAdapter} from './state';
-import {RoomsActions, roomsUnion} from './actions';
+import {RoomsActions, RoomsUnion} from './actions';
 
 export function roomsReducer(
     state = initialRoomListState,
-    action: roomsUnion,
+    action: RoomsUnion,
 ): RoomListState {
     switch (action.type) {
-        case RoomsActions.loadRoomsSuccess: {
+        case RoomsActions.loadRoomsSuccess:
+        case RoomsActions.upsertAllRoomsSuccess: {
             return roomsAdapter.addAll(action.payload.rooms, state);
         }
-        case RoomsActions.loadRoomsError: {
+        case RoomsActions.loadRoomsError:
+        case RoomsActions.upsertAllRoomsError: {
             return roomsAdapter.removeAll(state);
         }
+
         default:
             return state;
     }
