@@ -13,15 +13,17 @@
             <mat-card-content>
                 <mat-list>
                     <mat-list-item>
-                        {{(equipment$ | async)?.value}}
+                        <div class="equip-detail-item">
+                            <span>{{(equipment$ | async)?.type}}</span>
+                            <span>{{(equipment$ | async)?.value | unit: (equipment$ | async) }}</span>
+                        </div>
                     </mat-list-item>
                     <mat-divider></mat-divider>
                     <mat-list-item>
-                        {{(equipment$ | async)?.location}}
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
-                    <mat-list-item>
-                        {{(equipment$ | async)?.update}}
+                        <div class="equip-detail-item">
+                            <span>Room</span>
+                            <span>{{(equipment$ | async)?.location}}</span>
+                        </div>
                     </mat-list-item>
                     <mat-divider></mat-divider>
                 </mat-list>

@@ -30,8 +30,6 @@ export class HttpRoomsService {
                         [roomName, roomDTO]: [keyof RoomsDTO, RoomsDTO[keyof RoomsDTO]],
                         index,
                     ) => {
-                        roomDTO = this.equipmentPartition.withoutName(roomDTO);
-
                         return {
                             roomName,
                             equipment: this.equipmentPartition.partition(roomDTO),
@@ -49,9 +47,7 @@ export class HttpRoomsService {
             })
             .pipe(
                 map((roomsDTO: RoomsDTO) => {
-                    let roomDTO = roomsDTO[roomName];
-
-                    roomDTO = this.equipmentPartition.withoutName(roomDTO);
+                    const roomDTO = roomsDTO[roomName];
 
                     return {
                         roomName,
@@ -66,8 +62,6 @@ export class HttpRoomsService {
             map((rooms: RoomsDTO) =>
                 Object.entries(rooms).map(
                     ([roomName, roomDTO]: [keyof RoomsDTO, RoomDTO]) => {
-                        roomDTO = this.equipmentPartition.withoutName(roomDTO);
-
                         return {
                             roomName,
                             equipment: this.equipmentPartition.partition(roomDTO),

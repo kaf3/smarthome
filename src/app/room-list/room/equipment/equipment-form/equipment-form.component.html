@@ -14,7 +14,7 @@
                 placeholder="custom name for your device"
                 [ngrxFormControlState]="(formState$ | async)?.controls.name">
         </mat-form-field>
-        <mat-slide-toggle *ngIf="(equipment$ | async)?.group === 'device'"
+        <mat-slide-toggle *ngIf="(equipment$ | async)?.group === DEVICE"
             class="form-toggle"
             (change)="submitForm()"
             [ngrxFormControlState]="(formState$ | async)?.controls.value"

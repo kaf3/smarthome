@@ -1,5 +1,5 @@
-@import 'styles/layout';
-@import 'styles/theming';
+@import 'src/styles/layout';
+@import 'src/styles/theming';
 
 .equip-detail {
     width: $layout13 * 5;
@@ -17,4 +17,8 @@
 
 .equip-container {
     border-top: 1px solid $border-light;
+}
+
+.equip-detail-item {
+    @include space-between();
 }

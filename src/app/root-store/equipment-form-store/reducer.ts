@@ -9,6 +9,7 @@ import {
 } from 'ngrx-forms';
 import {EquipmentFormState, EquipmentFormValue, initialEquipmentFormState} from './state';
 import {EquipmentFormActions, EquipmentFormUnion} from './actions';
+import {EquipmentGroup} from '@models';
 
 export const equipmentFormReducer = function(
     state: EquipmentFormState = initialEquipmentFormState,
@@ -24,7 +25,7 @@ export const equipmentFormReducer = function(
                 state = addGroupControl(state, 'value', '');
             }
 
-            if (group === 'device') {
+            if (group === EquipmentGroup.DEVICE) {
                 return setValue(state, {name, value});
             }
             state = removeGroupControl(state, 'value');

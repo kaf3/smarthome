@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {RoomDTO} from '@models';
+import {EquipmentGroup, EquipmentType, RoomDTO} from '@models';
 import {Equipment} from '@models';
 
 export type EquipmentId = string;
@@ -12,15 +12,8 @@ export type EquipmentValueProp = string;
 export class EquipmentPartitionService {
     constructor() {}
 
-    public withoutName(roomDTO: RoomDTO): RoomDTO {
-        Object.defineProperty(roomDTO, 'r_name', {
-            enumerable: false,
-        });
-
-        return roomDTO;
-    }
-
     public partition(roomDTO: RoomDTO): Equipment[] {
+        EquipmentPartitionService.ignoreRoomName(roomDTO);
         // array of array of 3 elems : name of equip, key of props, value of props
         // какое устройство, какое его поле, какое значение поля
         const slices: [EquipmentId, EquipmentProp, EquipmentValueProp][] = Object.entries(
@@ -71,8 +64,8 @@ export class EquipmentPartitionService {
 
     private static getGroup(property: 's' | 'd'): Equipment['group'] {
         const switcher = {
-            s: 'sensor',
-            d: 'device',
+            s: EquipmentGroup.SENSOR,
+            d: EquipmentGroup.DEVICE,
         };
 
         return switcher[property];
@@ -80,11 +73,11 @@ export class EquipmentPartitionService {
 
     private static getType(key: string): Equipment['type'] {
         const switcher = {
-            humi: 'humidity',
-            temp: 'temperature',
-            'co2-': 'co2',
-            kett: 'kettle',
-            toas: 'toaster',
+            humi: EquipmentType.HUMIDITY,
+            temp: EquipmentType.TEMPERATURE,
+            'co2-': EquipmentType.CO2,
+            kett: EquipmentType.ACTIVITY,
+            toas: EquipmentType.ACTIVITY,
         };
 
         return switcher[key.slice(0, 4)];
@@ -101,5 +94,11 @@ export class EquipmentPartitionService {
         };
 
         return switcher[property];
+    }
+
+    private static ignoreRoomName(roomDTO: RoomDTO): void {
+        Object.defineProperty(roomDTO, 'r_name', {
+            enumerable: false,
+        });
     }
 }

@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {Equipment} from '../../../models/equipment';
+import {Equipment} from '@models';
 
 export enum EquipmentActions {
     getEquipment = '[Equipment] Get Equipment',

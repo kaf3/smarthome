@@ -7,7 +7,7 @@ import {
     EquipmentStoreSelectors,
 } from '@store';
 import {Observable} from 'rxjs';
-import {Equipment} from '@models';
+import {Equipment, EquipmentGroup} from '@models';
 import {filter} from 'rxjs/operators';
 
 @Component({
@@ -16,8 +16,9 @@ import {filter} from 'rxjs/operators';
     styleUrls: ['./equipment-form.component.scss'],
 })
 export class EquipmentFormComponent implements OnInit {
-    formState$: Observable<EquipmentFormStoreState.EquipmentFormState>;
-    equipment$: Observable<Equipment>;
+    public readonly formState$: Observable<EquipmentFormStoreState.EquipmentFormState>;
+    public readonly equipment$: Observable<Equipment>;
+    public readonly DEVICE = EquipmentGroup.DEVICE;
 
     constructor(
         public readonly store: Store<EquipmentFormStoreState.EquipmentFormState>,

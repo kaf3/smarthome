@@ -17,12 +17,16 @@
                     {{equipment.group}}
                 </mat-card-subtitle>
             </mat-card-header>
-            <mat-card-content class="equip-card-content">
-            <span class="mat-body-strong">
-                <ng-container *ngIf="equipment.group === 'sensor'">
-                    level of
-                </ng-container>
-                {{equipment.type}}: {{equipment.value}}</span>
+            <mat-card-content class="equip-card-content mat-body-strong">
+                <span>
+                    <ng-container *ngIf="equipment.group === DEVICE">
+                        level of
+                    </ng-container>
+                    {{equipment.type}}:
+                </span>
+                <span>
+                   {{equipment.value | unit: equipment}}
+                </span>
             </mat-card-content>
         </mat-card>
     </a>

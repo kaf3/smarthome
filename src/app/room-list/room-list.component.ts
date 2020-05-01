@@ -12,7 +12,7 @@ import {Observable} from 'rxjs';
     styleUrls: ['./room-list.component.scss'],
 })
 export class RoomListComponent implements OnInit {
-    rooms$: Observable<Room[]>;
+    public readonly rooms$: Observable<Room[]>;
 
     constructor(private readonly store: Store<RoomListStoreState.RoomListState>) {
         this.store.dispatch(new RoomListStoreActions.LoadRooms());

@@ -27,4 +27,5 @@
 
 .equip-card-content {
     margin-bottom: 0;
+    @include space-between();
 }

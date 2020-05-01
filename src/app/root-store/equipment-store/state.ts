@@ -7,8 +7,8 @@ export interface EquipmentState {
 const initialEquipment: Equipment = {
     name: '',
     value: false,
-    type: '',
-    group: '',
+    type: null,
+    group: null,
     id: '',
     location: '',
     working: false,

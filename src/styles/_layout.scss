@@ -1,4 +1,4 @@
-@import './base';
+@import 'base';
 
 $layout01: $base-size;
 $layout02: 12px;
@@ -13,3 +13,13 @@ $layout10: 50px;
 $layout11: 64px;
 $layout12: 72px;
 $layout13: 80px;
+
+@mixin space-between {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        & span {
+            display: block;
+        }
+}
