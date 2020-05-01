@@ -9,7 +9,7 @@ import {
     GetEquipmentSuccess,
 } from './actions';
 import {navigation} from '@nrwl/angular';
-import {EquipmentComponent} from '../../room-list/room/equipment/equipment.component';
+import {EquipmentComponent} from '../../ui/room-list/room/equipment/equipment.component';
 import {ActivatedRouteSnapshot} from '@angular/router';
 import {of} from 'rxjs';
 import {catchError, filter, map, switchMap} from 'rxjs/operators';

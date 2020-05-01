@@ -8,7 +8,7 @@ import {RoomRoutingModule} from './room.routing.module';
 import {MatRippleModule} from '@angular/material/core';
 import {MatCardModule} from '@angular/material/card';
 import {EquipmentModule} from './equipment/equipment.module';
-import {PipesModule} from '../../pipes/pipes.module';
+import {PipesModule} from '../../../pipes/pipes.module';
 
 @NgModule({
     declarations: [RoomComponent],
