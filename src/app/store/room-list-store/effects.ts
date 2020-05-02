@@ -60,6 +60,9 @@ export class RoomsEffects {
             }),
             switchMap((roomsDTO: RoomsDTO) => this.httpRooms.postRooms(roomsDTO)),
             switchMap((rooms: Room[]) => of(new UpsertAllRoomsSuccess({rooms}))),
+            catchError(() =>
+                of(new LoadRoomsError({errorMsg: 'Error: could not update rooms'})),
+            ),
         ),
     );
 
