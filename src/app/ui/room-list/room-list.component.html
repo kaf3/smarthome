@@ -1,7 +1,5 @@
-<!--<ul>
-    <li *ngFor="let room of rooms"><a [routerLink]="['/', room.id]">{{room?.roomName}}</a></li>
-  </ul>
-<h3>Room </h3>-->
+<mat-progress-bar mode="indeterminate" *ngIf="loading$ | async"></mat-progress-bar>
+
 
 <nav color="primary" mat-align-tabs="center" mat-tab-nav-bar #matTabNav>
   <a #rla="routerLinkActive" *ngFor="let room of rooms$ | async"

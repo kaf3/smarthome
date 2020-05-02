@@ -4,6 +4,7 @@ import {StoreModule} from '@ngrx/store';
 import {roomsReducer} from './reducer';
 import {EffectsModule} from '@ngrx/effects';
 import {RoomsEffects} from './effects';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [],
@@ -11,6 +12,7 @@ import {RoomsEffects} from './effects';
         CommonModule,
         StoreModule.forFeature('room-list', roomsReducer),
         EffectsModule.forFeature([RoomsEffects]),
+        MatSnackBarModule,
     ],
 })
 export class RoomListStoreModule {}

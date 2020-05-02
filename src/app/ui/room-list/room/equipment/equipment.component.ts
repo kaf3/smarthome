@@ -13,12 +13,12 @@ import {filter} from 'rxjs/operators';
 export class EquipmentComponent implements OnInit {
     equipment$: Observable<Equipment>;
 
-    constructor(public store: Store<EquipmentStoreState.EquipmentState>) {
+    constructor(public store: Store<EquipmentStoreState.EquipmentState>) {}
+
+    ngOnInit(): void {
         this.equipment$ = this.store.pipe(
             select(EquipmentStoreSelectors.selectEquipment),
             filter(equipment => !!equipment),
         );
     }
-
-    ngOnInit(): void {}
 }

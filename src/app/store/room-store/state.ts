@@ -1,8 +1,9 @@
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {Equipment} from '@models';
+import {CallState, Equipment, LoadingState} from '../../models';
 
 export interface RoomState extends EntityState<Equipment> {
     roomName: string;
+    callState: CallState;
 }
 
 export const roomAdapter: EntityAdapter<Equipment> = createEntityAdapter<Equipment>({
@@ -12,4 +13,5 @@ export const roomAdapter: EntityAdapter<Equipment> = createEntityAdapter<Equipme
 
 export const initialRoomState: RoomState = roomAdapter.getInitialState({
     roomName: '',
+    callState: LoadingState.INIT,
 });

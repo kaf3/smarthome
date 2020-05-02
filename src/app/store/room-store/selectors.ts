@@ -1,7 +1,7 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {roomAdapter, RoomState} from './state';
 import {Dictionary} from '@ngrx/entity';
-import {Equipment} from '@models';
+import {Equipment} from '../../models';
 
 const selectRoomState = createFeatureSelector<RoomState>('room');
 

@@ -7,7 +7,7 @@ import {
     EquipmentStoreSelectors,
 } from '@store';
 import {Observable} from 'rxjs';
-import {Equipment, EquipmentGroup} from '@models';
+import {Equipment, EquipmentGroup} from '../../../../../models';
 import {filter} from 'rxjs/operators';
 
 @Component({

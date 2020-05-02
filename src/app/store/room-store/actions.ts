@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {Room} from 'src/models/room';
+import {Room} from 'src/app/models/room';
 
 export enum RoomActions {
     getRoom = '[Room] Get Room',

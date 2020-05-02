@@ -3,7 +3,7 @@ import {select, Store} from '@ngrx/store';
 import {RoomStoreSelectors, RoomStoreState} from '@store';
 import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
-import {Equipment, EquipmentGroup} from '@models';
+import {Equipment, EquipmentGroup} from '../../../models';
 
 @Component({
     selector: 'app-room',
@@ -11,11 +11,13 @@ import {Equipment, EquipmentGroup} from '@models';
     styleUrls: ['./room.component.scss'],
 })
 export class RoomComponent implements OnInit {
-    public readonly roomName$: Observable<string>;
-    public readonly equipmentList$: Observable<Equipment[]>;
+    public roomName$: Observable<string>;
+    public equipmentList$: Observable<Equipment[]>;
     public readonly DEVICE = EquipmentGroup.DEVICE;
 
-    constructor(private readonly store: Store<RoomStoreState.RoomState>) {
+    constructor(private readonly store: Store<RoomStoreState.RoomState>) {}
+
+    ngOnInit(): void {
         this.roomName$ = this.store.pipe(
             select(RoomStoreSelectors.selectRoomName),
             filter(roomName => !!roomName),
@@ -24,6 +26,4 @@ export class RoomComponent implements OnInit {
             select(RoomStoreSelectors.selectAllEquipmentFromRoom),
         );
     }
-
-    ngOnInit(): void {}
 }

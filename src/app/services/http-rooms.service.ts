@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {Room} from '../../models/room';
-import {RoomDTO} from '../../models/roomDTO';
+import {Room} from '../models/room';
+import {RoomDTO} from '../models/roomDTO';
 import {EquipmentPartitionService} from './equipment-partition.service';
-import {RoomsDTO} from '../../models/roomsDTO';
+import {RoomsDTO} from '../models/roomsDTO';
 import {environment} from '../../environments/environment';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;

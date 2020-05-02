@@ -19,10 +19,11 @@
       "dom"
     ],
       "paths": {
-        "@store": ["src/app/root-store/index.ts"],
-          "@models": ["src/models/index.ts"],
-          "@pipes": ["src/pipes/index.ts"],
-          "@services": ["src/services/index.ts"]
+          "@store": ["src/app/store/index.ts"],
+          "@models": ["src/app/models/index.ts"],
+          "@pipes": ["src/app/pipes/index.ts"],
+          "@services": ["src/app/services/index.ts"],
+          "@helpers": ["src/app/helpers/index.ts"]
       }
   },
   "angularCompilerOptions": {

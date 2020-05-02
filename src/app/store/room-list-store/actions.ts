@@ -1,6 +1,6 @@
 import {Action} from '@ngrx/store';
-import {Room} from 'src/models/room';
-import {Equipment} from '@models';
+import {Room} from 'src/app/models/room';
+import {Equipment} from '../../models';
 
 export enum RoomsActions {
     loadRooms = '[Rooms list] Load Rooms',
@@ -23,6 +23,8 @@ export class LoadRoomsSuccess implements Action {
 
 export class LoadRoomsError implements Action {
     readonly type = RoomsActions.loadRoomsError;
+
+    constructor(public payload: {errorMsg: string}) {}
 }
 
 export class UpsertAllRooms implements Action {
@@ -39,6 +41,8 @@ export class UpsertAllRoomsSuccess implements Action {
 
 export class UpsertAllRoomsError implements Action {
     readonly type = RoomsActions.upsertAllRoomsError;
+
+    constructor(public payload: {errorMsg: string}) {}
 }
 
 export type RoomsUnion =

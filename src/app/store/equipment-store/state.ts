@@ -1,4 +1,4 @@
-import {Equipment} from 'src/models/equipment';
+import {Equipment} from 'src/app/models/equipment';
 
 export interface EquipmentState {
     equipment: Equipment;

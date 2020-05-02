@@ -2,17 +2,19 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
     LoadRooms,
+    LoadRoomsError,
     LoadRoomsSuccess,
     RoomsActions,
     UpsertAllRooms,
     UpsertAllRoomsSuccess,
 } from './actions';
-import {map, switchMap} from 'rxjs/operators';
+import {catchError, map, switchMap} from 'rxjs/operators';
 
 import {of} from 'rxjs';
-import {HttpRoomsService} from '../../sevices/http-rooms.service';
+import {HttpRoomsService} from '@services';
 import {Equipment, Room, RoomsDTO} from '@models';
-import {SerializeService} from '../../sevices/serialize.service';
+import {SerializeService} from '@services';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable()
 export class RoomsEffects {
@@ -21,6 +23,9 @@ export class RoomsEffects {
             ofType<LoadRooms>(RoomsActions.loadRooms),
             switchMap(() => this.httpRoomsService.loadRooms()),
             switchMap((rooms: Room[]) => of(new LoadRoomsSuccess({rooms}))),
+            catchError(() =>
+                of(new LoadRoomsError({errorMsg: 'Error: could not load rooms'})),
+            ),
         ),
     );
 
@@ -58,10 +63,28 @@ export class RoomsEffects {
         ),
     );
 
+    errorHandler = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType<LoadRoomsError>(RoomsActions.loadRoomsError),
+                map((action: LoadRoomsError) =>
+                    this.openSnackBar(action.payload.errorMsg, 'Error'),
+                ),
+            ),
+        {dispatch: false},
+    );
+
+    private openSnackBar(message: string, action: string) {
+        this._snackBar.open(message, action, {
+            duration: 2000,
+        });
+    }
+
     constructor(
         private readonly actions$: Actions,
         private readonly httpRoomsService: HttpRoomsService,
         private readonly httpRooms: HttpRoomsService,
         private readonly serializer: SerializeService,
+        private readonly _snackBar: MatSnackBar,
     ) {}
 }

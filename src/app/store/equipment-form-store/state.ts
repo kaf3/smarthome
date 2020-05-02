@@ -1,5 +1,5 @@
 import {createFormGroupState, FormGroupState} from 'ngrx-forms';
-import {Equipment} from '@models';
+import {Equipment} from '../../models';
 
 export interface EquipmentFormValue {
     name: Equipment['name'] | null;

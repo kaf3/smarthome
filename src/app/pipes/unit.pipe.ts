@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {Activity, Equipment, EquipmentGroup, EquipmentType} from '@models';
+import {Activity, Equipment, EquipmentGroup, EquipmentType} from '../models';
 
 @Pipe({
     name: 'unit',

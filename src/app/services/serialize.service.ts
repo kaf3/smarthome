@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Equipment} from '@models';
-import {RoomDTO} from '@models';
+import {Equipment} from '../models';
+import {RoomDTO} from '../models';
 
 @Injectable({
     providedIn: 'root',

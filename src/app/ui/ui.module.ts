@@ -8,7 +8,8 @@ import {RoomListModule} from './room-list/room-list.module';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
-import {SidenavService} from '../sevices/sidenav.service';
+import {SidenavService} from '../services/sidenav.service';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
     declarations: [UiComponent],
@@ -22,6 +23,7 @@ import {SidenavService} from '../sevices/sidenav.service';
         MatIconModule,
         MatToolbarModule,
         MatButtonModule,
+        MatProgressBarModule,
     ],
     providers: [SidenavService],
 })
