@@ -13,7 +13,7 @@ export class EquipmentPartitionService {
     constructor() {}
 
     public partition(roomDTO: RoomDTO): Equipment[] {
-        EquipmentPartitionService.ignoreRoomName(roomDTO);
+        roomDTO = EquipmentPartitionService.ignoreRoomName(roomDTO);
         // array of array of 3 elems : name of equip, key of props, value of props
         // какое устройство, какое его поле, какое значение поля
         const slices: [EquipmentId, EquipmentProp, EquipmentValueProp][] = Object.entries(
@@ -96,9 +96,13 @@ export class EquipmentPartitionService {
         return switcher[property];
     }
 
-    private static ignoreRoomName(roomDTO: RoomDTO): void {
-        Object.defineProperty(roomDTO, 'r_name', {
+    private static ignoreRoomName(roomDTO: RoomDTO): RoomDTO {
+        const roomDTOcopy = {...roomDTO};
+
+        Object.defineProperty(roomDTOcopy, 'r_name', {
             enumerable: false,
         });
+
+        return roomDTOcopy;
     }
 }

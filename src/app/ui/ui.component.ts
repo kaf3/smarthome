@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatSidenav} from '@angular/material/sidenav';
 import {SidenavService} from '../sevices/sidenav.service';
 
@@ -7,7 +7,7 @@ import {SidenavService} from '../sevices/sidenav.service';
     templateUrl: './ui.component.html',
     styleUrls: ['./ui.component.scss'],
 })
-export class UiComponent implements OnInit {
+export class UiComponent implements OnInit, OnDestroy {
     @ViewChild('sidenav') sideNav: MatSidenav;
     title = 'Smart Home';
 
@@ -21,5 +21,11 @@ export class UiComponent implements OnInit {
 
     public onClose() {
         this.sidenavService.setState(false);
+    }
+
+    ngOnDestroy(): void {
+        if (!!this.sidenavService.sidenavSubject) {
+            this.sidenavService.sidenavSubject.complete();
+        }
     }
 }

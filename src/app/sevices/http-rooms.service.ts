@@ -41,9 +41,11 @@ export class HttpRoomsService {
     }
 
     public patchRoom(roomName: RoomDTO['r_name'], roomDTO: RoomDTO): Observable<Room> {
+        const roomDTOcopy = {...roomDTO};
+
         return this.http
             .patch<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`, {
-                [roomName]: roomDTO,
+                [roomName]: roomDTOcopy,
             })
             .pipe(
                 map((roomsDTO: RoomsDTO) => {
@@ -58,17 +60,21 @@ export class HttpRoomsService {
     }
 
     public postRooms(roomsDTO: RoomsDTO): Observable<Room[]> {
-        return this.http.put<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`, roomsDTO).pipe(
-            map((rooms: RoomsDTO) =>
-                Object.entries(rooms).map(
-                    ([roomName, roomDTO]: [keyof RoomsDTO, RoomDTO]) => {
-                        return {
-                            roomName,
-                            equipment: this.equipmentPartition.partition(roomDTO),
-                        } as Room;
-                    },
+        const roomsDTOcopy = {...roomsDTO};
+
+        return this.http
+            .put<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`, roomsDTOcopy)
+            .pipe(
+                map((rooms: RoomsDTO) =>
+                    Object.entries(rooms).map(
+                        ([roomName, roomDTO]: [keyof RoomsDTO, RoomDTO]) => {
+                            return {
+                                roomName,
+                                equipment: this.equipmentPartition.partition(roomDTO),
+                            } as Room;
+                        },
+                    ),
                 ),
-            ),
-        );
+            );
     }
 }

@@ -10,3 +10,7 @@
 .app-sidenav-container {
     min-height: calc(100% - 64px);
 }
+
+.app-sidenav-link-active {
+    background-color: $mat-list-item-active-light;
+}

@@ -8,6 +8,7 @@ import {RoomListModule} from './room-list/room-list.module';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
+import {SidenavService} from '../sevices/sidenav.service';
 
 @NgModule({
     declarations: [UiComponent],
@@ -22,5 +23,6 @@ import {MatButtonModule} from '@angular/material/button';
         MatToolbarModule,
         MatButtonModule,
     ],
+    providers: [SidenavService],
 })
 export class UiModule {}
