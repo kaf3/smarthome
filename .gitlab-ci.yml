@@ -4,11 +4,11 @@ image: node:slim
 cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
-        - .npm/
+        - node_modules/
 
 
 before_script:
-    - npm ci --cache .npm --prefer-offline
+    - npm install
 
 build:
     script: npm run build
