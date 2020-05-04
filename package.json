@@ -11,7 +11,7 @@
     "prettier": "prettier --list-different \"src/**/*{.ts,.js,.json}\"",
     "prettier:fix": "npm run prettier -- --write",
     "lint:es": "eslint \"src/**/*.{ts,js}\"",
-      "lint:es:fix": "eslint \"src/**/*.{ts,js}\"",
+    "lint:es:fix": "eslint \"src/**/*.{ts,js}\"",
     "lint:es:ci": "eslint --format ./node_modules/eslint-teamcity/index.js \"src/**/*.{ts,js}\"",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
@@ -28,6 +28,7 @@
     "@angular/platform-browser-dynamic": "~9.0.2",
     "@angular/router": "~9.0.2",
     "@ngrx/core": "^1.2.0",
+    "@ngrx/data": "^9.1.0",
     "@ngrx/effects": "^8.6.0",
     "@ngrx/entity": "^8.6.0",
     "@ngrx/router-store": "^8.6.0",
