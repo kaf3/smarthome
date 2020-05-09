@@ -4,6 +4,7 @@ import {EquipmentStoreSelectors, EquipmentStoreState} from '@store';
 import {Equipment} from '@models';
 import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
+import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
 
 @Component({
     selector: 'app-equipment',
@@ -13,7 +14,10 @@ import {filter} from 'rxjs/operators';
 export class EquipmentComponent implements OnInit {
     equipment$: Observable<Equipment>;
 
-    constructor(public store: Store<EquipmentStoreState.EquipmentState>) {}
+    constructor(
+        public store: Store<EquipmentStoreState.EquipmentState>,
+        public route: ActivatedRoute,
+    ) {}
 
     ngOnInit(): void {
         this.equipment$ = this.store.pipe(

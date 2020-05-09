@@ -1,12 +1,14 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EquipmentComponent} from './equipment.component';
-import {EquipmentStoreModule} from '../../../../store/equipment-store/equipment-store.module';
+import {EquipmentStoreModule} from '@store';
 import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import {EquipmentFormModule} from './equipment-form/equipment-form.module';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {PipesModule} from '../../../../pipes/pipes.module';
+import {PipesModule} from '@pipes';
+import {EffectsModule} from '@ngrx/effects';
+import {EquipmentUiEffects} from './equipment.ui.effects';
 
 @NgModule({
     declarations: [EquipmentComponent],
@@ -19,6 +21,7 @@ import {PipesModule} from '../../../../pipes/pipes.module';
         EquipmentFormModule,
         MatToolbarModule,
         PipesModule,
+        EffectsModule.forFeature([EquipmentUiEffects]),
     ],
 })
 export class EquipmentModule {}
