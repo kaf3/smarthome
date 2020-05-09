@@ -1,5 +1,5 @@
 <mat-toolbar>
-  {{roomName$ | async}}
+    {{roomName$ | async}}
 </mat-toolbar>
 
 <div class="equip-list">
@@ -8,7 +8,7 @@
        [routerLink]="[equipment.id]"
        routerLinkActive="equip-link-active"
     >
-        <mat-card  matRipple class="equip-card-active">
+        <mat-card matRipple class="equip-card-active">
             <mat-card-header>
                 <mat-card-title>
                     {{equipment.name}}

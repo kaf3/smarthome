@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EquipmentFormComponent} from './equipment-form.component';
-import {EquipmentFormStoreModule} from '@store';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -15,7 +14,6 @@ import {FormsModule} from '@angular/forms';
     exports: [EquipmentFormComponent],
     imports: [
         CommonModule,
-        EquipmentFormStoreModule,
         MatFormFieldModule,
         MatInputModule,
         MatSlideToggleModule,

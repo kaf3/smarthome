@@ -3,6 +3,7 @@ import {RoomListStoreState} from './room-list-store';
 import {RoomStoreState} from './room-store';
 import {EquipmentStoreState} from './equipment-store';
 import {EquipmentFormStoreState} from './equipment-form-store';
+import {createSelector} from '@ngrx/store';
 
 export interface AppState {
     RoomListState: RoomListStoreState.RoomListState;
@@ -18,3 +19,8 @@ export const initialAppState: AppState = {
     EquipmentState: EquipmentStoreState.initialEquipmentState,
     EquipmentForm: EquipmentFormStoreState.initialEquipmentFormState,
 };
+
+export const selectRoomListLazyState = createSelector(
+    (state: AppState) => state.RoomListState,
+    state => state,
+);

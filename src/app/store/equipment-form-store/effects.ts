@@ -8,8 +8,7 @@ import {
     LoadEquipmentFormSuccess,
     SubmitEquipmentForm,
 } from './actions';
-import {map, switchMap, take} from 'rxjs/operators';
-import {filter} from 'rxjs/operators';
+import {filter, map, switchMap, take} from 'rxjs/operators';
 import {Equipment} from '@models';
 import {selectEquipmentFormState} from './selectors';
 import {EquipmentStoreSelectors} from '../equipment-store';

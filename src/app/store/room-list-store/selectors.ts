@@ -17,15 +17,15 @@ export const selectRoomByName = createSelector(
 
 export const selectLoading = createSelector(
     selectRoomListState,
-    state => isLoading(state),
+    isLoading,
 );
 
 export const selectLoaded = createSelector(
     selectRoomListState,
-    state => isLoaded(state),
+    isLoaded,
 );
 
 export const selectError = createSelector(
     selectRoomListState,
-    state => getError(state),
+    getError,
 );

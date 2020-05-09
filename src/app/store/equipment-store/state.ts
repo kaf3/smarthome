@@ -1,7 +1,9 @@
 import {Equipment} from 'src/app/models/equipment';
+import {CallState, LoadingState} from '@models';
 
 export interface EquipmentState {
     equipment: Equipment;
+    callState: CallState;
 }
 
 const initialEquipment: Equipment = {
@@ -17,4 +19,5 @@ const initialEquipment: Equipment = {
 
 export const initialEquipmentState: EquipmentState = {
     equipment: initialEquipment,
+    callState: LoadingState.INIT,
 };

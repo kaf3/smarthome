@@ -21,6 +21,8 @@ export class GetEquipmentSuccess implements Action {
 
 export class GetEquipmentError implements Action {
     readonly type = EquipmentActions.getEquipmentError;
+
+    constructor(public payload: {errorMsg: string}) {}
 }
 
 export type EquipmentUnion = GetEquipment | GetEquipmentSuccess | GetEquipmentError;

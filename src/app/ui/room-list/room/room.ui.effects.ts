@@ -6,7 +6,7 @@ import {select, Store} from '@ngrx/store';
 import {filter, map, take} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {RoomStoreSelectors, RoomStoreState, RoomStoreActions} from '@store';
+import {RoomStoreActions, RoomStoreSelectors, RoomStoreState} from '@store';
 
 @Injectable()
 export class RoomUiEffects {
@@ -27,7 +27,11 @@ export class RoomUiEffects {
                     );
                 },
                 onError(a: ActivatedRouteSnapshot, e: any): Observable<any> | any {
-                    return of(new RoomStoreActions.GetRoomError());
+                    return of(
+                        new RoomStoreActions.GetRoomError({
+                            errorMsg: 'could not load room',
+                        }),
+                    );
                 },
             }),
         ),

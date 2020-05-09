@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Equipment} from '@models';
-import {RoomDTO} from '@models';
+import {Equipment, RoomDTO} from '@models';
 
 @Injectable()
 export class SerializeService {

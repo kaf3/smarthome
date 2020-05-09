@@ -8,9 +8,11 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {LoadingComponent} from './loading/loading.component';
+import {OverlayModule} from '@angular/cdk/overlay';
 
 @NgModule({
-    declarations: [UiComponent],
+    declarations: [UiComponent, LoadingComponent],
     exports: [UiComponent],
     imports: [
         CommonModule,
@@ -21,6 +23,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
         MatToolbarModule,
         MatButtonModule,
         MatProgressBarModule,
+        OverlayModule,
     ],
 })
 export class UiModule {}

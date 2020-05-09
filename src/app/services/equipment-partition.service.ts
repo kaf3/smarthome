@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {EquipmentGroup, EquipmentType, RoomDTO} from '@models';
-import {Equipment} from '@models';
+import {Equipment, EquipmentGroup, EquipmentType, RoomDTO} from '@models';
 
 export type EquipmentId = string;
 export type EquipmentProp = string;

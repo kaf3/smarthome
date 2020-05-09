@@ -11,7 +11,7 @@ import {TemplatePortal} from '@angular/cdk/portal';
 export class LoadingService {
     public overlayRef?: OverlayRef;
 
-    constructor(private overlay: Overlay) {}
+    constructor(private readonly overlay: Overlay) {}
 
     public open<T = any>(
         templateRef: TemplateRef<any>,
@@ -19,8 +19,14 @@ export class LoadingService {
     ): OverlayRef {
         this.overlayRef = this.overlay.create(this.getOverlayConfig());
         this.overlayRef.attach(new TemplatePortal(templateRef, vcr));
-        console.log(this.overlayRef);
+
         return this.overlayRef;
+    }
+
+    public close() {
+        if (!!this.overlayRef) {
+            this.overlayRef.detach();
+        }
     }
 
     private getOverlayConfig(): OverlayConfig {
@@ -35,11 +41,5 @@ export class LoadingService {
             .position()
             .global()
             .centerHorizontally();
-    }
-
-    public close() {
-        if (!!this.overlayRef) {
-            this.overlayRef.detach();
-        }
     }
 }

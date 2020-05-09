@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RoomComponent} from './room.component';
-import {RoomStoreModule} from '@store';
 import {RouterModule} from '@angular/router';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {RoomRoutingModule} from './room.routing.module';
@@ -16,7 +15,6 @@ import {RoomUiEffects} from './room.ui.effects';
     declarations: [RoomComponent],
     imports: [
         CommonModule,
-        RoomStoreModule,
         EquipmentModule,
         RoomRoutingModule,
         MatToolbarModule,

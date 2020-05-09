@@ -16,6 +16,7 @@ export class LoadEquipmentForm implements Action {
 
 export class LoadEquipmentFormSuccess implements Action {
     readonly type = EquipmentFormActions.loadEquipmentFormSuccess;
+
     constructor(public payload: {equipment: Equipment}) {}
 }
 

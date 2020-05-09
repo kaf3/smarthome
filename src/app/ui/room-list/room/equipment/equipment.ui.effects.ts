@@ -19,7 +19,11 @@ export class EquipmentUiEffects {
                     );
                 },
                 onError: (a: ActivatedRouteSnapshot, e: any): any => {
-                    return of(new EquipmentStoreActions.GetEquipmentError());
+                    return of(
+                        new EquipmentStoreActions.GetEquipmentError({
+                            errorMsg: 'could not load equipment',
+                        }),
+                    );
                 },
             }),
         ),

@@ -3,6 +3,7 @@ export const enum LoadingState {
     LOADING = 'LOADING',
     LOADED = 'LOADED',
 }
+
 export interface ErrorState {
     errorMsg: string;
 }

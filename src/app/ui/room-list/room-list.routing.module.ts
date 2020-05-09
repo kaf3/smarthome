@@ -5,6 +5,7 @@ import {RoomComponent} from './room/room.component';
 import {RoomListComponent} from './room-list.component';
 import {EquipmentComponent} from './room/equipment/equipment.component';
 import {EquipmentResolver} from './room/equipment/equipment.resolver';
+import {RoomResolver} from './room/room.resolver';
 
 const routes: Routes = [
     {
@@ -14,6 +15,9 @@ const routes: Routes = [
             {
                 path: ':id',
                 component: RoomComponent,
+                resolve: {
+                    roomName: RoomResolver,
+                },
                 children: [
                     {
                         path: ':detail',

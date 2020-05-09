@@ -11,9 +11,8 @@ import {
 import {catchError, map, switchMap} from 'rxjs/operators';
 
 import {of} from 'rxjs';
-import {HttpRoomsService} from '@services';
+import {HttpRoomsService, SerializeService} from '@services';
 import {Equipment, Room, RoomsDTO} from '@models';
-import {SerializeService} from '@services';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Store} from '@ngrx/store';
 import {RoomListState} from './state';

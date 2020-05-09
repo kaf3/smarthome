@@ -18,7 +18,6 @@ export class RoomListComponent implements OnInit, OnDestroy {
 
     public rooms$: Observable<Room[]>;
     public readonly destroy$ = new Subject();
-    public loading$: Observable<boolean>;
 
     constructor(
         private readonly store: Store<RoomListStoreState.RoomListState>,
@@ -26,8 +25,6 @@ export class RoomListComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.loading$ = this.store.pipe(select(RoomListStoreSelectors.selectLoading));
-
         this.rooms$ = this.store.pipe(
             select(RoomListStoreSelectors.selectRoomList),
             filter(rooms => !!rooms.length),

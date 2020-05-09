@@ -4,7 +4,7 @@ import {EquipmentStoreSelectors, EquipmentStoreState} from '@store';
 import {Equipment} from '@models';
 import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
-import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'app-equipment',

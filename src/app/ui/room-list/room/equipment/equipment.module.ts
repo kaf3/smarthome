@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EquipmentComponent} from './equipment.component';
-import {EquipmentStoreModule} from '@store';
 import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import {EquipmentFormModule} from './equipment-form/equipment-form.module';
@@ -15,7 +14,6 @@ import {EquipmentUiEffects} from './equipment.ui.effects';
     exports: [EquipmentComponent],
     imports: [
         CommonModule,
-        EquipmentStoreModule,
         MatCardModule,
         MatListModule,
         EquipmentFormModule,

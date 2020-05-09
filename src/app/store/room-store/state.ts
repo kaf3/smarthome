@@ -1,5 +1,5 @@
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {CallState, Equipment, LoadingState} from '../../models';
+import {CallState, Equipment, LoadingState} from '@models';
 
 export interface RoomState extends EntityState<Equipment> {
     roomName: string;

@@ -21,6 +21,8 @@ export class GetRoomSuccess implements Action {
 
 export class GetRoomError implements Action {
     readonly type = RoomActions.getRoomError;
+
+    constructor(public payload: {errorMsg: string}) {}
 }
 
 export type RoomUnion = GetRoom | GetRoomSuccess | GetRoomError;

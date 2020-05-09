@@ -2,6 +2,7 @@ import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {roomAdapter, RoomState} from './state';
 import {Dictionary} from '@ngrx/entity';
 import {Equipment} from '../../models';
+import {getError, isLoaded, isLoading} from '@helpers';
 
 const selectRoomState = createFeatureSelector<RoomState>('room');
 
@@ -22,4 +23,19 @@ export const selectEquipmentByIdFromRoom = createSelector(
 export const selectRoomName = createSelector(
     selectRoomState,
     state => state.roomName,
+);
+
+export const selectLoading = createSelector(
+    selectRoomState,
+    isLoading,
+);
+
+export const selectLoaded = createSelector(
+    selectRoomState,
+    isLoaded,
+);
+
+export const selectError = createSelector(
+    selectRoomState,
+    getError,
 );
