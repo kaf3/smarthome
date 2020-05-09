@@ -4,8 +4,13 @@ import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
     {
+        path: 'rooms',
+        loadChildren: () =>
+            import('./room-list/room-list.module').then(m => m.RoomListModule),
+    },
+    {
         path: '',
-        redirectTo: '/rooms',
+        redirectTo: '',
         pathMatch: 'full',
     },
 ];

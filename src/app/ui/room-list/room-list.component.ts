@@ -3,7 +3,7 @@ import {select, Store} from '@ngrx/store';
 
 import {Room} from 'src/app/models/room';
 import {filter, takeUntil} from 'rxjs/operators';
-import {RoomListStoreActions, RoomListStoreSelectors, RoomListStoreState} from '@store';
+import {RoomListStoreSelectors, RoomListStoreState} from '@store';
 import {Observable, Subject} from 'rxjs';
 import {MatTabNav} from '@angular/material/tabs';
 import {SidenavService} from '@services';
@@ -26,7 +26,6 @@ export class RoomListComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.store.dispatch(new RoomListStoreActions.LoadRooms());
         this.loading$ = this.store.pipe(select(RoomListStoreSelectors.selectLoading));
 
         this.rooms$ = this.store.pipe(

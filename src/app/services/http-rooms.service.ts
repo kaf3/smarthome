@@ -10,14 +10,13 @@ import {environment} from '../../environments/environment';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class HttpRoomsService {
     constructor(
         private readonly http: HttpClient,
         private readonly equipmentPartition: EquipmentPartitionService,
     ) {}
+
     public loadRoomsDTO(): Observable<RoomsDTO> {
         return this.http.get<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`);
     }

@@ -15,6 +15,8 @@ import {HttpRoomsService} from '@services';
 import {Equipment, Room, RoomsDTO} from '@models';
 import {SerializeService} from '@services';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Store} from '@ngrx/store';
+import {RoomListState} from './state';
 
 @Injectable()
 export class RoomsEffects {
@@ -89,5 +91,6 @@ export class RoomsEffects {
         private readonly httpRooms: HttpRoomsService,
         private readonly serializer: SerializeService,
         private readonly _snackBar: MatSnackBar,
+        private readonly store: Store<RoomListState>,
     ) {}
 }

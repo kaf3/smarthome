@@ -8,12 +8,9 @@ import {
     GetEquipmentError,
     GetEquipmentSuccess,
 } from './actions';
-import {navigation} from '@nrwl/angular';
-import {EquipmentComponent} from '../../ui/room-list/room/equipment/equipment.component';
-import {ActivatedRouteSnapshot} from '@angular/router';
 import {of} from 'rxjs';
 import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {RoomStoreSelectors} from '@store';
+import {RoomStoreSelectors} from '../room-store';
 
 @Injectable()
 export class EquipmentEffects {
@@ -27,16 +24,6 @@ export class EquipmentEffects {
             filter(equipment => !!equipment),
             switchMap(equipment => of(new GetEquipmentSuccess({equipment}))),
             catchError(() => of(new GetEquipmentError())),
-        ),
-    );
-
-    navigationEquipment = createEffect(() =>
-        this.actions$.pipe(
-            navigation(EquipmentComponent, {
-                run: (routerSnap: ActivatedRouteSnapshot) => {
-                    return of(new GetEquipment({id: routerSnap.params.detail}));
-                },
-            }),
         ),
     );
 

@@ -4,10 +4,11 @@ import {RouterModule, Routes} from '@angular/router';
 import {RoomComponent} from './room/room.component';
 import {RoomListComponent} from './room-list.component';
 import {EquipmentComponent} from './room/equipment/equipment.component';
+import {EquipmentResolver} from './room/equipment/equipment.resolver';
 
 const routes: Routes = [
     {
-        path: 'rooms',
+        path: '',
         component: RoomListComponent,
         children: [
             {
@@ -17,6 +18,9 @@ const routes: Routes = [
                     {
                         path: ':detail',
                         component: EquipmentComponent,
+                        resolve: {
+                            equipment: EquipmentResolver,
+                        },
                     },
                 ],
             },
