@@ -6,6 +6,7 @@ import {
     TemplateRef,
     ViewChild,
     ViewContainerRef,
+    Injectable,
 } from '@angular/core';
 import {Store} from '@ngrx/store';
 import {RoomListStoreSelectors, RootStoreState} from '@store';

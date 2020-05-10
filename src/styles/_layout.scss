@@ -15,11 +15,11 @@ $layout12: 72px;
 $layout13: 80px;
 
 @mixin space-between {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 
-        & span {
-            display: block;
-        }
+    & span {
+        display: block;
+    }
 }

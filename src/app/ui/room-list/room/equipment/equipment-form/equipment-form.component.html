@@ -4,7 +4,7 @@
             Edit
         </mat-card-title>
     </mat-card-header>
-    <form [ngrxFormState]="(formState$ | async)" (ngSubmit)="submitForm()">
+    <form [ngrxFormState]="formState$ | async" (ngSubmit)="submitForm()">
         <mat-card-content>
             <mat-form-field>
                 <mat-label>Name</mat-label>
@@ -12,22 +12,18 @@
                     type="text"
                     matInput
                     placeholder="custom name for your device"
-                    [ngrxFormControlState]="(formState$ | async)?.controls.name">
+                    [ngrxFormControlState]="(formState$ | async)?.controls.name"
+                />
             </mat-form-field>
-            <mat-slide-toggle *ngIf="(equipment$ | async)?.group === DEVICE"
-                              class="form-toggle"
-                              (change)="submitForm()"
-                              [ngrxFormControlState]="(formState$ | async)?.controls.value"
+            <mat-slide-toggle
+                *ngIf="(equipment$ | async)?.group === DEVICE"
+                class="form-toggle"
+                (change)="submitForm()"
+                [ngrxFormControlState]="(formState$ | async)?.controls.value"
             ></mat-slide-toggle>
-
         </mat-card-content>
         <mat-card-footer>
             <button mat-button>Save</button>
         </mat-card-footer>
     </form>
 </mat-card>
-
-
-
-
-

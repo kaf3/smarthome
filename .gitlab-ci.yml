@@ -16,6 +16,6 @@ build:
 
 
 test:
-    script: npm run lint:es && npm test
+    script: npm run lint && npm test
 
 

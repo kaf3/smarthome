@@ -4,8 +4,6 @@ $app-primary: mat-palette($mat-indigo);
 $app-accent: mat-palette($mat-pink);
 $app-light-theme: mat-light-theme($app-primary, $app-accent);
 
-
-
 $primary: mat-color(map_get($app-light-theme, primary));
 $accent: mat-color(map_get($app-light-theme, accent));
 $warn: mat-color(map_get($app-light-theme, warn));
@@ -14,10 +12,8 @@ $foreground: map_get($app-light-theme, foreground);
 $background: map_get($app-light-theme, background);
 
 $status-bar: map_get($background, status-bar);
-$app-bar:    map_get($background, app-bar);
+$app-bar: map_get($background, app-bar);
 $background-color: map_get($background, background);
 
-$border-light: rgba(0,0,0,.12);
-$mat-list-item-active-light: rgba(0,0,0,.04)
-
-
+$border-light: rgba(0, 0, 0, 0.12);
+$mat-list-item-active-light: rgba(0, 0, 0, 0.04);

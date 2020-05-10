@@ -5,4 +5,4 @@ module.exports = {
         '^.+\\.(ts|js|html)$': 'ts-jest',
     },
     moduleFileExtensions: ['ts', 'js', 'html'],
-}
+};
