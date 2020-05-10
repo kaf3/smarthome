@@ -1,4 +1,4 @@
 {
-    "src/**/*.{ts,js}": ["prettier --write", "eslint --fix"],
+    "src/**/*.{ts,js}": ["prettier --write", "npm run lint"],
     "src/**/*.{md,json,template.html}": ["prettier --write"]
 }
