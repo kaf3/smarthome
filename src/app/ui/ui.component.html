@@ -8,22 +8,14 @@
 <mat-sidenav-container class="app-sidenav-container">
 	<mat-sidenav #sidenav mode="side" class="app-sidenav" (closed)="onClose()" (opened)="onOpen()">
 		<mat-nav-list>
-			<a #rla=routerLinkActive  [disabled]="rla.isActive"  mat-list-item routerLink="rooms" routerLinkActive="app-sidenav-link-active">rooms</a>
-		</mat-nav-list>
-		<mat-nav-list>
-			<a mat-list-item>analytics</a>
-		</mat-nav-list>
-		<mat-nav-list>
-			<a mat-list-item>commands</a>
-		</mat-nav-list>
-		<mat-nav-list>
-			<a mat-list-item>safety</a>
-		</mat-nav-list>
-		<mat-nav-list>
-			<a mat-list-item>settings</a>
-		</mat-nav-list>
-		<mat-nav-list>
-			<a mat-list-item>sign out</a>
+			<a
+				#rla=routerLinkActive
+				[disabled]="rla.isActive"
+				mat-list-item
+				[routerLink]="link.path"
+				routerLinkActive="app-sidenav-link-active"
+				*ngFor="let link of sidenavLinks"
+			>{{link.name}}</a>
 		</mat-nav-list>
 	</mat-sidenav>
 	<mat-sidenav-content>

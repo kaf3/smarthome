@@ -10,6 +10,24 @@ import { SidenavService } from '@services';
 export class UiComponent implements OnDestroy {
 	@ViewChild('sidenav') sideNav: MatSidenav;
 	title = 'Smart Home';
+	sidenavLinks: { name: string; path: string }[] = [
+		{
+			name: 'Rooms',
+			path: 'rooms',
+		},
+		{
+			name: 'Commands',
+			path: 'commands',
+		},
+		{
+			name: 'Analytics',
+			path: 'analytics',
+		},
+		{
+			name: 'Safety',
+			path: 'safety',
+		},
+	];
 
 	constructor(private readonly sidenavService: SidenavService) {}
 

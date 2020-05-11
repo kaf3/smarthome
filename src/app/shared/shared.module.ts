@@ -7,8 +7,7 @@ import {
 	SerializeService,
 	SidenavService,
 } from '@services';
-import { EquipmentResolver } from '../ui/room-list/room/equipment/equipment.resolver';
-import { RoomResolver } from '../ui/room-list/room/room.resolver';
+import { RoomListResolver } from '../ui/room-list/room-list.resolver';
 
 @NgModule({
 	declarations: [],
@@ -23,9 +22,8 @@ export class SharedModule {
 				EquipmentPartitionService,
 				SerializeService,
 				SidenavService,
-				EquipmentResolver,
-				RoomResolver,
 				LoadingService,
+				RoomListResolver,
 			],
 		};
 	}

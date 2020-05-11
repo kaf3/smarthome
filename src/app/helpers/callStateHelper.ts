@@ -1,4 +1,3 @@
-// Helper function to extract error, if there is one.
 import { ErrorState, HasCallState, LoadingState } from '@models';
 
 export function getError<T extends HasCallState>(state: T): string | null {

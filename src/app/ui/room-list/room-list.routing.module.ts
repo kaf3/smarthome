@@ -4,27 +4,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { RoomComponent } from './room/room.component';
 import { RoomListComponent } from './room-list.component';
 import { EquipmentComponent } from './room/equipment/equipment.component';
-import { EquipmentResolver } from './room/equipment/equipment.resolver';
-import { RoomResolver } from './room/room.resolver';
+import { RoomListResolver } from './room-list.resolver';
 
 const routes: Routes = [
 	{
 		path: '',
 		component: RoomListComponent,
+		resolve: {
+			ready: RoomListResolver,
+		},
 		children: [
 			{
 				path: ':id',
 				component: RoomComponent,
-				resolve: {
-					roomName: RoomResolver,
-				},
 				children: [
 					{
 						path: ':detail',
 						component: EquipmentComponent,
-						resolve: {
-							equipment: EquipmentResolver,
-						},
 					},
 				],
 			},
