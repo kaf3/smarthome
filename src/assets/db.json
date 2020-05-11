@@ -1,22 +1,22 @@
 {
-    "Kitchen": {
-        "r_name": "Kitchen",
-        "s_temp_temperature_on_the_window": 24,
-        "s_humi_humidity_in_room": 747,
-        "s_co2-_sensorCo2": 23,
-        "d_toas_toaster_on_kitchen": true,
-        "d_kett_kettle_OMM": false,
-        "m_temp_temperature_on_the_window": 1221112
-    },
-    "Bedroom": {
-        "r_name": "Bedroom",
-        "s_temp_in_Bedroom": 29,
-        "s_co2-_sensorCo2": 23,
-        "d_toas_toster_in_bed": true
-    },
-    "Launge": {
-        "r_name": "Launge",
-        "s_temp_Laaa": 20,
-        "d_humi_humidity_in_launge": 760
-    }
+	"Kitchen": {
+		"r_name": "Kitchen",
+		"s_temp_temperature_on_the_window": 24,
+		"s_humi_humidity_in_room": 747,
+		"s_co2-_sensorCo2": 23,
+		"d_toas_toaster_on_kitchen": true,
+		"d_kett_kettle_OMM": false,
+		"m_temp_temperature_on_the_window": 1221112
+	},
+	"Bedroom": {
+		"r_name": "Bedroom",
+		"s_temp_in_Bedroom": 29,
+		"s_co2-_sensorCo2": 23,
+		"d_toas_toster_in_bed": true
+	},
+	"Launge": {
+		"r_name": "Launge",
+		"s_temp_Laaa": 20,
+		"d_humi_humidity_in_launge": 760
+	}
 }

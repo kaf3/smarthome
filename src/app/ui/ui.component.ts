@@ -1,31 +1,29 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MatSidenav} from '@angular/material/sidenav';
-import {SidenavService} from '@services';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { SidenavService } from '@services';
 
 @Component({
-    selector: 'app-ui',
-    templateUrl: './ui.component.html',
-    styleUrls: ['./ui.component.scss'],
+	selector: 'app-ui',
+	templateUrl: './ui.component.html',
+	styleUrls: ['./ui.component.scss'],
 })
-export class UiComponent implements OnInit, OnDestroy {
-    @ViewChild('sidenav') sideNav: MatSidenav;
-    title = 'Smart Home';
+export class UiComponent implements OnDestroy {
+	@ViewChild('sidenav') sideNav: MatSidenav;
+	title = 'Smart Home';
 
-    constructor(private readonly sidenavService: SidenavService) {}
+	constructor(private readonly sidenavService: SidenavService) {}
 
-    ngOnInit(): void {}
+	public onOpen(): void {
+		this.sidenavService.setState(true);
+	}
 
-    public onOpen() {
-        this.sidenavService.setState(true);
-    }
+	public onClose(): void {
+		this.sidenavService.setState(false);
+	}
 
-    public onClose() {
-        this.sidenavService.setState(false);
-    }
-
-    ngOnDestroy(): void {
-        if (!!this.sidenavService.sidenavSubject) {
-            this.sidenavService.sidenavSubject.complete();
-        }
-    }
+	ngOnDestroy(): void {
+		if (this.sidenavService.sidenavSubject) {
+			this.sidenavService.sidenavSubject.complete();
+		}
+	}
 }

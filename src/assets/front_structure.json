@@ -1,36 +1,36 @@
 {
-    "users": {
-        "user_id": {
-            "id": "user_id",
-            "name": "John",
-            "rooms": {
-                "room01": {
-                    "id": "room01",
-                    "name": "Kitchen",
-                    "hardwareCollection": {
-                        "1234": {
-                            "mac": 1234,
-                            "name": "My meteo",
-                            "location": {
-                                "id": "room01",
-                                "name": "room1"
-                            },
-                            "type": "meteo",
-                            "numberOfEquip": "1",
-                            "equipmentCollection": {
-                                "temp": {
-                                    "name": "temp1",
-                                    "group": "sensor",
-                                    "type": "temp",
-                                    "value": "24",
-                                    "status": "true"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "fcmid": {}
-        }
-    }
+	"users": {
+		"user_id": {
+			"id": "user_id",
+			"name": "John",
+			"rooms": {
+				"room01": {
+					"id": "room01",
+					"name": "Kitchen",
+					"hardwareCollection": {
+						"1234": {
+							"mac": 1234,
+							"name": "My meteo",
+							"location": {
+								"id": "room01",
+								"name": "room1"
+							},
+							"type": "meteo",
+							"numberOfEquip": "1",
+							"equipmentCollection": {
+								"temp": {
+									"name": "temp1",
+									"group": "sensor",
+									"type": "temp",
+									"value": "24",
+									"status": "true"
+								}
+							}
+						}
+					}
+				}
+			},
+			"fcmid": {}
+		}
+	}
 }

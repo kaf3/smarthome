@@ -2,30 +2,30 @@
 @import 'src/styles/theming';
 
 .equip-card {
-    width: 232px;
-    margin: $layout03;
+	width: 232px;
+	margin: $layout03;
 }
 
 .equip-link-active .equip-card-active {
-    color: $primary;
+	color: $primary;
 }
 
 .equip-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    background-color: $app-bar;
-    align-items: center;
-    margin-bottom: $layout11;
-    border-bottom: 1px solid $border-light;
-    padding-bottom: $layout03;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	background-color: $app-bar;
+	align-items: center;
+	margin-bottom: $layout11;
+	border-bottom: 1px solid $border-light;
+	padding-bottom: $layout03;
 }
 
 .equip-list a {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 .equip-card-content {
-    margin-bottom: 0;
-    @include space-between();
+	margin-bottom: 0;
+	@include space-between();
 }

@@ -1,15 +1,17 @@
 <nav color="primary" mat-align-tabs="center" mat-tab-nav-bar #matTabNav>
-    <a
-        #rla="routerLinkActive"
-        *ngFor="let room of rooms$ | async"
-        [active]="rla.isActive"
-        [routerLinkActiveOptions]="{exact: false}"
-        [routerLink]="[room.roomName]"
-        mat-tab-link
-        routerLinkActive
-    >
-        {{ room?.roomName }}</a
-    >
+	<a
+		#rla="routerLinkActive"
+		*ngFor="let room of rooms$ | async"
+		[active]="rla.isActive"
+		[routerLinkActiveOptions]="{ exact: false }"
+		[routerLink]="[room.roomName]"
+		mat-tab-link
+		routerLinkActive
+		#rl
+
+	>
+		{{ room?.roomName }}</a
+	>
 </nav>
 
 <router-outlet></router-outlet>

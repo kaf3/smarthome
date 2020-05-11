@@ -1,6 +1,6 @@
-import {Equipment} from './equipment';
+import { Equipment } from './equipment';
 
 export interface Room {
-    roomName: string;
-    equipment: Equipment[];
+	roomName: string;
+	equipment: Equipment[];
 }

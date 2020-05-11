@@ -1,28 +1,28 @@
-import {Action} from '@ngrx/store';
-import {Equipment} from '../../models';
+import { Action } from '@ngrx/store';
+import { Equipment } from '../../models';
 
 export enum EquipmentActions {
-    getEquipment = '[Equipment] Get Equipment',
-    getEquipmentSuccess = '[Equipment] Get Equipment Success',
-    getEquipmentError = '[Equipment] Get Equipment Error',
+	getEquipment = '[Equipment] Get Equipment',
+	getEquipmentSuccess = '[Equipment] Get Equipment Success',
+	getEquipmentError = '[Equipment] Get Equipment Error',
 }
 
 export class GetEquipment implements Action {
-    readonly type = EquipmentActions.getEquipment;
+	readonly type = EquipmentActions.getEquipment;
 
-    constructor(public payload: {id: Equipment['id']}) {}
+	constructor(public payload: { id: Equipment['id'] }) {}
 }
 
 export class GetEquipmentSuccess implements Action {
-    readonly type = EquipmentActions.getEquipmentSuccess;
+	readonly type = EquipmentActions.getEquipmentSuccess;
 
-    constructor(public payload: {equipment: Equipment}) {}
+	constructor(public payload: { equipment: Equipment }) {}
 }
 
 export class GetEquipmentError implements Action {
-    readonly type = EquipmentActions.getEquipmentError;
+	readonly type = EquipmentActions.getEquipmentError;
 
-    constructor(public payload: {errorMsg: string}) {}
+	constructor(public payload: { errorMsg: string }) {}
 }
 
 export type EquipmentUnion = GetEquipment | GetEquipmentSuccess | GetEquipmentError;

@@ -1,25 +1,16 @@
-import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {EquipmentState} from './state';
-import {getError, isLoaded, isLoading} from '@helpers';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { EquipmentState } from './state';
+import { getError, isLoaded, isLoading } from '@helpers';
 
 const selectEquipmentState = createFeatureSelector<EquipmentState>('equipment');
 
 export const selectEquipment = createSelector(
-    selectEquipmentState,
-    (equipmentState: EquipmentState) => equipmentState.equipment,
+	selectEquipmentState,
+	(equipmentState: EquipmentState) => equipmentState.equipment,
 );
 
-export const selectLoading = createSelector(
-    selectEquipmentState,
-    isLoading,
-);
+export const selectLoading = createSelector(selectEquipmentState, isLoading);
 
-export const selectLoaded = createSelector(
-    selectEquipmentState,
-    isLoaded,
-);
+export const selectLoaded = createSelector(selectEquipmentState, isLoaded);
 
-export const selectError = createSelector(
-    selectEquipmentState,
-    getError,
-);
+export const selectError = createSelector(selectEquipmentState, getError);

@@ -1,36 +1,36 @@
 <div class="equip-container">
-    <mat-toolbar>{{ (equipment$ | async)?.name }}</mat-toolbar>
-    <div class="equip">
-        <mat-card class="equip-detail">
-            <mat-card-header>
-                <mat-card-title>
-                    {{ (equipment$ | async)?.name }}
-                </mat-card-title>
-                <mat-card-subtitle>
-                    {{ (equipment$ | async)?.group }}
-                </mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-list>
-                    <mat-list-item>
-                        <div class="equip-detail-item">
-                            <span>{{ (equipment$ | async)?.type }}</span>
-                            <span>{{
-                                (equipment$ | async)?.value | unit: (equipment$ | async)
-                            }}</span>
-                        </div>
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
-                    <mat-list-item>
-                        <div class="equip-detail-item">
-                            <span>Room</span>
-                            <span>{{ (equipment$ | async)?.location }}</span>
-                        </div>
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
-                </mat-list>
-            </mat-card-content>
-        </mat-card>
-        <app-equipment-form></app-equipment-form>
-    </div>
+	<mat-toolbar>{{ (equipment$ | async)?.name }}</mat-toolbar>
+	<div class="equip">
+		<mat-card class="equip-detail">
+			<mat-card-header>
+				<mat-card-title>
+					{{ (equipment$ | async)?.name }}
+				</mat-card-title>
+				<mat-card-subtitle>
+					{{ (equipment$ | async)?.group }}
+				</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content>
+				<mat-list>
+					<mat-list-item>
+						<div class="equip-detail-item">
+							<span>{{ (equipment$ | async)?.type }}</span>
+							<span>{{
+								(equipment$ | async)?.value | unit: (equipment$ | async)
+							}}</span>
+						</div>
+					</mat-list-item>
+					<mat-divider></mat-divider>
+					<mat-list-item>
+						<div class="equip-detail-item">
+							<span>Room</span>
+							<span>{{ (equipment$ | async)?.location }}</span>
+						</div>
+					</mat-list-item>
+					<mat-divider></mat-divider>
+				</mat-list>
+			</mat-card-content>
+		</mat-card>
+		<app-equipment-form></app-equipment-form>
+	</div>
 </div>

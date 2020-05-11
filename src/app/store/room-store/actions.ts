@@ -1,28 +1,28 @@
-import {Action} from '@ngrx/store';
-import {Room} from 'src/app/models/room';
+import { Action } from '@ngrx/store';
+import { Room } from 'src/app/models/room';
 
 export enum RoomActions {
-    getRoom = '[Room] Get Room',
-    getRoomSuccess = '[Room] Get Room Success',
-    getRoomError = '[Room] Get Room Error',
+	getRoom = '[Room] Get Room',
+	getRoomSuccess = '[Room] Get Room Success',
+	getRoomError = '[Room] Get Room Error',
 }
 
 export class GetRoom implements Action {
-    readonly type = RoomActions.getRoom;
+	readonly type = RoomActions.getRoom;
 
-    constructor(public payload: {roomName: Room['roomName']}) {}
+	constructor(public payload: { roomName: Room['roomName'] }) {}
 }
 
 export class GetRoomSuccess implements Action {
-    readonly type = RoomActions.getRoomSuccess;
+	readonly type = RoomActions.getRoomSuccess;
 
-    constructor(public payload: {room: Room}) {}
+	constructor(public payload: { room: Room }) {}
 }
 
 export class GetRoomError implements Action {
-    readonly type = RoomActions.getRoomError;
+	readonly type = RoomActions.getRoomError;
 
-    constructor(public payload: {errorMsg: string}) {}
+	constructor(public payload: { errorMsg: string }) {}
 }
 
 export type RoomUnion = GetRoom | GetRoomSuccess | GetRoomError;

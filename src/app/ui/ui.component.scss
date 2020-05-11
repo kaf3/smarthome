@@ -2,15 +2,15 @@
 @import 'theming';
 
 .app-sidenav {
-    width: $layout11 * 4;
-    height: 100%;
-    background-color: $background-color;
+	width: $layout11 * 4;
+	height: 100%;
+	background-color: $background-color;
 }
 
 .app-sidenav-container {
-    min-height: calc(100% - 64px);
+	min-height: calc(100% - 64px);
 }
 
 .app-sidenav-link-active {
-    background-color: $mat-list-item-active-light;
+	background-color: $mat-list-item-active-light;
 }
