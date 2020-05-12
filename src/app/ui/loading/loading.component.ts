@@ -6,9 +6,8 @@ import {
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { RoomListStoreSelectors, RootStoreState } from '@store';
-import { filter, takeUntil } from 'rxjs/operators';
+import { RoomListFacade } from '@store/room-list';
+import { takeUntil } from 'rxjs/operators';
 import { LoadingService } from '@services';
 import { Subject } from 'rxjs';
 
@@ -22,31 +21,19 @@ export class LoadingComponent implements OnDestroy, AfterViewInit {
 	@ViewChild('loadRef') public readonly loadRef: TemplateRef<any>;
 
 	constructor(
-		private readonly store: Store<RootStoreState.AppState>,
+		private readonly roomListFacade: RoomListFacade,
 		private readonly load: LoadingService,
 		public readonly vcr: ViewContainerRef,
 	) {}
 
 	ngAfterViewInit(): void {
-		this.store
-			.select(RoomListStoreSelectors.selectLoading)
-			.pipe(
-				filter((load) => !!load),
-				takeUntil(this.destroy$),
-			)
-			.subscribe(() => {
-				this.load.open(this.loadRef, this.vcr);
-			});
+		this.roomListFacade.loading$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+			this.load.open(this.loadRef, this.vcr);
+		});
 
-		this.store
-			.select(RoomListStoreSelectors.selectLoaded)
-			.pipe(
-				filter((load) => !!load),
-				takeUntil(this.destroy$),
-			)
-			.subscribe(() => {
-				this.load.close();
-			});
+		this.roomListFacade.loaded$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+			this.load.close();
+		});
 	}
 
 	ngOnDestroy(): void {

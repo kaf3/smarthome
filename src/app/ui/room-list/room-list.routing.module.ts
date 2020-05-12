@@ -4,19 +4,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { RoomComponent } from './room/room.component';
 import { RoomListComponent } from './room-list.component';
 import { EquipmentComponent } from './room/equipment/equipment.component';
-import { RoomListResolver } from './room-list.resolver';
+import { RoomGuard } from './room/room.guard';
 
 const routes: Routes = [
 	{
 		path: '',
 		component: RoomListComponent,
-		resolve: {
+		/*		resolve: {
 			ready: RoomListResolver,
-		},
+		},*/
 		children: [
 			{
 				path: ':id',
 				component: RoomComponent,
+				canDeactivate: [RoomGuard],
 				children: [
 					{
 						path: ':detail',

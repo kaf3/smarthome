@@ -4,7 +4,7 @@ import { navigation } from '@nrwl/angular';
 import { EquipmentComponent } from './equipment.component';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { of } from 'rxjs';
-import { EquipmentStoreActions } from '@store';
+import { EquipmentStoreActions } from '@store/equipment';
 
 @Injectable()
 export class EquipmentUiEffects {

@@ -3,10 +3,11 @@ import { Actions, createEffect } from '@ngrx/effects';
 import { navigation } from '@nrwl/angular';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Action, Store } from '@ngrx/store';
-import { RoomListStoreActions, RoomListStoreSelectors, RoomListStoreState } from '@store';
+import { Action } from '@ngrx/store';
+import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
 import { filter, map, take } from 'rxjs/operators';
 import { RoomListComponent } from './room-list.component';
+import { Room } from '@models';
 
 @Injectable()
 export class RoomListUiEffects {
@@ -14,9 +15,9 @@ export class RoomListUiEffects {
 		this.actions$.pipe(
 			navigation(RoomListComponent, {
 				run: (_a: ActivatedRouteSnapshot): Observable<Action> | Action | void => {
-					return this.store.select(RoomListStoreSelectors.selectRoomList).pipe(
+					return this.roomListFacade.roomList$.pipe(
 						take(1),
-						filter((rooms) => !rooms.length),
+						filter((rooms: Room[]) => !rooms.length),
 						map(() => new RoomListStoreActions.LoadRooms()),
 					);
 				},
@@ -26,6 +27,6 @@ export class RoomListUiEffects {
 
 	constructor(
 		private readonly actions$: Actions,
-		private readonly store: Store<RoomListStoreState.RoomListState>,
+		private readonly roomListFacade: RoomListFacade,
 	) {}
 }

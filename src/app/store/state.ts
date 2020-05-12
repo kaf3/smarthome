@@ -3,24 +3,20 @@ import { RoomListStoreState } from './room-list-store';
 import { RoomStoreState } from './room-store';
 import { EquipmentStoreState } from './equipment-store';
 import { EquipmentFormStoreState } from './equipment-form-store';
-import { createSelector } from '@ngrx/store';
+
+export type FeatureKey = keyof AppState;
 
 export interface AppState {
-	RoomListState: RoomListStoreState.RoomListState;
-	RoomState: RoomStoreState.RoomState;
-	EquipmentState: EquipmentStoreState.EquipmentState;
-	EquipmentForm: EquipmentFormStoreState.EquipmentFormState;
+	roomList: RoomListStoreState.RoomListState;
+	room: RoomStoreState.RoomState;
+	equipment: EquipmentStoreState.EquipmentState;
+	equipmentForm: EquipmentFormStoreState.EquipmentFormState;
 	router?: RouterReducerState;
 }
 
 export const initialAppState: AppState = {
-	RoomListState: RoomListStoreState.initialRoomListState,
-	RoomState: RoomStoreState.initialRoomState,
-	EquipmentState: EquipmentStoreState.initialEquipmentState,
-	EquipmentForm: EquipmentFormStoreState.initialEquipmentFormState,
+	roomList: RoomListStoreState.initialRoomListState,
+	room: RoomStoreState.initialRoomState,
+	equipment: EquipmentStoreState.initialEquipmentState,
+	equipmentForm: EquipmentFormStoreState.initialEquipmentFormState,
 };
-
-export const selectRoomListLazyState = createSelector(
-	(state: AppState) => state.RoomListState,
-	(state) => state,
-);

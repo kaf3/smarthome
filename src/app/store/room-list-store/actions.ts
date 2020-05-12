@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Room } from 'src/app/models/room';
-import { Equipment } from '../../models';
+import { Equipment } from '@models';
 
 export enum RoomsActions {
 	loadRooms = '[Rooms list] Load Rooms',

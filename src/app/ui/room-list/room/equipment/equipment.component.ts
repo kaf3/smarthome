@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { EquipmentStoreSelectors, EquipmentStoreState } from '@store';
+import { EquipmentFacade } from '@store/equipment';
 import { Equipment } from '@models';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	selector: 'app-equipment',
@@ -14,15 +12,9 @@ import { ActivatedRoute } from '@angular/router';
 export class EquipmentComponent implements OnInit {
 	equipment$: Observable<Equipment>;
 
-	constructor(
-		public store: Store<EquipmentStoreState.EquipmentState>,
-		public route: ActivatedRoute,
-	) {}
+	constructor(public readonly equipmentFacade: EquipmentFacade) {}
 
 	ngOnInit(): void {
-		this.equipment$ = this.store.pipe(
-			select(EquipmentStoreSelectors.selectEquipment),
-			filter((equipment) => !!equipment),
-		);
+		this.equipment$ = this.equipmentFacade.equipment$.pipe(filter((equipment) => !!equipment));
 	}
 }

@@ -8,14 +8,14 @@ import {
 	ViewChild,
 	ViewChildren,
 } from '@angular/core';
-import { select, Store } from '@ngrx/store';
 
 import { Room } from 'src/app/models/room';
 import { filter, takeUntil } from 'rxjs/operators';
-import { RoomListStoreSelectors, RoomListStoreState, RoomStoreSelectors } from '@store';
+import { RoomListFacade } from '@store/room-list';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { MatTabNav } from '@angular/material/tabs';
 import { SidenavService } from '@services';
+import { CallState } from '@models';
 
 @Component({
 	selector: 'app-room-list',
@@ -30,15 +30,12 @@ export class RoomListComponent implements OnInit, OnDestroy, AfterViewInit {
 	public readonly destroy$ = new Subject();
 
 	constructor(
-		private readonly store: Store<RoomListStoreState.RoomListState>,
+		private readonly roomListFacade: RoomListFacade,
 		private readonly sidenavService: SidenavService,
 	) {}
 
 	ngOnInit(): void {
-		this.rooms$ = this.store.pipe(
-			select(RoomListStoreSelectors.selectRoomList),
-			filter((rooms) => !!rooms.length),
-		);
+		this.rooms$ = this.roomListFacade.roomList$.pipe(filter((rooms) => !!rooms.length));
 
 		this.sidenavService
 			.getState()
@@ -64,18 +61,14 @@ export class RoomListComponent implements OnInit, OnDestroy, AfterViewInit {
 	}
 
 	private autoRouterLinkActive(): void {
-		combineLatest([
-			this.rl.changes,
-			this.rooms$,
-			this.store.select(RoomStoreSelectors.selectInit),
-		] as [Observable<QueryList<ElementRef>>, Observable<Room[]>, Observable<boolean>])
+		combineLatest([this.rl.changes, this.rooms$, this.roomListFacade.init$] as [
+			Observable<QueryList<ElementRef>>,
+			Observable<Room[]>,
+			Observable<CallState>,
+		])
 			.pipe(takeUntil(this.destroy$))
-			.subscribe(([rlQueryList, _, isInit]) => {
-				console.log(isInit);
-				if (isInit) {
-					rlQueryList.first.nativeElement.click();
-				}
-				console.log('click');
+			.subscribe(([rlQueryList, _r, _i]) => {
+				rlQueryList.first.nativeElement.click();
 			});
 	}
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { appReducers } from './reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { NavigationActionTiming, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { initialAppState } from './state';
 import { FeatureStoreModule } from './feature-store.module';
@@ -17,6 +17,7 @@ import { FeatureStoreModule } from './feature-store.module';
 		EffectsModule.forRoot([]),
 		StoreRouterConnectingModule.forRoot({
 			stateKey: 'router',
+			navigationActionTiming: NavigationActionTiming.PostActivation,
 		}),
 		StoreDevtoolsModule.instrument(),
 	],

@@ -9,13 +9,14 @@
 	<mat-sidenav #sidenav mode="side" class="app-sidenav" (closed)="onClose()" (opened)="onOpen()">
 		<mat-nav-list>
 			<a
-				#rla=routerLinkActive
+				#rla="routerLinkActive"
 				[disabled]="rla.isActive"
 				mat-list-item
 				[routerLink]="link.path"
 				routerLinkActive="app-sidenav-link-active"
 				*ngFor="let link of sidenavLinks"
-			>{{link.name}}</a>
+				>{{ link.name }}</a
+			>
 		</mat-nav-list>
 	</mat-sidenav>
 	<mat-sidenav-content>

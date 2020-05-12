@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { EquipmentFormState } from './state';
 import {
 	EquipmentFormActions,
@@ -10,9 +9,9 @@ import {
 } from './actions';
 import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Equipment } from '@models';
-import { selectEquipmentFormState } from './selectors';
-import { EquipmentStoreSelectors } from '../equipment-store';
+import { EquipmentFacade } from '@store/equipment';
 import { UpsertAllRooms } from '../room-list-store/actions';
+import { EquipmentFormFacade } from './facade';
 
 @Injectable()
 export class EquipmentFormEffects {
@@ -20,7 +19,7 @@ export class EquipmentFormEffects {
 		this.actions$.pipe(
 			ofType<LoadEquipmentForm>(EquipmentFormActions.loadEquipmentForm),
 			switchMap(() =>
-				this.store.select(EquipmentStoreSelectors.selectEquipment).pipe(
+				this.equipmentFacade.equipment$.pipe(
 					filter((equipment) => !!equipment.id),
 					map((equipment) => new LoadEquipmentFormSuccess({ equipment })),
 				),
@@ -31,9 +30,9 @@ export class EquipmentFormEffects {
 	submitEquipmentForm$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<SubmitEquipmentForm>(EquipmentFormActions.submitEquipmentForm),
-			switchMap(() => this.store.select(selectEquipmentFormState).pipe(take(1))),
+			switchMap(() => this.equipmentFormFacade.equipmentFormState$.pipe(take(1))),
 			switchMap((formState: EquipmentFormState) =>
-				this.store.select(EquipmentStoreSelectors.selectEquipment).pipe(
+				this.equipmentFacade.equipment$.pipe(
 					take(1),
 					map((equipment: Equipment) => {
 						const eqp = { ...equipment } as Equipment;
@@ -53,6 +52,7 @@ export class EquipmentFormEffects {
 
 	constructor(
 		private readonly actions$: Actions,
-		private readonly store: Store<EquipmentFormState>,
+		private readonly equipmentFacade: EquipmentFacade,
+		private readonly equipmentFormFacade: EquipmentFormFacade,
 	) {}
 }
