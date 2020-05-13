@@ -4,7 +4,7 @@ import {
 	LoadRooms,
 	LoadRoomsError,
 	LoadRoomsSuccess,
-	RoomsActions,
+	RoomsActionsTypes,
 	UpsertAllRooms,
 	UpsertAllRoomsSuccess,
 } from './actions';
@@ -19,7 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RoomsEffects {
 	loadRooms$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType<LoadRooms>(RoomsActions.loadRooms),
+			ofType<LoadRooms>(RoomsActionsTypes.loadRooms),
 			switchMap(() => this.httpRoomsService.loadRooms()),
 			switchMap((rooms: Room[]) => of(new LoadRoomsSuccess({ rooms }))),
 			catchError(() => of(new LoadRoomsError({ errorMsg: 'Error: could not load rooms' }))),
@@ -28,7 +28,7 @@ export class RoomsEffects {
 
 	upsertAllRooms$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType<UpsertAllRooms>(RoomsActions.upsertAllRooms),
+			ofType<UpsertAllRooms>(RoomsActionsTypes.upsertAllRooms),
 			switchMap(({ payload }) => {
 				const { obj } = payload;
 
@@ -64,7 +64,7 @@ export class RoomsEffects {
 	errorHandler = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType<LoadRoomsError>(RoomsActions.loadRoomsError),
+				ofType<LoadRoomsError>(RoomsActionsTypes.loadRoomsError),
 				map((action: LoadRoomsError) =>
 					this.openSnackBar(action.payload.errorMsg, 'Error'),
 				),

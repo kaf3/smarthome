@@ -6,6 +6,8 @@ import { EquipmentFormStoreState } from './equipment-form-store';
 
 export type FeatureKey = keyof AppState;
 
+export const ROUTER_FEATURE_KEY: FeatureKey = 'router';
+
 export interface AppState {
 	roomList: RoomListStoreState.RoomListState;
 	room: RoomStoreState.RoomState;

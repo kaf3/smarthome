@@ -1,6 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { CallState, Equipment, LoadingState } from '@models';
-import { initialEquipment } from '../equipment-store/state';
+import { CallState, Equipment, initialEquipment, LoadingState, Room } from '@models';
 import { FeatureKey } from '../state';
 
 export const ROOM_FEATURE_KEY: FeatureKey = 'room';
@@ -10,9 +9,10 @@ export interface RoomPartialState {
 }
 
 export interface RoomState extends EntityState<Equipment> {
-	roomName: string;
+	id: Room['id'];
+	roomName: Room['roomName'];
 	callState: CallState;
-	activeEquipment: Equipment;
+	activeEquipment: Room['activeEquipment'];
 }
 
 export const roomAdapter: EntityAdapter<Equipment> = createEntityAdapter<Equipment>({
@@ -21,6 +21,7 @@ export const roomAdapter: EntityAdapter<Equipment> = createEntityAdapter<Equipme
 });
 
 export const initialRoomState: RoomState = roomAdapter.getInitialState({
+	id: -1,
 	roomName: '',
 	callState: LoadingState.INIT,
 	activeEquipment: initialEquipment,

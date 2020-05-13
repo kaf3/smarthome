@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Room, RoomDTO, RoomsDTO } from '@models';
+import { initialEquipment, Room, RoomDTO, RoomsDTO } from '@models';
 import { EquipmentPartitionService } from './equipment-partition.service';
 import { environment } from '../../environments/environment';
 
@@ -23,9 +23,11 @@ export class HttpRoomsService {
 		return this.http.get<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`).pipe(
 			map((rooms: RoomsDTO) =>
 				Object.entries(rooms).map(
-					([roomName, roomDTO]: [keyof RoomsDTO, RoomsDTO[keyof RoomsDTO]]) => {
+					([roomName, roomDTO]: [keyof RoomsDTO, RoomsDTO[keyof RoomsDTO]], id) => {
 						return {
 							roomName,
+							id,
+							activeEquipment: initialEquipment,
 							equipment: this.equipmentPartition.partition(roomDTO),
 						} as Room;
 					},
@@ -58,9 +60,10 @@ export class HttpRoomsService {
 
 		return this.http.put<RoomsDTO>(`${FIREBASE_DATABASE_URL}/.json`, roomsDTOcopy).pipe(
 			map((rooms: RoomsDTO) =>
-				Object.entries(rooms).map(([roomName, roomDTO]: [keyof RoomsDTO, RoomDTO]) => {
+				Object.entries(rooms).map(([roomName, roomDTO]: [keyof RoomsDTO, RoomDTO], id) => {
 					return {
 						roomName,
+						id,
 						equipment: this.equipmentPartition.partition(roomDTO),
 					} as Room;
 				}),

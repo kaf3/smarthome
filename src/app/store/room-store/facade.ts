@@ -1,40 +1,41 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { RoomState } from './state';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import {
-	selectActiveEquipment,
 	selectAllEquipmentFromRoom,
 	selectCallState,
 	selectEquipmentByIdFromRoom,
-	selectEquipmentEntitiesFromRoom,
 	selectRoomName,
+	selectRoomState,
 } from './selectors';
 import { AppState } from '../state';
-import { Dictionary } from '@ngrx/entity';
 import { Equipment, LoadableFacade, Room } from '@models';
-import { UpsertRoomSuccess } from './actions';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class RoomFacade extends LoadableFacade<RoomState> {
 	public readonly roomName$: Observable<string>;
-	public readonly equipmentEntities$: Observable<Dictionary<Equipment>>;
 	public readonly equipmentList$: Observable<Equipment[]>;
-	public readonly activeEquipment$: Observable<Equipment>;
+	public readonly room$: Observable<Room>;
+	public readonly roomState$: Observable<RoomState>;
 
 	constructor(store: Store<AppState>) {
 		super(store, selectCallState);
 		this.roomName$ = this.store.pipe(select(selectRoomName));
-		this.equipmentEntities$ = this.store.pipe(select(selectEquipmentEntitiesFromRoom));
 		this.equipmentList$ = this.store.pipe(select(selectAllEquipmentFromRoom));
-		this.activeEquipment$ = this.store.pipe(select(selectActiveEquipment));
+		this.roomState$ = this.store.pipe(select(selectRoomState));
+		this.room$ = combineLatest([this.roomState$, this.equipmentList$]).pipe(
+			map(([roomState, equipment]) => ({
+				roomName: roomState.roomName,
+				id: roomState.id,
+				activeEquipment: roomState.activeEquipment,
+				equipment,
+			})),
+		);
 	}
 
 	public equipmentById$(id: Equipment['id']): Observable<Equipment> {
 		return this.store.pipe(select(selectEquipmentByIdFromRoom, id));
-	}
-
-	public upsertRoomSuccess(room: Room, activeEquipment: Equipment): void {
-		this.store.dispatch(new UpsertRoomSuccess({ room, activeEquipment }));
 	}
 }

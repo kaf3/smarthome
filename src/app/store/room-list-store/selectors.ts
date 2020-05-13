@@ -10,9 +10,9 @@ const selectRoomListState = createFeatureSelector<AppState, RoomListState>(ROOML
 export const selectRoomList = roomsAdapter.getSelectors(selectRoomListState).selectAll;
 export const selectRoomListEntities = roomsAdapter.getSelectors(selectRoomListState).selectEntities;
 
-export const selectRoomByName = createSelector(
+export const selectRoomById = createSelector(
 	selectRoomListEntities,
-	(roomEntities: Dictionary<Room>, name: string) => roomEntities[name],
+	(roomEntities: Dictionary<Room>, id: Room['id']) => roomEntities[id],
 );
 
 export const selectCallState = createSelector(selectRoomListState, (state) => state.callState);

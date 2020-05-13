@@ -5,7 +5,7 @@ import { Equipment } from '@models';
 import { getError, isInit, isLoaded, isLoading } from '@helpers';
 import { AppState } from '../state';
 
-const selectRoomState = createFeatureSelector<AppState, RoomState>(ROOM_FEATURE_KEY);
+export const selectRoomState = createFeatureSelector<AppState, RoomState>(ROOM_FEATURE_KEY);
 
 const { selectIds, selectEntities, selectAll, selectTotal } = roomAdapter.getSelectors(
 	selectRoomState,

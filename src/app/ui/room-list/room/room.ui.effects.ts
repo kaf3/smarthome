@@ -2,11 +2,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { navigation } from '@nrwl/angular';
 import { RoomComponent } from './room.component';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { filter, map, take, withLatestFrom } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { RoomFacade, RoomStoreActions } from '@store/room';
-import { RouterFacade } from '@store/router';
 
 @Injectable()
 export class RoomUiEffects {
@@ -17,10 +16,6 @@ export class RoomUiEffects {
 					return this.roomFacade.roomName$.pipe(
 						take(1),
 						filter((roomName) => roomName !== routerSnap.params.id),
-						map((x) => {
-							console.log('eff');
-							return x;
-						}),
 						map(
 							() =>
 								new RoomStoreActions.GetRoom({
@@ -46,21 +41,10 @@ export class RoomUiEffects {
 				ofType<RoomStoreActions.GetRoomSuccess>(
 					RoomStoreActions.RoomActionTypes.getRoomSuccess,
 				),
-				withLatestFrom(this.routerFacade.routerState$),
-				map(([_, router]) => router),
-				withLatestFrom(this.roomFacade.activeEquipment$),
-				map(([_router, eqp]) => {
-					/*const url = router.state.url + '/' + eqp.id;
-										const routerState = { ...router.state };
-					const event = new NavigationStart(router.navigationId, url, 'imperative', null);
-					const payload: RouterRequestPayload = { routerState, event };
-					const routerRequestAction: RouterRequestAction = {
-						type: ROUTER_REQUEST,
-						payload,
-					};
-					return routerRequestAction;*/
-					if (eqp.id) {
-						//this.router.navigate([`${eqp.id}`]);
+				map((action) => {
+					const { id } = action.payload.room.activeEquipment;
+					if (!!id) {
+						this.router.navigate([`${this.router.url}/${id}`]);
 					}
 				}),
 			),
@@ -70,7 +54,6 @@ export class RoomUiEffects {
 	constructor(
 		private readonly actions$: Actions,
 		private readonly roomFacade: RoomFacade,
-		private readonly routerFacade: RouterFacade,
 		private readonly router: Router,
 	) {}
 }

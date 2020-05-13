@@ -5,7 +5,7 @@ import { appReducers } from './reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { initialAppState } from './state';
+import { initialAppState, ROUTER_FEATURE_KEY } from './state';
 import { FeatureStoreModule } from './feature-store.module';
 
 @NgModule({
@@ -16,7 +16,7 @@ import { FeatureStoreModule } from './feature-store.module';
 		StoreModule.forRoot(appReducers, { initialState: initialAppState }),
 		EffectsModule.forRoot([]),
 		StoreRouterConnectingModule.forRoot({
-			stateKey: 'router',
+			stateKey: ROUTER_FEATURE_KEY,
 			navigationActionTiming: NavigationActionTiming.PostActivation,
 		}),
 		StoreDevtoolsModule.instrument(),

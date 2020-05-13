@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { LoadableFacade } from '../../models/loadable.facade';
+import { LoadableFacade, Room } from '@models';
 import { RoomListState } from './state';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../state';
 import {
 	selectCallState,
-	selectRoomByName,
+	selectRoomById,
 	selectRoomList,
 	selectRoomListEntities,
 } from './selectors';
 import { Observable } from 'rxjs';
-import { Room } from '@models';
 import { Dictionary } from '@ngrx/entity';
+import { UpsertRoom } from './actions';
 
 @Injectable()
 export class RoomListFacade extends LoadableFacade<RoomListState> {
@@ -25,7 +25,11 @@ export class RoomListFacade extends LoadableFacade<RoomListState> {
 		this.roomEntities$ = this.store.pipe(select(selectRoomListEntities));
 	}
 
-	public roomByName$(name: Room['roomName']): Observable<Room> {
-		return this.store.pipe(select(selectRoomByName, name));
+	public roomById$(id: Room['id']): Observable<Room> {
+		return this.store.pipe(select(selectRoomById, id));
+	}
+
+	public upsertRoom(room: Room): void {
+		this.store.dispatch(new UpsertRoom({ room }));
 	}
 }

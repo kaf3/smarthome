@@ -13,7 +13,7 @@ export interface RoomListState extends EntityState<Room> {
 }
 
 export const roomsAdapter: EntityAdapter<Room> = createEntityAdapter<Room>({
-	selectId: (room: Room) => room.roomName,
+	selectId: (room: Room) => room.id,
 	sortComparer: false,
 });
 

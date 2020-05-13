@@ -36,3 +36,14 @@ export interface Equipment {
 	working: boolean; ///doesnt work yet
 	frequencyUpdating: number[]; ///doesnt work yet
 }
+
+export const initialEquipment: Equipment = {
+	name: '',
+	value: false,
+	type: null,
+	group: null,
+	id: '',
+	location: '',
+	working: false,
+	frequencyUpdating: [],
+};
