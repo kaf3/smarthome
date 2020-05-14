@@ -38,6 +38,9 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 				callState: LoadingState.LOADED,
 			});
 		}
+		case RoomsActionsTypes.upsertRoomListWhenLeft: {
+			return initialRoomState;
+		}
 		default:
 			return state;
 	}

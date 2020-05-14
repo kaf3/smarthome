@@ -10,6 +10,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EffectsModule } from '@ngrx/effects';
 import { RoomListUiEffects } from './room-list.ui.effects';
 import { RoomGuard } from './room/room.guard';
+import { RoomListGuard } from './room-list.guard';
 
 @NgModule({
 	declarations: [RoomListComponent],
@@ -24,6 +25,6 @@ import { RoomGuard } from './room/room.guard';
 		MatProgressBarModule,
 		EffectsModule.forFeature([RoomListUiEffects]),
 	],
-	providers: [RoomGuard],
+	providers: [RoomGuard, RoomListGuard],
 })
 export class RoomListModule {}

@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { RoomListModule } from './room-list/room-list.module';
 import { CommandsModule } from './commands/commands.module';
+import { RoomListLoadGuard } from './room-list/room-list.load.guard';
 
 const routes: Routes = [
 	{
 		path: 'rooms',
 		loadChildren: (): Promise<RoomListModule> =>
 			import('./room-list/room-list.module').then((m) => m.RoomListModule),
+		canLoad: [RoomListLoadGuard],
 	},
 	{
 		path: 'commands',

@@ -27,8 +27,7 @@ export class RoomGuard implements CanDeactivate<unknown> {
 				if (!!activeEquipment.id) {
 					const newRoom: Room = { ...room };
 					newRoom.activeEquipment = activeEquipment;
-					console.log(newRoom);
-					this.roomListFacade.upsertRoom(newRoom);
+					this.roomListFacade.upsertRoomWhenLeft(newRoom);
 				}
 				return true;
 			}),

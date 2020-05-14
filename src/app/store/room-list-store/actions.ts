@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Room } from 'src/app/models/room';
-import { Equipment } from '@models';
+import { Equipment, RoomList } from '@models';
 
 export enum RoomsActionsTypes {
 	loadRooms = '[Rooms list] Load Rooms',
@@ -10,6 +10,9 @@ export enum RoomsActionsTypes {
 	upsertAllRoomsSuccess = '[Rooms list] Upsert All Rooms Success',
 	upsertAllRoomsError = '[Rooms list] Upsert All Rooms Error',
 	upsertRoom = '[Rooms list] Upsert Room',
+	upsertRoomWhenLeft = '[Room list] Upsert Room When Left',
+	upsertRoomListWhenLeft = '[Room list] Upsert RoomList When Left',
+	openRoomList = '[Room list] Open Room List',
 }
 
 export class LoadRooms implements Action {
@@ -46,10 +49,26 @@ export class UpsertAllRoomsError implements Action {
 	constructor(public payload: { errorMsg: string }) {}
 }
 
-export class UpsertRoom {
+export class UpsertRoom implements Action {
 	readonly type = RoomsActionsTypes.upsertRoom;
 
 	constructor(public payload: { room: Room }) {}
+}
+
+export class UpsertRoomWhenLeft implements Action {
+	readonly type = RoomsActionsTypes.upsertRoomWhenLeft;
+
+	constructor(public payload: { room: Room }) {}
+}
+
+export class UpsertRoomListWhenLeft implements Action {
+	readonly type = RoomsActionsTypes.upsertRoomListWhenLeft;
+
+	constructor(public payload: { roomList: RoomList }) {}
+}
+
+export class OpenRoomList implements Action {
+	readonly type = RoomsActionsTypes.openRoomList;
 }
 
 export type RoomsUnion =
@@ -59,4 +78,7 @@ export type RoomsUnion =
 	| UpsertAllRooms
 	| UpsertAllRoomsError
 	| UpsertAllRoomsSuccess
-	| UpsertRoom;
+	| UpsertRoom
+	| UpsertRoomWhenLeft
+	| UpsertRoomListWhenLeft
+	| OpenRoomList;

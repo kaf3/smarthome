@@ -21,8 +21,17 @@ export function roomsReducer(state = initialRoomListState, action: RoomsUnion): 
 
 			return { ...state, callState: { errorMsg } };
 		}
-		case RoomsActionsTypes.upsertRoom: {
+		case RoomsActionsTypes.upsertRoom:
+		case RoomsActionsTypes.upsertRoomWhenLeft: {
 			return roomsAdapter.upsertOne(action.payload.room, state);
+		}
+
+		case RoomsActionsTypes.upsertRoomListWhenLeft: {
+			const { activeRoom, rooms } = action.payload.roomList;
+			return roomsAdapter.addAll(rooms, {
+				...state,
+				activeRoom,
+			});
 		}
 
 		default:

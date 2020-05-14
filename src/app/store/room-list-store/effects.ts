@@ -4,16 +4,19 @@ import {
 	LoadRooms,
 	LoadRoomsError,
 	LoadRoomsSuccess,
+	OpenRoomList,
 	RoomsActionsTypes,
 	UpsertAllRooms,
 	UpsertAllRoomsSuccess,
 } from './actions';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { HttpRoomsService, SerializeService } from '@services';
 import { Equipment, Room, RoomsDTO } from '@models';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { RoomListFacade } from './facade';
 
 @Injectable()
 export class RoomsEffects {
@@ -72,6 +75,21 @@ export class RoomsEffects {
 		{ dispatch: false },
 	);
 
+	redirectToActiveRoom = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType<OpenRoomList>(RoomsActionsTypes.openRoomList),
+				withLatestFrom(this.roomListFacade.roomList$),
+				map(([_a, roomList]) => {
+					const { roomName } = roomList.activeRoom;
+					if (!!roomName) {
+						this.router.navigate([`/rooms/${roomName}`]);
+					}
+				}),
+			),
+		{ dispatch: false },
+	);
+
 	private openSnackBar(message: string, action: string): void {
 		this._snackBar.open(message, action, {
 			duration: 2000,
@@ -84,5 +102,7 @@ export class RoomsEffects {
 		private readonly httpRooms: HttpRoomsService,
 		private readonly serializer: SerializeService,
 		private readonly _snackBar: MatSnackBar,
+		private readonly router: Router,
+		private readonly roomListFacade: RoomListFacade,
 	) {}
 }

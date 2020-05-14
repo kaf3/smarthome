@@ -8,6 +8,7 @@ import {
 	SidenavService,
 } from '@services';
 import { RoomListResolver } from '../ui/room-list/room-list.resolver';
+import { RoomListLoadGuard } from '../ui/room-list/room-list.load.guard';
 
 @NgModule({
 	declarations: [],
@@ -24,6 +25,7 @@ export class SharedModule {
 				SidenavService,
 				LoadingService,
 				RoomListResolver,
+				RoomListLoadGuard,
 			],
 		};
 	}

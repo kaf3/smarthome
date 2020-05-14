@@ -35,7 +35,8 @@ export class RoomListComponent implements OnInit, OnDestroy, AfterViewInit {
 	) {}
 
 	ngOnInit(): void {
-		this.rooms$ = this.roomListFacade.roomList$.pipe(filter((rooms) => !!rooms.length));
+		this.roomListFacade.openRoomList();
+		this.rooms$ = this.roomListFacade.rooms$.pipe(filter((rooms) => !!rooms.length));
 
 		this.sidenavService
 			.getState()
