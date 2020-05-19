@@ -12,6 +12,7 @@ import {
 import { AppState } from '../state';
 import { Equipment, LoadableFacade, Room } from '@models';
 import { map } from 'rxjs/operators';
+import { GetRoom } from './actions';
 
 @Injectable()
 export class RoomFacade extends LoadableFacade<RoomState> {
@@ -37,5 +38,9 @@ export class RoomFacade extends LoadableFacade<RoomState> {
 
 	public equipmentById$(id: Equipment['id']): Observable<Equipment> {
 		return this.store.pipe(select(selectEquipmentByIdFromRoom, id));
+	}
+
+	public getRoom(roomName: Room['roomName']): void {
+		this.store.dispatch(new GetRoom({ roomName }));
 	}
 }

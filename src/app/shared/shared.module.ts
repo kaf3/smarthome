@@ -7,7 +7,6 @@ import {
 	SerializeService,
 	SidenavService,
 } from '@services';
-import { RoomListResolver } from '../ui/room-list/room-list.resolver';
 import { RoomListLoadGuard } from '../ui/room-list/room-list.load.guard';
 
 @NgModule({
@@ -24,7 +23,6 @@ export class SharedModule {
 				SerializeService,
 				SidenavService,
 				LoadingService,
-				RoomListResolver,
 				RoomListLoadGuard,
 			],
 		};

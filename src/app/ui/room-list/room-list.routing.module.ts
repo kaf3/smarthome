@@ -5,18 +5,13 @@ import { RoomComponent } from './room/room.component';
 import { RoomListComponent } from './room-list.component';
 import { EquipmentComponent } from './room/equipment/equipment.component';
 import { RoomGuard } from './room/room.guard';
-import { RoomListResolver } from './room-list.resolver';
-import { RoomListGuard } from './room-list.guard';
+import { RoomListLoadGuard } from './room-list.load.guard';
 
 const routes: Routes = [
 	{
 		path: '',
 		component: RoomListComponent,
-		resolve: {
-			ready: RoomListResolver,
-		},
-		canDeactivate: [RoomListGuard],
-		canActivate: [RoomListGuard],
+		canDeactivate: [RoomListLoadGuard],
 		children: [
 			{
 				path: ':id',

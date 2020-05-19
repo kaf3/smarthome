@@ -12,10 +12,9 @@ import {
 import { Room } from 'src/app/models/room';
 import { filter, takeUntil } from 'rxjs/operators';
 import { RoomListFacade } from '@store/room-list';
-import { combineLatest, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { MatTabNav } from '@angular/material/tabs';
 import { SidenavService } from '@services';
-import { CallState } from '@models';
 
 @Component({
 	selector: 'app-room-list',
@@ -37,17 +36,11 @@ export class RoomListComponent implements OnInit, OnDestroy, AfterViewInit {
 	ngOnInit(): void {
 		this.roomListFacade.openRoomList();
 		this.rooms$ = this.roomListFacade.rooms$.pipe(filter((rooms) => !!rooms.length));
-
-		this.sidenavService
-			.getState()
-			.pipe(takeUntil(this.destroy$))
-			.subscribe(() => {
-				this.alignInkNavBar();
-			});
+		this.alignSidenav();
 	}
 
 	ngAfterViewInit(): void {
-		this.autoRouterLinkActive();
+		this.autoSelectRoom();
 	}
 
 	ngOnDestroy(): void {
@@ -61,15 +54,20 @@ export class RoomListComponent implements OnInit, OnDestroy, AfterViewInit {
 		}
 	}
 
-	private autoRouterLinkActive(): void {
-		combineLatest([this.rl.changes, this.rooms$, this.roomListFacade.init$] as [
-			Observable<QueryList<ElementRef>>,
-			Observable<Room[]>,
-			Observable<CallState>,
-		])
+	private alignSidenav(): void {
+		this.sidenavService
+			.getState()
 			.pipe(takeUntil(this.destroy$))
-			.subscribe(([rlQueryList, _r, _i]) => {
-				rlQueryList.first.nativeElement.click();
+			.subscribe(() => {
+				this.alignInkNavBar();
 			});
+	}
+
+	private autoSelectRoom(): void {
+		this.roomListFacade.roomList$.pipe(takeUntil(this.destroy$)).subscribe((roomList) => {
+			if (!!roomList.rooms.length && !roomList.activeRoom.roomName) {
+				this.rl.first.nativeElement.click();
+			}
+		});
 	}
 }
