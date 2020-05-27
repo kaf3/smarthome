@@ -1,16 +1,15 @@
 {
 	"users": {
 		"user_id": {
-			"name": "John",
 			"rooms": {
 				"room01": {
 					"name": "Kitchen",
 					"hardwareCollection": {
-						"1234": {
+						"hardware01": {
 							"mac": 1234,
 							"name": "hardware1",
 							"type": "meteo",
-							"numberOfEquip": "3",
+							"numberOfEquip": 3,
 							"equipmentCollection": {
 								"temp": {
 									"name": "",
@@ -40,10 +39,9 @@
 				"room02": {
 					"name": "Bedroom",
 					"hardwareCollection": {
-						"5678": {
+						"hardware02": {
 							"mac": 5678,
 							"name": "My meteo 2",
-							"id": 56789,
 							"type": "meteo",
 							"numberOfEquip": 3,
 							"equipmentCollection": {
@@ -52,44 +50,63 @@
 									"group": "sensor",
 									"type": "temp",
 									"value": "24",
-									"status": "true"
+									"status": true
 								},
 								"humi": {
 									"name": "",
 									"group": "sensor",
 									"type": "humi",
 									"value": "747",
-									"status": "true"
+									"status": true
 								},
 								"co2-": {
 									"name": "",
 									"group": "sensor",
 									"type": "co2-",
 									"value": "45",
-									"status": "true"
+									"status": true
 								}
 							}
 						},
-						"1012": {
+						"hardware03": {
 							"mac": 1012,
 							"name": "Toaster outlet",
-							"id": 101213,
 							"type": "outlet",
-							"numberOfEquip": "2",
+							"numberOfEquip": 2,
 							"equipmentCollection": {
 								"outl": {
 									"name": "",
 									"group": "device",
 									"type": "outl",
 									"value": "true",
-									"status": "true"
+									"status": true
 								},
 								"powe": {
 									"name": "",
 									"group": "sensor",
 									"type": "powe",
 									"value": "1",
-									"status": "true"
+									"status": true
+								}
+							}
+						}
+					}
+				},
+				"room03": {
+					"name": "Living room",
+					"hardwareCollection": {
+						"hardware04": {
+							"mac": 9999,
+							"name": "My hardware",
+							"type": "unknown",
+							"numberOfEquip": 1,
+							"equipmentCollection": {
+								"pres": {
+									"name": "",
+									"group": "sensor",
+									"type": "pres",
+									"value": "747",
+									"status": true
 								}
 							}
 						}
