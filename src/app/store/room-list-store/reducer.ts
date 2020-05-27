@@ -1,32 +1,39 @@
 import { initialRoomListState, RoomListState, roomsAdapter } from './state';
-import { RoomsActionsTypes, RoomsUnion } from './actions';
-import { LoadingState } from '@models';
+import { RoomListActionsTypes, RoomsUnion } from './actions';
+import { LoadingState } from '@models/error-loading';
 
 export function roomsReducer(state = initialRoomListState, action: RoomsUnion): RoomListState {
 	switch (action.type) {
-		case RoomsActionsTypes.loadRooms:
-		case RoomsActionsTypes.upsertAllRooms: {
+		case RoomListActionsTypes.loadRoomList:
+		case RoomListActionsTypes.upsertAllRooms: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
-		case RoomsActionsTypes.loadRoomsSuccess:
-		case RoomsActionsTypes.upsertAllRoomsSuccess: {
+		case RoomListActionsTypes.loadRoomListSuccess: {
+			const { rooms, activeRoom } = action.payload.roomList;
+			return roomsAdapter.addAll(rooms, {
+				...state,
+				activeRoom,
+				callState: LoadingState.LOADED,
+			});
+		}
+		case RoomListActionsTypes.upsertAllRoomsSuccess: {
 			return roomsAdapter.addAll(action.payload.rooms, {
 				...state,
 				callState: LoadingState.LOADED,
 			});
 		}
-		case RoomsActionsTypes.loadRoomsError:
-		case RoomsActionsTypes.upsertAllRoomsError: {
+		case RoomListActionsTypes.loadRoomListError:
+		case RoomListActionsTypes.upsertAllRoomsError: {
 			const { errorMsg } = action.payload;
 
 			return { ...state, callState: { errorMsg } };
 		}
-		case RoomsActionsTypes.upsertRoom:
-		case RoomsActionsTypes.upsertRoomWhenLeft: {
+		case RoomListActionsTypes.upsertRoom:
+		case RoomListActionsTypes.upsertRoomWhenLeft: {
 			return roomsAdapter.upsertOne(action.payload.room, state);
 		}
 
-		case RoomsActionsTypes.upsertRoomListWhenLeft: {
+		case RoomListActionsTypes.upsertRoomListWhenLeft: {
 			const { activeRoom, rooms } = action.payload.roomList;
 			return roomsAdapter.addAll(rooms, {
 				...state,

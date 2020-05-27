@@ -1,8 +1,8 @@
-import { AppState } from '../store/state';
+import { AppState } from '../../store/state';
 import { MemoizedSelector, select, Store } from '@ngrx/store';
 import { valueof } from './valueof';
 import { Observable } from 'rxjs';
-import { CallState } from './error.loading';
+import { CallState } from '../error-loading/error.loading';
 import { filter, map } from 'rxjs/operators';
 import { getError, isInit, isLoaded, isLoading } from '@helpers';
 

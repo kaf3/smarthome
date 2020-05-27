@@ -1,4 +1,4 @@
-import { ErrorState, HasCallState, LoadingState } from '@models';
+import { ErrorState, HasCallState, LoadingState } from '@models/error-loading';
 
 export function getError<T extends HasCallState>(state: T): string | null {
 	const { callState } = state;

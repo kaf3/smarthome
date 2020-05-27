@@ -1,74 +1,75 @@
 import { Action } from '@ngrx/store';
-import { Room } from 'src/app/models/room';
-import { Equipment, RoomList } from '@models';
+import { Room } from '@models/room/room';
+import { Equipment } from '@models/equipment';
+import { RoomList } from '@models/rooms';
 
-export enum RoomsActionsTypes {
-	loadRooms = '[Rooms list] Load Rooms',
-	loadRoomsSuccess = '[Rooms list] Load Rooms Success',
-	loadRoomsError = '[Rooms list] Load Rooms Error',
-	upsertAllRooms = '[Rooms list] Upsert All Rooms',
-	upsertAllRoomsSuccess = '[Rooms list] Upsert All Rooms Success',
-	upsertAllRoomsError = '[Rooms list] Upsert All Rooms Error',
-	upsertRoom = '[Rooms list] Upsert Room',
+export enum RoomListActionsTypes {
+	loadRoomList = '[Room list] Load Room List',
+	loadRoomListSuccess = '[Room list] Load Room List Success',
+	loadRoomListError = '[Room list] Load Room List Error',
+	upsertAllRooms = '[Room list] Upsert All Rooms',
+	upsertAllRoomsSuccess = '[Room list] Upsert All Rooms Success',
+	upsertAllRoomsError = '[Room list] Upsert All Rooms Error',
+	upsertRoom = '[Room list] Upsert Room',
 	upsertRoomWhenLeft = '[Room list] Upsert Room When Left',
 	upsertRoomListWhenLeft = '[Room list] Upsert RoomList When Left',
 	openRoomList = '[Room list] Open Room List',
 }
 
 export class LoadRooms implements Action {
-	readonly type = RoomsActionsTypes.loadRooms;
+	readonly type = RoomListActionsTypes.loadRoomList;
 }
 
 export class LoadRoomsSuccess implements Action {
-	readonly type = RoomsActionsTypes.loadRoomsSuccess;
+	readonly type = RoomListActionsTypes.loadRoomListSuccess;
 
-	constructor(public payload: { rooms: Room[] }) {}
+	constructor(public payload: { roomList: RoomList }) {}
 }
 
 export class LoadRoomsError implements Action {
-	readonly type = RoomsActionsTypes.loadRoomsError;
+	readonly type = RoomListActionsTypes.loadRoomListError;
 
 	constructor(public payload: { errorMsg: string }) {}
 }
 
 export class UpsertAllRooms implements Action {
-	readonly type = RoomsActionsTypes.upsertAllRooms;
+	readonly type = RoomListActionsTypes.upsertAllRooms;
 
 	constructor(public payload: { obj: Room[] | Room | Equipment }) {}
 }
 
 export class UpsertAllRoomsSuccess implements Action {
-	readonly type = RoomsActionsTypes.upsertAllRoomsSuccess;
+	readonly type = RoomListActionsTypes.upsertAllRoomsSuccess;
 
 	constructor(public payload: { rooms: Room[] }) {}
 }
 
 export class UpsertAllRoomsError implements Action {
-	readonly type = RoomsActionsTypes.upsertAllRoomsError;
+	readonly type = RoomListActionsTypes.upsertAllRoomsError;
 
 	constructor(public payload: { errorMsg: string }) {}
 }
 
 export class UpsertRoom implements Action {
-	readonly type = RoomsActionsTypes.upsertRoom;
+	readonly type = RoomListActionsTypes.upsertRoom;
 
 	constructor(public payload: { room: Room }) {}
 }
 
 export class UpsertRoomWhenLeft implements Action {
-	readonly type = RoomsActionsTypes.upsertRoomWhenLeft;
+	readonly type = RoomListActionsTypes.upsertRoomWhenLeft;
 
 	constructor(public payload: { room: Room }) {}
 }
 
 export class UpsertRoomListWhenLeft implements Action {
-	readonly type = RoomsActionsTypes.upsertRoomListWhenLeft;
+	readonly type = RoomListActionsTypes.upsertRoomListWhenLeft;
 
 	constructor(public payload: { roomList: RoomList }) {}
 }
 
 export class OpenRoomList implements Action {
-	readonly type = RoomsActionsTypes.openRoomList;
+	readonly type = RoomListActionsTypes.openRoomList;
 }
 
 export type RoomsUnion =

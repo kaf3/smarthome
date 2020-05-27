@@ -9,7 +9,7 @@ import {
 	ViewChildren,
 } from '@angular/core';
 
-import { Room } from 'src/app/models/room';
+import { Room } from '@models/room/room';
 import { filter, takeUntil } from 'rxjs/operators';
 import { RoomListFacade } from '@store/room-list';
 import { Observable, Subject } from 'rxjs';

@@ -1,7 +1,6 @@
 {
 	"users": {
 		"user_id": {
-			"name": "John",
 			"rooms": {
 				"room01": {
 					"name": "Kitchen",

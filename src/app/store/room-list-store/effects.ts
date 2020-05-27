@@ -5,33 +5,34 @@ import {
 	LoadRoomsError,
 	LoadRoomsSuccess,
 	OpenRoomList,
-	RoomsActionsTypes,
+	RoomListActionsTypes,
 	UpsertAllRooms,
 	UpsertAllRoomsSuccess,
 } from './actions';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { HttpRoomsService, SerializeService } from '@services';
-import { Equipment, Room, RoomsDTO } from '@models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { RoomListFacade } from './facade';
+import { RoomList } from '@models/rooms';
+import { Equipment } from '@models/equipment';
 
 @Injectable()
 export class RoomsEffects {
 	loadRooms$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType<LoadRooms>(RoomsActionsTypes.loadRooms),
-			switchMap(() => this.httpRoomsService.loadRooms()),
-			switchMap((rooms: Room[]) => of(new LoadRoomsSuccess({ rooms }))),
+			ofType<LoadRooms>(RoomListActionsTypes.loadRoomList),
+			switchMap(() => this.httpRoomsService.loadRoomList().pipe(take(1))),
+			switchMap((roomList: RoomList) => of(new LoadRoomsSuccess({ roomList }))),
 			catchError(() => of(new LoadRoomsError({ errorMsg: 'Error: could not load rooms' }))),
 		),
 	);
 
 	upsertAllRooms$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType<UpsertAllRooms>(RoomsActionsTypes.upsertAllRooms),
+			ofType<UpsertAllRooms>(RoomListActionsTypes.upsertAllRooms),
 			switchMap(({ payload }) => {
 				const { obj } = payload;
 
@@ -67,7 +68,7 @@ export class RoomsEffects {
 	errorHandler = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType<LoadRoomsError>(RoomsActionsTypes.loadRoomsError),
+				ofType<LoadRoomsError>(RoomListActionsTypes.loadRoomListError),
 				map((action: LoadRoomsError) =>
 					this.openSnackBar(action.payload.errorMsg, 'Error'),
 				),
@@ -78,7 +79,7 @@ export class RoomsEffects {
 	redirectToActiveRoom = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType<OpenRoomList>(RoomsActionsTypes.openRoomList),
+				ofType<OpenRoomList>(RoomListActionsTypes.openRoomList),
 				withLatestFrom(this.roomListFacade.roomList$),
 				map(([_a, roomList]) => {
 					const { roomName } = roomList.activeRoom;

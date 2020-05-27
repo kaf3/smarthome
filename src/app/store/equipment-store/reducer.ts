@@ -21,7 +21,7 @@ export function equipmentReducer(
 
 			return { ...state, callState: { errorMsg } };
 		}
-		case RoomListStoreActions.RoomsActionsTypes.upsertRoomWhenLeft: {
+		case RoomListStoreActions.RoomListActionsTypes.upsertRoomWhenLeft: {
 			return initialEquipmentState;
 		}
 		default:

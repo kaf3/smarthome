@@ -1,12 +1,12 @@
 import { RoomActionTypes, RoomUnion } from './actions';
 import { initialRoomState, roomAdapter, RoomState } from './state';
-import { RoomsActionsTypes, RoomsUnion } from '../room-list-store/actions';
+import { RoomListActionsTypes, RoomsUnion } from '../room-list-store/actions';
 import { LoadingState } from '@models';
 
 export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsUnion): RoomState {
 	switch (action.type) {
 		case RoomActionTypes.getRoom:
-		case RoomsActionsTypes.upsertAllRooms: {
+		case RoomListActionsTypes.upsertAllRooms: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
 		case RoomActionTypes.getRoomSuccess: {
@@ -25,7 +25,7 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 
 			return { ...state, callState: { errorMsg } };
 		}
-		case RoomsActionsTypes.upsertAllRoomsSuccess: {
+		case RoomListActionsTypes.upsertAllRoomsSuccess: {
 			const { equipment, activeEquipment, roomName, id } = action.payload.rooms.find(
 				(room) => state.id === room.id,
 			);
@@ -38,7 +38,7 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 				callState: LoadingState.LOADED,
 			});
 		}
-		case RoomsActionsTypes.upsertRoomListWhenLeft: {
+		case RoomListActionsTypes.upsertRoomListWhenLeft: {
 			return initialRoomState;
 		}
 		default:
