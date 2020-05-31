@@ -3,6 +3,7 @@ import { RoomListStoreState } from './room-list-store';
 import { RoomStoreState } from './room-store';
 import { EquipmentStoreState } from './equipment-store';
 import { EquipmentFormStoreState } from './equipment-form-store';
+import { HardwareStoreState } from './hardware-store';
 
 export type FeatureKey = keyof AppState;
 
@@ -13,6 +14,7 @@ export interface AppState {
 	room: RoomStoreState.RoomState;
 	equipment: EquipmentStoreState.EquipmentState;
 	equipmentForm: EquipmentFormStoreState.EquipmentFormState;
+	hardware: HardwareStoreState.HardwareState;
 	router?: RouterReducerState;
 }
 
@@ -21,4 +23,5 @@ export const initialAppState: AppState = {
 	room: RoomStoreState.initialRoomState,
 	equipment: EquipmentStoreState.initialEquipmentState,
 	equipmentForm: EquipmentFormStoreState.initialEquipmentFormState,
+	hardware: HardwareStoreState.initialState,
 };

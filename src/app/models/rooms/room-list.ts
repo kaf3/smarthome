@@ -1,29 +1,26 @@
 import { Room } from '../room/room';
-import { RoomCollection } from '@models/rooms/roomsDTO';
 import { EquipmentDTO } from '@models/equipment';
-import { EquipmentCollectionDTO, HardwareDTO } from '@models/hardware';
-import { HardwareCollectionDTO, RoomDTO } from '@models/room';
+import { HardwareDTO } from '@models/hardware';
+import { RoomDTO } from '@models/room';
+import { Collection, OmitByPropType } from '@models/common';
 
-interface IRoomList {
-	readonly rooms: Room[];
-	readonly activeRoom: Room;
-}
+export type RoomListProps = OmitByPropType<RoomList, Function>;
 
-export class RoomList implements IRoomList {
+export class RoomList {
 	public readonly rooms: Room[];
 	public readonly activeRoom: Room;
 
-	constructor(source: RoomList | IRoomList) {
+	constructor(source: RoomList | RoomListProps) {
 		this.rooms = source.rooms;
 		this.activeRoom = source.activeRoom;
 	}
 
-	public createRoomCollection(): RoomCollection {
-		const roomMap = new Map<keyof RoomCollection, RoomDTO>();
+	public createRoomCollection(): Collection<RoomDTO> {
+		const roomMap = new Map<keyof Collection<RoomDTO>, RoomDTO>();
 		this.rooms.forEach((room) => {
-			const hardwareMap = new Map<keyof HardwareCollectionDTO, HardwareDTO>();
+			const hardwareMap = new Map<keyof Collection<HardwareDTO>, HardwareDTO>();
 			room.hardwares.forEach((hardware) => {
-				const equipmentMap = new Map<keyof EquipmentCollectionDTO, EquipmentDTO>();
+				const equipmentMap = new Map<keyof Collection<EquipmentDTO>, EquipmentDTO>();
 				hardware.equipments.forEach((equipment) => {
 					const equipmentDTO = equipment.createDTO();
 					equipmentMap.set(equipment.id, equipmentDTO);
@@ -35,5 +32,26 @@ export class RoomList implements IRoomList {
 			roomMap.set(room.id, roomDTO);
 		});
 		return Object.fromEntries(roomMap);
+	}
+}
+
+export type RoomListDTOProps = OmitByPropType<RoomListDTO, Function>;
+
+export class RoomListDTO {
+	public readonly roomCollection: Collection<RoomDTO>;
+
+	constructor(source: RoomListDTO | RoomListDTOProps) {
+		this.roomCollection = { ...source.roomCollection };
+	}
+
+	public createDomain(): RoomList {
+		const rooms = Object.entries(this.roomCollection).map(([id, roomDTO]) =>
+			new RoomDTO({ ...roomDTO }).createDomain(id),
+		);
+
+		return new RoomList({
+			activeRoom: rooms[0], //when you open roomlist firstly
+			rooms,
+		});
 	}
 }

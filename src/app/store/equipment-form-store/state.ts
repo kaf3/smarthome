@@ -1,5 +1,5 @@
 import { createFormGroupState, FormGroupState } from 'ngrx-forms';
-import { Equipment } from '@models';
+import { Equipment } from '@models/equipment';
 import { FeatureKey } from '../state';
 
 export const EQUIPMENT_FORM_FEATURE_KEY: FeatureKey = 'equipmentForm';

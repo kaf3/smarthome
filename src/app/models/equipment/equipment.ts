@@ -1,4 +1,5 @@
-import { EquipmentDTO } from '@models/equipment/equipmentDTO';
+import { OmitByPropType } from '@models/common';
+import { createDictionary, toDomainDictionary, toDTODictionary } from '@helpers';
 
 export enum EquipmentGroup {
 	SENSOR = 'sensor',
@@ -11,8 +12,16 @@ export enum EquipmentType {
 	HUMIDITY = 'humidity',
 	CURRENT = 'current',
 	VOLTAGE = 'voltage',
-	ACTIVITY = 'activity', //special for devices
 	USERTYPE = 'userType',
+}
+
+export enum EquipmentDTOType {
+	TEMPERATURE = 'temp',
+	CO2 = 'co2-',
+	HUMIDITY = 'humi',
+	CURRENT = 'curr',
+	VOLTAGE = 'volt',
+	USERTYPE = 'user',
 }
 
 export enum Activity {
@@ -26,29 +35,57 @@ export enum Status {
 	DISABLED = 'disabled',
 }
 
-export interface IEquipment {
-	readonly name: string;
-	readonly value: string | number | boolean | null;
-	readonly type: string | null;
-	readonly group: string | null;
-	readonly id: string | null;
-	readonly status: boolean;
+export const equipmentTypeDictionary = createDictionary(EquipmentDTOType, EquipmentType);
+
+//////make inheritance
+
+export type EquipmentDTOProps = OmitByPropType<EquipmentDTO, Function>;
+
+export class EquipmentDTO {
+	public readonly name: string;
+	public readonly group: string;
+	public readonly type: string;
+	public readonly status: boolean;
+	public readonly value: boolean | string | number;
+	public createDomain: (id: Equipment['id']) => Equipment;
+
+	constructor(source: EquipmentDTO | EquipmentDTOProps) {
+		this.name = source.name;
+		this.group = source.group;
+		this.type = source.type;
+		this.status = source.status;
+		this.value = source.value;
+	}
+
+	static convertToDomainType = toDomainDictionary(equipmentTypeDictionary);
 }
 
-export class Equipment implements IEquipment {
-	public readonly name: string;
-	public readonly value: string | number | boolean | null;
+type EquipmentProps = OmitByPropType<Equipment, Function>;
+
+export class Equipment {
+	public name: string;
+	private _value: string | number | boolean | null;
 	public readonly type: string | null;
 	public readonly group: string | null;
 	public readonly id: string | null;
 	public readonly status: boolean;
 
-	constructor(source: IEquipment | Equipment) {
+	set value(val: Equipment['_value']) {
+		if (this.group === EquipmentGroup.DEVICE) {
+			this._value = val;
+		}
+	}
+
+	get value(): Equipment['_value'] {
+		return this.group === EquipmentGroup.DEVICE ? !!this._value : this._value;
+	}
+
+	constructor(source: Equipment | EquipmentProps) {
 		this.name = source.name;
 		this.group = source.group;
 		this.id = source.id;
 		this.status = source.status;
-		this.value = source.value;
+		this._value = source.value;
 		this.type = source.type;
 	}
 
@@ -57,17 +94,30 @@ export class Equipment implements IEquipment {
 			name: this.name,
 			value: this.value,
 			status: this.status,
-			type: this.type,
+			type: Equipment.convertToDTOType[this.type],
 			group: this.group,
 		});
 	}
+
+	static readonly initial = new Equipment({
+		name: '',
+		group: null,
+		id: null,
+		status: false,
+		value: null,
+		type: null,
+	});
+
+	static readonly convertToDTOType = toDTODictionary(equipmentTypeDictionary);
 }
 
-export const initialEquipment = new Equipment({
-	name: '',
-	group: null,
-	id: null,
-	status: false,
-	value: null,
-	type: null,
-});
+EquipmentDTO.prototype.createDomain = function (id: Equipment['id']): Equipment {
+	return new Equipment({
+		name: this.name,
+		type: EquipmentDTO.convertToDomainType[this.type],
+		group: this.group,
+		status: this.status,
+		value: this.value,
+		id,
+	});
+};

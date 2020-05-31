@@ -1,6 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { CallState, initialRoom, LoadingState, Room } from '@models';
 import { FeatureKey } from '../state';
+import { Room } from '@models/room';
+import { CallState, LoadingState } from '@models/error-loading';
 
 export const ROOMLIST_FEATURE_KEY: FeatureKey = 'roomList';
 
@@ -20,5 +21,5 @@ export const roomsAdapter: EntityAdapter<Room> = createEntityAdapter<Room>({
 
 export const initialRoomListState: RoomListState = roomsAdapter.getInitialState({
 	callState: LoadingState.INIT,
-	activeRoom: initialRoom,
+	activeRoom: Room.initial,
 });

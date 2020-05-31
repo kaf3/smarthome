@@ -1,46 +1,28 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { RoomState } from './state';
-import { combineLatest, Observable } from 'rxjs';
-import {
-	selectAllEquipmentFromRoom,
-	selectCallState,
-	selectEquipmentByIdFromRoom,
-	selectRoomName,
-	selectRoomState,
-} from './selectors';
+import { Observable } from 'rxjs';
+import { selectById, selectCallState, selectRoom } from './selectors';
 import { AppState } from '../state';
-import { Equipment, LoadableFacade, Room } from '@models';
-import { map } from 'rxjs/operators';
 import { GetRoom } from './actions';
+import { LoadableFacade } from '@models/common';
+import { Room } from '@models/room';
+import { Hardware } from '@models/hardware';
 
 @Injectable()
 export class RoomFacade extends LoadableFacade<RoomState> {
-	public readonly roomName$: Observable<string>;
-	public readonly equipmentList$: Observable<Equipment[]>;
 	public readonly room$: Observable<Room>;
-	public readonly roomState$: Observable<RoomState>;
 
 	constructor(store: Store<AppState>) {
 		super(store, selectCallState);
-		this.roomName$ = this.store.pipe(select(selectRoomName));
-		this.equipmentList$ = this.store.pipe(select(selectAllEquipmentFromRoom));
-		this.roomState$ = this.store.pipe(select(selectRoomState));
-		this.room$ = combineLatest([this.roomState$, this.equipmentList$]).pipe(
-			map(([roomState, equipment]) => ({
-				roomName: roomState.roomName,
-				id: roomState.id,
-				activeEquipment: roomState.activeEquipment,
-				equipment,
-			})),
-		);
+		this.room$ = this.store.pipe(select(selectRoom));
 	}
 
-	public equipmentById$(id: Equipment['id']): Observable<Equipment> {
-		return this.store.pipe(select(selectEquipmentByIdFromRoom, id));
+	public hardwareById$(id: Hardware['id']): Observable<Hardware> {
+		return this.store.pipe(select(selectById, id));
 	}
 
-	public getRoom(roomName: Room['roomName']): void {
-		this.store.dispatch(new GetRoom({ roomName }));
+	public getRoom(id: Room['id']): void {
+		this.store.dispatch(new GetRoom({ id }));
 	}
 }

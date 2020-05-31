@@ -115,5 +115,42 @@
 			},
 			"fcmid": {}
 		}
+	},
+	"Bedroom": {
+		"d_toas_01": true,
+		"n_temp_01": "temperature (02",
+		"n_toas_01": "toaster in bed)",
+		"r_name": "Bedroom",
+		"s_co2-_01": 23,
+		"s_temp_01": 29,
+		"u_temp_01": "",
+		"u_toas_01": ""
+	},
+	"Kitchen": {
+		"d_co2-_01": false,
+		"d_kett_01": true,
+		"d_temp_01": true,
+		"d_toas_01": true,
+		"n_co2-_01": "co2 (01)(",
+		"n_humi_01": "humidity (01",
+		"n_kett_01": "kettle (01",
+		"n_toas_01": "toaster (44)",
+		"r_name": "Kitchen",
+		"s_co2-_01": 23,
+		"s_humi_01": 747,
+		"s_temp_01": 24,
+		"u_co2-_01": "",
+		"u_humi_01": "",
+		"u_kett_01": "",
+		"u_toas_01": ""
+	},
+	"Launge": {
+		"d_humi_01": 760,
+		"n_humi_01": "humidity (01)",
+		"n_temp_01": "temperature (01",
+		"r_name": "Launge",
+		"s_temp_01": 20,
+		"u_humi_01": "",
+		"u_temp_01": ""
 	}
 }

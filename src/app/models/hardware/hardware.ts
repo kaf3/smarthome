@@ -1,31 +1,54 @@
-import { Equipment } from '@models/equipment';
-import { HardwareDTO } from '@models/hardware/hardwareDTO';
+import { Equipment, EquipmentDTO, EquipmentDTOProps } from '@models/equipment';
+import { BaseDomain } from '@models/common/baseDomain';
+import { Collection, OmitByPropType } from '@models/common';
 
-interface IHardware {
-	readonly mac: number | string | null;
-	readonly name: string;
-	readonly type: string | null;
-	readonly equipments: Equipment[];
-	readonly id: string | null;
-}
-
-export class Hardware implements IHardware {
-	public readonly mac: number | string | null;
-	public readonly name: string;
-	public readonly type: string | null;
-	public readonly equipments: Equipment[];
-	public readonly id: string | null;
-	constructor(source: Hardware | IHardware) {
-		this.id = source.id;
-		this.mac = source.mac;
-		this.type = source.type;
-		this.name = source.name;
-		this.equipments = [...source.equipments];
+export class BaseHardware extends BaseDomain {
+	protected constructor(
+		id: BaseDomain['id'],
+		name: BaseDomain['name'],
+		public readonly mac: number | string | null,
+		public readonly type: string | null,
+	) {
+		super(id, name);
 	}
 
-	/*	public createEquipmentCollection(): Collection<Equipment> {
-		return DTO.createCollection<Equipment>(this.equipments);
-	}*/
+	static readonly initial = new BaseHardware(
+		BaseDomain.initial.id,
+		BaseDomain.initial.name,
+		null,
+		null,
+	);
+}
+
+export type HardwareDTOProps = OmitByPropType<HardwareDTO, Function>;
+
+export class HardwareDTO {
+	public readonly mac: number | string;
+	public readonly name: string;
+	public readonly type: string;
+	public readonly numberOfEquip: number;
+	public readonly equipmentCollection: Collection<EquipmentDTO>;
+	public createDomain: (id: Hardware['id']) => Hardware;
+
+	constructor(source: HardwareDTO | HardwareDTOProps) {
+		this.equipmentCollection = { ...source.equipmentCollection };
+		this.mac = source.mac;
+		this.name = source.name;
+		this.type = source.type;
+		this.numberOfEquip = source.numberOfEquip;
+	}
+}
+
+export type HardwareProps = OmitByPropType<Hardware, Function>;
+
+export class Hardware extends BaseHardware {
+	public readonly equipments: Equipment[];
+	public readonly activeEquipment: Equipment;
+	constructor(source: HardwareProps | Hardware) {
+		super(source.id, source.name, source.mac, source.type);
+		this.equipments = [...source.equipments];
+		this.activeEquipment = new Equipment(source.activeEquipment);
+	}
 	public createDTO(equipmentCollection: HardwareDTO['equipmentCollection']): HardwareDTO {
 		return new HardwareDTO({
 			mac: this.mac,
@@ -35,12 +58,30 @@ export class Hardware implements IHardware {
 			equipmentCollection,
 		});
 	}
+
+	public getBase(): BaseHardware {
+		return new BaseHardware(this.id, this.name, this.mac, this.type);
+	}
+
+	static readonly initial = new Hardware({
+		...BaseHardware.initial,
+		equipments: [],
+		activeEquipment: Equipment.initial,
+	});
 }
 
-export const initialHardware = new Hardware({
-	id: null,
-	equipments: [],
-	type: null,
-	mac: null,
-	name: '',
-});
+HardwareDTO.prototype.createDomain = function (id: Hardware['id']): Hardware {
+	const equipments = Object.entries(
+		this.equipmentCollection,
+	).map(([equipmentId, equipmentDTO]: [Equipment['id'], EquipmentDTOProps]) =>
+		new EquipmentDTO({ ...equipmentDTO }).createDomain(equipmentId),
+	);
+	return new Hardware({
+		mac: this.mac,
+		type: this.type,
+		name: this.name,
+		id,
+		equipments,
+		activeEquipment: Equipment.initial,
+	});
+};

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { EquipmentFormFacade, EquipmentFormStoreState } from '@store/equipment-form';
 import { Observable } from 'rxjs';
-import { Equipment, EquipmentGroup } from '@models';
+import { Equipment, EquipmentGroup } from '@models/equipment';
 import { filter } from 'rxjs/operators';
 import { EquipmentFacade } from '@store/equipment';
 

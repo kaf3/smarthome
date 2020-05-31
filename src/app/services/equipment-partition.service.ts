@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Equipment, EquipmentGroup, EquipmentType, RoomDTO } from '@models';
 
 export type EquipmentId = string;
 export type EquipmentProp = string;
@@ -7,7 +6,7 @@ export type EquipmentValueProp = string;
 
 @Injectable()
 export class EquipmentPartitionService {
-	public partition(roomDTO: RoomDTO): Equipment[] {
+	/*	public partition(roomDTO: RoomDTO): Equipment[] {
 		roomDTO = EquipmentPartitionService.ignoreRoomName(roomDTO);
 		// array of array of 3 elems : name of equip, key of props, value of props
 		// какое устройство, какое его поле, какое значение поля
@@ -88,5 +87,5 @@ export class EquipmentPartitionService {
 		});
 
 		return roomDTOcopy;
-	}
+	}*/
 }

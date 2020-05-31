@@ -1,0 +1,22 @@
+@import '../../../../../styles/layout';
+@import '../../../../../styles/theming';
+
+.hardware-container {
+	border-top: 1px solid $border-light;
+	background-color: $app-bar;
+	border-bottom: 1px solid $border-light;
+}
+
+.hardware {
+	width: $layout13 * 5;
+	margin: $layout03;
+
+}
+
+.equip-detail {
+
+}
+
+.equip-detail-item {
+	@include space-between();
+}

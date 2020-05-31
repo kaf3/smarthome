@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EquipmentFacade } from '@store/equipment';
-import { Equipment } from '@models';
+import { Equipment } from '@models/equipment';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

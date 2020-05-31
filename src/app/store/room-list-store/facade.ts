@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { LoadableFacade, Room, RoomList } from '@models';
 import { RoomListState } from './state';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../state';
@@ -13,13 +12,16 @@ import {
 import { combineLatest, Observable } from 'rxjs';
 import { Dictionary } from '@ngrx/entity';
 import {
-	LoadRooms,
+	LoadRoomList,
 	OpenRoomList,
 	UpsertRoom,
 	UpsertRoomListWhenLeft,
 	UpsertRoomWhenLeft,
 } from './actions';
 import { map } from 'rxjs/operators';
+import { LoadableFacade } from '@models/common';
+import { RoomList } from '@models/rooms';
+import { Room } from '@models/room';
 
 @Injectable()
 export class RoomListFacade extends LoadableFacade<RoomListState> {
@@ -59,7 +61,7 @@ export class RoomListFacade extends LoadableFacade<RoomListState> {
 	}
 
 	public loadRooms(): void {
-		this.store.dispatch(new LoadRooms());
+		this.store.dispatch(new LoadRoomList());
 	}
 
 	public openRoomList(): void {

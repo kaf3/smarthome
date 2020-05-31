@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Activity, Equipment, EquipmentGroup, EquipmentType } from '../models';
+import { Activity, Equipment, EquipmentGroup, EquipmentType } from '@models/equipment';
 
 @Pipe({
 	name: 'unit',
@@ -11,9 +11,6 @@ export class UnitPipe implements PipeTransform {
 		}
 
 		switch (equipment.type) {
-			case EquipmentType.ACTIVITY: {
-				return value ? Activity.ON : Activity.OFF;
-			}
 			case EquipmentType.TEMPERATURE:
 				return value + '\xB0C.';
 			case EquipmentType.CO2:

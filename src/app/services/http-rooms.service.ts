@@ -2,29 +2,28 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { EquipmentPartitionService } from './equipment-partition.service';
 import { environment } from '../../environments/environment';
-import { RoomCollection, RoomList, RoomListDTO } from '@models/rooms';
-import { Room, RoomDTO } from '@models/room';
+import { RoomList, RoomListDTO } from '@models/rooms';
+import { RoomDTO } from '@models/room';
+import { Collection } from '@models/common';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 
 @Injectable()
 export class HttpRoomsService {
-	constructor(
-		private readonly http: HttpClient,
-		private readonly equipmentPartition: EquipmentPartitionService,
-	) {}
+	constructor(private readonly http: HttpClient) {}
 
-	public loadRoomsDTO(): Observable<RoomCollection> {
-		return this.http.get<RoomCollection>(`${FIREBASE_DATABASE_URL}/.json`);
+	public loadRoomsDTO(): Observable<Collection<RoomDTO>> {
+		return this.http.get<Collection<RoomDTO>>(
+			`${FIREBASE_DATABASE_URL}/users/user_id/rooms.json`,
+		);
 	}
 
 	public loadRooms(): Observable<RoomList> {
 		return this.http
-			.get<RoomCollection>(`${FIREBASE_DATABASE_URL}/.json`)
+			.get<Collection<RoomDTO>>(`${FIREBASE_DATABASE_URL}/.json`)
 			.pipe(
-				map((roomCollection: RoomCollection) =>
+				map((roomCollection: Collection<RoomDTO>) =>
 					new RoomListDTO({ roomCollection }).createDomain(),
 				),
 			);
@@ -32,27 +31,30 @@ export class HttpRoomsService {
 
 	public loadRoomList(): Observable<RoomList> {
 		return this.http
-			.get<RoomCollection>(`${FIREBASE_DATABASE_URL}/.json`)
+			.get<Collection<RoomDTO>>(`${FIREBASE_DATABASE_URL}/users/user_id/rooms.json`)
 			.pipe(
-				map((roomCollection: RoomCollection) =>
-					new RoomListDTO({ roomCollection }).createDomain(),
-				),
+				map((roomCollection: Collection<RoomDTO>) => {
+					return new RoomListDTO({ roomCollection }).createDomain();
+				}),
 			);
 	}
 
 	public postRoomList(roomList: RoomList): Observable<RoomList> {
 		return this.http
-			.put<RoomCollection>(`${FIREBASE_DATABASE_URL}/.json`, roomList.createRoomCollection())
+			.put<Collection<RoomDTO>>(
+				`${FIREBASE_DATABASE_URL}/.json`,
+				roomList.createRoomCollection(),
+			)
 			.pipe(map((roomCollection) => new RoomListDTO({ roomCollection }).createDomain()));
 	}
 
-	public postRooms(roomsDTO: RoomCollection): Observable<Room[]> {
+	/*	public postRooms(roomsDTO: Collection<RoomDTO>): Observable<Room[]> {
 		const roomsDTOcopy = { ...roomsDTO };
 
-		return this.http.put<RoomCollection>(`${FIREBASE_DATABASE_URL}/.json`, roomsDTOcopy).pipe(
-			map((rooms: RoomCollection) =>
+		return this.http.put<Collection<RoomDTO>>(`${FIREBASE_DATABASE_URL}/.json`, roomsDTOcopy).pipe(
+			map((rooms: Collection<RoomDTO>) =>
 				Object.entries(rooms).map(
-					([roomName, roomDTO]: [keyof RoomCollection, RoomDTO], id) => {
+					([roomName, roomDTO]: [keyof Collection<RoomDTO>, RoomDTO], id) => {
 						return {
 							roomName,
 							id,
@@ -62,5 +64,5 @@ export class HttpRoomsService {
 				),
 			),
 		);
-	}
+	}*/
 }

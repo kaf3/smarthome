@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { roomsReducer } from './reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { RoomsEffects } from './effects';
+import { RoomListEffects } from './effects';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ROOMLIST_FEATURE_KEY } from './state';
 import { RoomListFacade } from './facade';
@@ -13,7 +13,7 @@ import { RoomListFacade } from './facade';
 	imports: [
 		CommonModule,
 		StoreModule.forFeature(ROOMLIST_FEATURE_KEY, roomsReducer),
-		EffectsModule.forFeature([RoomsEffects]),
+		EffectsModule.forFeature([RoomListEffects]),
 		MatSnackBarModule,
 	],
 })

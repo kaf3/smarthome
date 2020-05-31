@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { RoomComponent } from './room/room.component';
 import { RoomListComponent } from './room-list.component';
-import { EquipmentComponent } from './room/equipment/equipment.component';
 import { RoomGuard } from './room/room.guard';
 import { RoomListLoadGuard } from './room-list.load.guard';
+import { HardwareComponent } from './room/hardware/hardware.component';
 
 const routes: Routes = [
 	{
@@ -19,8 +19,8 @@ const routes: Routes = [
 				canDeactivate: [RoomGuard],
 				children: [
 					{
-						path: ':detail',
-						component: EquipmentComponent,
+						path: ':hardwareId',
+						component: HardwareComponent,
 					},
 				],
 			},

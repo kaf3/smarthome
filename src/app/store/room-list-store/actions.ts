@@ -16,17 +16,17 @@ export enum RoomListActionsTypes {
 	openRoomList = '[Room list] Open Room List',
 }
 
-export class LoadRooms implements Action {
+export class LoadRoomList implements Action {
 	readonly type = RoomListActionsTypes.loadRoomList;
 }
 
-export class LoadRoomsSuccess implements Action {
+export class LoadRoomListSuccess implements Action {
 	readonly type = RoomListActionsTypes.loadRoomListSuccess;
 
 	constructor(public payload: { roomList: RoomList }) {}
 }
 
-export class LoadRoomsError implements Action {
+export class LoadRoomListError implements Action {
 	readonly type = RoomListActionsTypes.loadRoomListError;
 
 	constructor(public payload: { errorMsg: string }) {}
@@ -73,9 +73,9 @@ export class OpenRoomList implements Action {
 }
 
 export type RoomsUnion =
-	| LoadRooms
-	| LoadRoomsSuccess
-	| LoadRoomsError
+	| LoadRoomList
+	| LoadRoomListSuccess
+	| LoadRoomListError
 	| UpsertAllRooms
 	| UpsertAllRoomsError
 	| UpsertAllRoomsSuccess

@@ -2,7 +2,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { navigation } from '@nrwl/angular';
 import { RoomComponent } from './room.component';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { filter, map, take } from 'rxjs/operators';
+import { filter, map, mapTo, take } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { RoomFacade, RoomStoreActions } from '@store/room';
@@ -12,18 +12,16 @@ export class RoomUiEffects {
 	navigationRoom = createEffect(() =>
 		this.actions$.pipe(
 			navigation(RoomComponent, {
-				run: (routerSnap: ActivatedRouteSnapshot) => {
-					return this.roomFacade.roomName$.pipe(
+				run: (routerSnap: ActivatedRouteSnapshot) =>
+					this.roomFacade.room$.pipe(
 						take(1),
-						filter((roomName) => roomName !== routerSnap.params.id),
-						map(
-							() =>
-								new RoomStoreActions.GetRoom({
-									roomName: routerSnap.params.id,
-								}),
+						filter((room) => room.id !== routerSnap.params.id),
+						mapTo(
+							new RoomStoreActions.GetRoom({
+								id: routerSnap.params.id,
+							}),
 						),
-					);
-				},
+					),
 				onError(): Observable<any> | any {
 					return of(
 						new RoomStoreActions.GetRoomError({
@@ -35,14 +33,15 @@ export class RoomUiEffects {
 		),
 	);
 
-	redirectToActiveEquipment$ = createEffect(
+	redirectToActiveHardware$ = createEffect(
 		() =>
 			this.actions$.pipe(
 				ofType<RoomStoreActions.GetRoomSuccess>(
 					RoomStoreActions.RoomActionTypes.getRoomSuccess,
 				),
 				map((action) => {
-					const { id } = action.payload.room.activeEquipment;
+					const { id } = action.payload.room.activeHardware;
+
 					if (!!id) {
 						this.router.navigate([`${this.router.url}/${id}`]);
 					}

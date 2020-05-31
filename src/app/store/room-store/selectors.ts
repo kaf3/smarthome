@@ -1,39 +1,29 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { ROOM_FEATURE_KEY, roomAdapter, RoomState } from './state';
 import { Dictionary } from '@ngrx/entity';
-import { Equipment } from '@models';
-import { getError, isInit, isLoaded, isLoading } from '@helpers';
 import { AppState } from '../state';
+import { Hardware } from '@models/hardware';
+import { Room } from '@models/room';
 
 export const selectRoomState = createFeatureSelector<AppState, RoomState>(ROOM_FEATURE_KEY);
 
-const { selectIds, selectEntities, selectAll, selectTotal } = roomAdapter.getSelectors(
+export const { selectIds, selectEntities, selectAll, selectTotal } = roomAdapter.getSelectors(
 	selectRoomState,
 );
 
-export const selectEquipmentIdsFromRoom = selectIds;
-export const selectEquipmentEntitiesFromRoom = selectEntities;
-export const selectAllEquipmentFromRoom = selectAll;
-export const selectTotalEquipmentFromRoom = selectTotal;
-
-export const selectEquipmentByIdFromRoom = createSelector(
-	selectEquipmentEntitiesFromRoom,
-	(equipmentDict: Dictionary<Equipment>, id: string) => equipmentDict[id],
+export const selectById = createSelector(
+	selectEntities,
+	(hardwareCollection: Dictionary<Hardware>, id: string) =>
+		!!hardwareCollection[id] && new Hardware({ ...hardwareCollection[id] }),
 );
 
 export const selectCallState = createSelector(selectRoomState, (state) => state.callState);
 
-export const selectRoomName = createSelector(selectRoomState, (state) => state.roomName);
+export const selectName = createSelector(selectRoomState, (state) => state.baseRoom.name);
 
-export const selectLoading = createSelector(selectRoomState, isLoading);
-
-export const selectLoaded = createSelector(selectRoomState, isLoaded);
-
-export const selectInit = createSelector(selectRoomState, isInit);
-
-export const selectError = createSelector(selectRoomState, getError);
-
-export const selectActiveEquipment = createSelector(
+export const selectRoom = createSelector(
 	selectRoomState,
-	(state) => state.activeEquipment,
+	selectAll,
+	(state, hardwares) =>
+		new Room({ ...state.baseRoom, activeHardware: state.activeHardware, hardwares }),
 );

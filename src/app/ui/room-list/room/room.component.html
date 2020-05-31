@@ -1,34 +1,34 @@
 <mat-toolbar>
-	{{ roomName$ | async }}
+	{{ (room$ | async).name }}
 </mat-toolbar>
 
 <div class="equip-list">
 	<a
-		*ngFor="let equipment of equipmentList$ | async"
+		*ngFor="let hardware of (room$ | async).hardwares"
 		class="equip-card"
-		[routerLink]="[equipment.id]"
+		[routerLink]="[hardware.id]"
 		routerLinkActive="equip-link-active"
 	>
 		<mat-card matRipple class="equip-card-active">
 			<mat-card-header>
 				<mat-card-title>
-					{{ equipment.name }}
+					{{ hardware.name }}
 				</mat-card-title>
-				<mat-card-subtitle>
-					{{ equipment.group }}
-				</mat-card-subtitle>
+				<!--<mat-card-subtitle>
+					{{ hardware.group }}
+				</mat-card-subtitle>-->
 			</mat-card-header>
-			<mat-card-content class="equip-card-content mat-body-strong">
+<!--			<mat-card-content class="equip-card-content mat-body-strong">
 				<span>
-					<ng-container *ngIf="equipment.group === DEVICE">
+					<ng-container *ngIf="hardware.group === DEVICE">
 						level of
 					</ng-container>
-					{{ equipment.type }}:
+					{{ hardware.type }}:
 				</span>
 				<span>
-					{{ equipment.value | unit: equipment }}
+					{{ hardware.value | unit: hardware }}
 				</span>
-			</mat-card-content>
+			</mat-card-content>-->
 		</mat-card>
 	</a>
 </div>

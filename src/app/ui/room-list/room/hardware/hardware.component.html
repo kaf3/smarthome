@@ -1,0 +1,37 @@
+<div class="hardware-container">
+	<mat-toolbar>{{ (hardware$ | async).name }}</mat-toolbar>
+	<div class="hardware">
+		<mat-accordion>
+			<mat-expansion-panel *ngFor="let equipment of (hardware$ | async).equipments">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						{{equipment.id}}
+					</mat-panel-title>
+					<mat-panel-description>
+						{{equipment.value}}
+
+					</mat-panel-description>
+
+				</mat-expansion-panel-header>
+				<mat-list>
+					<mat-list-item>
+						<div class="equip-detail-item">
+							<span>{{ equipment.type }}</span>
+							<span>{{
+								equipment.value | unit: equipment
+								}}</span>
+						</div>
+					</mat-list-item>
+					<mat-divider></mat-divider>
+					<mat-list-item>
+						<div class="equip-detail-item">
+							<span>Статус</span>
+							<span>{{ equipment.status ? 'работает': 'не работает' }}</span>
+						</div>
+					</mat-list-item>
+					<mat-divider></mat-divider>
+				</mat-list>
+			</mat-expansion-panel>
+</mat-accordion>
+</div>
+</div>

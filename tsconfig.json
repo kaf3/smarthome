@@ -17,6 +17,7 @@
         "lib": ["es2019", "dom"],
         "paths": {
             "@store": ["src/app/store/index.ts"],
+			"@store/hardware": ["src/app/store/hardware-store/index.ts"],
 			"@store/room-list": ["src/app/store/room-list-store/index.ts"],
 			"@store/room": ["src/app/store/room-store/index.ts"],
 			"@store/equipment": ["src/app/store/equipment-store/index.ts"],

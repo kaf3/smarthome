@@ -1,13 +1,4 @@
-import {
-	AfterViewInit,
-	Component,
-	ElementRef,
-	OnDestroy,
-	OnInit,
-	QueryList,
-	ViewChild,
-	ViewChildren,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { Room } from '@models/room/room';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -21,9 +12,8 @@ import { SidenavService } from '@services';
 	templateUrl: './room-list.component.html',
 	styleUrls: ['./room-list.component.scss'],
 })
-export class RoomListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class RoomListComponent implements OnInit, OnDestroy {
 	@ViewChild('matTabNav') matTabNav: MatTabNav;
-	@ViewChildren('rl', { read: ElementRef }) rl: QueryList<ElementRef>;
 
 	public rooms$: Observable<Room[]>;
 	public readonly destroy$ = new Subject();
@@ -37,10 +27,6 @@ export class RoomListComponent implements OnInit, OnDestroy, AfterViewInit {
 		this.roomListFacade.openRoomList();
 		this.rooms$ = this.roomListFacade.rooms$.pipe(filter((rooms) => !!rooms.length));
 		this.alignSidenav();
-	}
-
-	ngAfterViewInit(): void {
-		this.autoSelectRoom();
 	}
 
 	ngOnDestroy(): void {
@@ -61,13 +47,5 @@ export class RoomListComponent implements OnInit, OnDestroy, AfterViewInit {
 			.subscribe(() => {
 				this.alignInkNavBar();
 			});
-	}
-
-	private autoSelectRoom(): void {
-		this.roomListFacade.roomList$.pipe(takeUntil(this.destroy$)).subscribe((roomList) => {
-			if (!!roomList.rooms.length && !roomList.activeRoom.roomName) {
-				this.rl.first.nativeElement.click();
-			}
-		});
 	}
 }

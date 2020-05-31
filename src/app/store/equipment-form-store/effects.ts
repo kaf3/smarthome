@@ -8,7 +8,7 @@ import {
 	SubmitEquipmentForm,
 } from './actions';
 import { filter, map, switchMap, take } from 'rxjs/operators';
-import { Equipment } from '@models';
+import { Equipment } from '@models/equipment';
 import { EquipmentFacade } from '@store/equipment';
 import { UpsertAllRooms } from '../room-list-store/actions';
 import { EquipmentFormFacade } from './facade';
@@ -35,14 +35,9 @@ export class EquipmentFormEffects {
 				this.equipmentFacade.equipment$.pipe(
 					take(1),
 					map((equipment: Equipment) => {
-						const eqp = { ...equipment } as Equipment;
-
+						const eqp = new Equipment({ ...equipment, value: equipment.value });
 						eqp.name = formState.value.name;
-
-						if (eqp.group === 'device') {
-							eqp.value = formState.value.value;
-						}
-
+						eqp.value = formState.value.value;
 						return new UpsertAllRooms({ obj: eqp });
 					}),
 				),

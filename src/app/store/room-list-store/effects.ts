@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-	LoadRooms,
-	LoadRoomsError,
-	LoadRoomsSuccess,
+	LoadRoomList,
+	LoadRoomListError,
+	LoadRoomListSuccess,
 	OpenRoomList,
 	RoomListActionsTypes,
-	UpsertAllRooms,
-	UpsertAllRoomsSuccess,
 } from './actions';
 import { catchError, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
@@ -17,20 +15,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { RoomListFacade } from './facade';
 import { RoomList } from '@models/rooms';
-import { Equipment } from '@models/equipment';
 
 @Injectable()
-export class RoomsEffects {
+export class RoomListEffects {
 	loadRooms$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType<LoadRooms>(RoomListActionsTypes.loadRoomList),
+			ofType<LoadRoomList>(RoomListActionsTypes.loadRoomList),
 			switchMap(() => this.httpRoomsService.loadRoomList().pipe(take(1))),
-			switchMap((roomList: RoomList) => of(new LoadRoomsSuccess({ roomList }))),
-			catchError(() => of(new LoadRoomsError({ errorMsg: 'Error: could not load rooms' }))),
+			switchMap((roomList: RoomList) => of(new LoadRoomListSuccess({ roomList }))),
+			catchError(() =>
+				of(new LoadRoomListError({ errorMsg: 'Error: could not load rooms' })),
+			),
 		),
 	);
 
-	upsertAllRooms$ = createEffect(() =>
+	/*	upsertAllRooms$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<UpsertAllRooms>(RoomListActionsTypes.upsertAllRooms),
 			switchMap(({ payload }) => {
@@ -61,15 +60,17 @@ export class RoomsEffects {
 			}),
 			switchMap((roomsDTO: RoomsDTO) => this.httpRooms.postRooms(roomsDTO)),
 			switchMap((rooms: Room[]) => of(new UpsertAllRoomsSuccess({ rooms }))),
-			catchError(() => of(new LoadRoomsError({ errorMsg: 'Error: could not update rooms' }))),
+			catchError(() =>
+				of(new LoadRoomListError({ errorMsg: 'Error: could not update rooms' })),
+			),
 		),
-	);
+	);*/
 
 	errorHandler = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType<LoadRoomsError>(RoomListActionsTypes.loadRoomListError),
-				map((action: LoadRoomsError) =>
+				ofType<LoadRoomListError>(RoomListActionsTypes.loadRoomListError),
+				map((action: LoadRoomListError) =>
 					this.openSnackBar(action.payload.errorMsg, 'Error'),
 				),
 			),
@@ -82,9 +83,9 @@ export class RoomsEffects {
 				ofType<OpenRoomList>(RoomListActionsTypes.openRoomList),
 				withLatestFrom(this.roomListFacade.roomList$),
 				map(([_a, roomList]) => {
-					const { roomName } = roomList.activeRoom;
-					if (!!roomName) {
-						this.router.navigate([`/rooms/${roomName}`]);
+					const { id } = roomList.activeRoom;
+					if (!!id && this.router.url.endsWith('/rooms/')) {
+						this.router.navigate([`/rooms/${id}`]);
 					}
 				}),
 			),

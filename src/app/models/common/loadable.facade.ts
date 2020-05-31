@@ -1,6 +1,6 @@
 import { AppState } from '../../store/state';
 import { MemoizedSelector, select, Store } from '@ngrx/store';
-import { valueof } from './valueof';
+import { valueof } from './utility-types';
 import { Observable } from 'rxjs';
 import { CallState } from '../error-loading/error.loading';
 import { filter, map } from 'rxjs/operators';

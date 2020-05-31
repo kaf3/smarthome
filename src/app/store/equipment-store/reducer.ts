@@ -1,6 +1,6 @@
 import { EquipmentState, initialEquipmentState } from './state';
 import { EquipmentActionsTypes, EquipmentUnion } from './actions';
-import { LoadingState } from '@models';
+import { LoadingState } from '@models/error-loading';
 import { RoomListStoreActions } from '@store/room-list';
 
 export function equipmentReducer(

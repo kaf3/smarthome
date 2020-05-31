@@ -1,7 +1,7 @@
 import { RoomActionTypes, RoomUnion } from './actions';
 import { initialRoomState, roomAdapter, RoomState } from './state';
 import { RoomListActionsTypes, RoomsUnion } from '../room-list-store/actions';
-import { LoadingState } from '@models';
+import { LoadingState } from '@models/error-loading';
 
 export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsUnion): RoomState {
 	switch (action.type) {
@@ -10,31 +10,23 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 			return { ...state, callState: LoadingState.LOADING };
 		}
 		case RoomActionTypes.getRoomSuccess: {
-			const { roomName, equipment, activeEquipment, id } = action.payload.room;
-
-			return roomAdapter.addAll(equipment, {
+			const { hardwares, activeHardware } = action.payload.room;
+			return roomAdapter.addAll(hardwares, {
 				...state,
-				id,
-				roomName,
-				activeEquipment,
+				baseRoom: action.payload.room.getBase(),
+				activeHardware,
 				callState: LoadingState.LOADED,
 			});
 		}
 		case RoomActionTypes.getRoomError: {
-			const { errorMsg } = action.payload;
-
-			return { ...state, callState: { errorMsg } };
+			return { ...state, callState: action.payload };
 		}
 		case RoomListActionsTypes.upsertAllRoomsSuccess: {
-			const { equipment, activeEquipment, roomName, id } = action.payload.rooms.find(
-				(room) => state.id === room.id,
-			);
-
-			return roomAdapter.addAll(equipment, {
+			const room = action.payload.rooms.find((room) => state.baseRoom.id === room.id);
+			return roomAdapter.addAll(room.hardwares, {
 				...state,
-				id,
-				activeEquipment,
-				roomName,
+				activeHardware: room.activeHardware,
+				baseRoom: room.getBase(),
 				callState: LoadingState.LOADED,
 			});
 		}

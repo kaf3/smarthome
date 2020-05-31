@@ -9,7 +9,7 @@ import {
 } from 'ngrx-forms';
 import { EquipmentFormState, EquipmentFormValue, initialEquipmentFormState } from './state';
 import { EquipmentFormActions, EquipmentFormUnion } from './actions';
-import { EquipmentGroup } from '@models';
+import { EquipmentGroup } from '@models/equipment';
 
 export const equipmentFormReducer = function (
 	state: EquipmentFormState = initialEquipmentFormState,

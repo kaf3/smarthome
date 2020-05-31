@@ -6,16 +6,16 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RoomRoutingModule } from './room.routing.module';
 import { MatRippleModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
-import { EquipmentModule } from './equipment/equipment.module';
 import { PipesModule } from '@pipes';
 import { EffectsModule } from '@ngrx/effects';
 import { RoomUiEffects } from './room.ui.effects';
+import { HardwareModule } from './hardware/hardware.module';
 
 @NgModule({
 	declarations: [RoomComponent],
 	imports: [
 		CommonModule,
-		EquipmentModule,
+		HardwareModule,
 		RoomRoutingModule,
 		MatToolbarModule,
 		MatRippleModule,

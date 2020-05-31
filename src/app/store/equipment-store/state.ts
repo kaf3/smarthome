@@ -1,5 +1,6 @@
-import { CallState, Equipment, initialEquipment, LoadingState } from '@models';
 import { FeatureKey } from '../state';
+import { Equipment } from '@models/equipment';
+import { CallState, LoadingState } from '@models/error-loading';
 
 export const EQUIPMENT_FEATURE_KEY: FeatureKey = 'equipment';
 
@@ -13,6 +14,6 @@ export interface EquipmentState {
 }
 
 export const initialEquipmentState: EquipmentState = {
-	equipment: initialEquipment,
+	equipment: Equipment.initial,
 	callState: LoadingState.INIT,
 };

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Equipment, RoomDTO } from '@models';
 
 @Injectable()
 export class SerializeService {
+	/*
 	public serializeEquipment(equipment: Equipment): RoomDTO {
 		const equipmentDTO: RoomDTO = {
 			// eslint-disable-next-line @typescript-eslint/camelcase
@@ -48,4 +48,5 @@ export class SerializeService {
 
 		return switcher[key][0];
 	}
+*/
 }

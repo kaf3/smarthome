@@ -7,9 +7,17 @@
 	background-color: $background-color;
 }
 
-.app-sidenav-container {
+.app-sidenav-super {
+	overflow: hidden;
 	min-height: calc(100% - 64px);
 }
+
+.app-sidenav-container {
+	margin-right: calc(100% - 100vw);
+	//height: 100%;
+}
+
+
 
 .app-sidenav-link-active {
 	background-color: $mat-list-item-active-light;

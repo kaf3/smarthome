@@ -4,12 +4,11 @@
 		*ngFor="let room of rooms$ | async"
 		[active]="rla.isActive"
 		[routerLinkActiveOptions]="{ exact: false }"
-		[routerLink]="[room.roomName]"
+		[routerLink]="[room.id]"
 		mat-tab-link
 		routerLinkActive
-		#rl
 	>
-		{{ room?.roomName }}</a
+		{{ room?.name }}</a
 	>
 </nav>
 
