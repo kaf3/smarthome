@@ -84,7 +84,7 @@ export class RoomListEffects {
 				withLatestFrom(this.roomListFacade.roomList$),
 				map(([_a, roomList]) => {
 					const { id } = roomList.activeRoom;
-					if (!!id && this.router.url.endsWith('/rooms/')) {
+					if (!!id && this.router.url.endsWith('/rooms')) {
 						this.router.navigate([`/rooms/${id}`]);
 					}
 				}),

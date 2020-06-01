@@ -41,8 +41,7 @@ export class RoomUiEffects {
 				),
 				map((action) => {
 					const { id } = action.payload.room.activeHardware;
-
-					if (!!id) {
+					if (!!id && !!/room\d+$/.test(this.router.url)) {
 						this.router.navigate([`${this.router.url}/${id}`]);
 					}
 				}),
