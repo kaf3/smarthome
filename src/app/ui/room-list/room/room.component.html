@@ -2,35 +2,40 @@
 	{{ (room$ | async).name }}
 </mat-toolbar>
 
-<div class="equip-list">
-	<a
-		*ngFor="let hardware of (room$ | async).hardwares"
-		class="equip-card"
-		[routerLink]="[hardware.id]"
-		routerLinkActive="equip-link-active"
-	>
-		<mat-card matRipple class="equip-card-active">
-			<mat-card-header>
-				<mat-card-title>
-					{{ hardware.name }}
-				</mat-card-title>
-				<!--<mat-card-subtitle>
-					{{ hardware.group }}
-				</mat-card-subtitle>-->
-			</mat-card-header>
-<!--			<mat-card-content class="equip-card-content mat-body-strong">
-				<span>
-					<ng-container *ngIf="hardware.group === DEVICE">
-						level of
-					</ng-container>
-					{{ hardware.type }}:
-				</span>
-				<span>
-					{{ hardware.value | unit: hardware }}
-				</span>
-			</mat-card-content>-->
-		</mat-card>
-	</a>
+<div  class="hardware-list">
+		<a
+			*ngFor="let hardware of (room$ | async).hardwares"
+			#rla="routerLinkActive"
+			class="hardware"
+			[routerLink]="[hardware.id]"
+			routerLinkActive
+		>
+			<mat-expansion-panel *ngIf="rla.isActive">
+				<mat-expansion-panel-header collapsedHeight="100%" expandedHeight="100%" class="hardware-expansion-header">
+					<mat-card-header class="hardware-card-active">
+						<mat-card-title>
+							{{hardware.name}}
+						</mat-card-title>
+					</mat-card-header>
+				</mat-expansion-panel-header>
+				<mat-card>
+					<mat-card-header>
+						<mat-card-title>hello</mat-card-title>
+					</mat-card-header>
+				</mat-card>
+			</mat-expansion-panel>
+				<mat-card matRipple class="hardware-card" *ngIf="!rla?.isActive">
+					<mat-card-header>
+						<mat-card-title>
+							{{hardware.name}}
+						</mat-card-title>
+					</mat-card-header>
+				</mat-card>
+		</a>
 </div>
 
 <router-outlet></router-outlet>
+
+
+
+

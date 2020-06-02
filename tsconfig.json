@@ -22,6 +22,7 @@
 			"@store/room": ["src/app/store/room-store/index.ts"],
 			"@store/equipment": ["src/app/store/equipment-store/index.ts"],
 			"@store/equipment-form": ["src/app/store/equipment-form-store/index.ts"],
+			"@store/hardware-form": ["src/app/store/hardware-form-store/index.ts"],
 			"@models": ["src/app/models/index.ts"],
 			"@models/*": ["src/app/models/*"],
             "@pipes": ["src/app/pipes/index.ts"],

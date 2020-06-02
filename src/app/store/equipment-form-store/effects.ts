@@ -10,7 +10,7 @@ import {
 import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Equipment } from '@models/equipment';
 import { EquipmentFacade } from '@store/equipment';
-import { UpsertAllRooms } from '../room-list-store/actions';
+import { UpsertRoomList } from '../room-list-store/actions';
 import { EquipmentFormFacade } from './facade';
 
 @Injectable()
@@ -38,7 +38,7 @@ export class EquipmentFormEffects {
 						const eqp = new Equipment({ ...equipment, value: equipment.value });
 						eqp.name = formState.value.name;
 						eqp.value = formState.value.value;
-						return new UpsertAllRooms({ obj: eqp });
+						return new UpsertRoomList({ obj: eqp });
 					}),
 				),
 			),

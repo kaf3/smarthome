@@ -10,6 +10,8 @@ import { PipesModule } from '@pipes';
 import { EffectsModule } from '@ngrx/effects';
 import { RoomUiEffects } from './room.ui.effects';
 import { HardwareModule } from './hardware/hardware.module';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { PortalModule } from '@angular/cdk/portal';
 
 @NgModule({
 	declarations: [RoomComponent],
@@ -22,6 +24,8 @@ import { HardwareModule } from './hardware/hardware.module';
 		MatCardModule,
 		PipesModule,
 		EffectsModule.forFeature([RoomUiEffects]),
+		MatExpansionModule,
+		PortalModule,
 	],
 	exports: [RouterModule],
 })

@@ -1,16 +1,16 @@
 @import 'src/styles/layout';
 @import 'src/styles/theming';
 
-.equip-card {
+.hardware {
 	width: 232px;
 	margin: $layout03;
 }
 
-.equip-link-active .equip-card-active {
+.hardware-card-active {
 	color: $primary;
 }
 
-.equip-list {
+.hardware-list {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -21,11 +21,21 @@
 	padding-bottom: $layout03;
 }
 
-.equip-list a {
+.hardware-list a {
 	text-decoration: none;
 }
 
-.equip-card-content {
+.hardware-card-content {
 	margin-bottom: 0;
 	@include space-between();
+}
+
+.hardware-card {
+	padding-left: $layout05;
+	padding-right: $layout05;
+}
+
+.hardware-expansion-header {
+	padding-top: $layout03;
+	padding-bottom: $layout03;
 }

@@ -6,7 +6,7 @@ import { LoadingState } from '@models/error-loading';
 export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsUnion): RoomState {
 	switch (action.type) {
 		case RoomActionTypes.getRoom:
-		case RoomListActionsTypes.upsertAllRooms: {
+		case RoomListActionsTypes.upsertRoomList: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
 		case RoomActionTypes.getRoomSuccess: {
@@ -21,7 +21,7 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 		case RoomActionTypes.getRoomError: {
 			return { ...state, callState: action.payload };
 		}
-		case RoomListActionsTypes.upsertAllRoomsSuccess: {
+		case RoomListActionsTypes.upsertRoomListSuccess: {
 			const room = action.payload.rooms.find((room) => state.baseRoom.id === room.id);
 			return roomAdapter.addAll(room.hardwares, {
 				...state,

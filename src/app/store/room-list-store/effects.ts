@@ -29,43 +29,6 @@ export class RoomListEffects {
 		),
 	);
 
-	/*	upsertAllRooms$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType<UpsertAllRooms>(RoomListActionsTypes.upsertAllRooms),
-			switchMap(({ payload }) => {
-				const { obj } = payload;
-
-				if (Object.prototype.hasOwnProperty.call(obj, 'roomName')) {
-					return of(null);
-				}
-
-				if (Object.prototype.hasOwnProperty.call(obj, 'value')) {
-					return this.httpRooms.loadRoomsDTO().pipe(
-						map((roomsDTO) => {
-							const equipmentDTO = this.serializer.serializeEquipment(
-								obj as Equipment,
-							);
-
-							roomsDTO[equipmentDTO.r_name] = this.serializer.serializeRoom(
-								equipmentDTO,
-								roomsDTO[equipmentDTO.r_name],
-							);
-
-							return roomsDTO;
-						}),
-					);
-				}
-
-				return of(null);
-			}),
-			switchMap((roomsDTO: RoomsDTO) => this.httpRooms.postRooms(roomsDTO)),
-			switchMap((rooms: Room[]) => of(new UpsertAllRoomsSuccess({ rooms }))),
-			catchError(() =>
-				of(new LoadRoomListError({ errorMsg: 'Error: could not update rooms' })),
-			),
-		),
-	);*/
-
 	errorHandler = createEffect(
 		() =>
 			this.actions$.pipe(
