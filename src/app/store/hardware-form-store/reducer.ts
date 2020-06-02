@@ -2,13 +2,7 @@ import { HardwareFormActions, HardwareFormActionTypes } from './actions';
 import { FeatureKey } from '../state';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
-import {
-	createFormGroupState,
-	formGroupReducer,
-	FormGroupState,
-	reset,
-	setValue,
-} from 'ngrx-forms';
+import { createFormGroupState, formGroupReducer, FormGroupState, setValue } from 'ngrx-forms';
 
 export const hardwareFormFeatureKey: FeatureKey = 'hardwareForm';
 
@@ -44,9 +38,6 @@ export function reducer(
 
 		case HardwareFormActionTypes.LoadHardwareFormFailure:
 			return state;
-
-		case HardwareFormActionTypes.SubmitHardwareForm:
-			return reset(state);
 
 		default:
 			return state;

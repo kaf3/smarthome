@@ -2,7 +2,6 @@ import {
 	Actions,
 	addGroupControl,
 	formGroupReducer,
-	MarkAsSubmittedAction,
 	removeGroupControl,
 	reset,
 	setValue,
@@ -35,10 +34,9 @@ export const equipmentFormReducer = function (
 		case EquipmentFormActions.loadEquipmentFormError: {
 			return state;
 		}
-		case MarkAsSubmittedAction.TYPE: {
-			return reset(state);
-		}
+
 		case EquipmentFormActions.submitEquipmentForm: {
+			//disable to check state in effects
 			return reset(state);
 		}
 		case EquipmentFormActions.submitEquipmentFormSuccess: {

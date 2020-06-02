@@ -11,13 +11,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { RoomUiEffects } from './room.ui.effects';
 import { HardwareModule } from './hardware/hardware.module';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { PortalModule } from '@angular/cdk/portal';
+import { HardwareFormModule } from './hardware-form/hardware-form.module';
 
 @NgModule({
 	declarations: [RoomComponent],
 	imports: [
 		CommonModule,
 		HardwareModule,
+		HardwareFormModule,
 		RoomRoutingModule,
 		MatToolbarModule,
 		MatRippleModule,
@@ -25,7 +26,6 @@ import { PortalModule } from '@angular/cdk/portal';
 		PipesModule,
 		EffectsModule.forFeature([RoomUiEffects]),
 		MatExpansionModule,
-		PortalModule,
 	],
 	exports: [RouterModule],
 })

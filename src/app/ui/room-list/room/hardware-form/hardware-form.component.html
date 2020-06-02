@@ -1,1 +1,35 @@
-<p>hardware-form works!</p>
+<form [ngrxFormState]="formState$ | async" (submit)="submitForm()">
+	<mat-form-field>
+		<mat-label>
+			Имя
+		</mat-label>
+		<input
+			type="text"
+			matInput
+			placeholder="Новое имя устройства"
+			[ngrxFormControlState]="(formState$ | async).controls.name"
+		/>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>
+			Комната
+		</mat-label>
+		<mat-select [ngrxFormControlState]="(formState$ | async)?.controls.roomName">
+			<mat-option *ngFor="let room of rooms$ | async" [value]="room.name">
+				{{ room.name }}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<button mat-button type="submit">
+		Сохранить
+	</button>
+	<button
+		mat-raised-button
+		color="accent"
+		type="button"
+		(click)="reset()"
+		[disabled]="(formState$ | async).isInvalid && (formState$ | async).isSubmitted"
+	>
+		Отмена
+	</button>
+</form>

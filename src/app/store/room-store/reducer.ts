@@ -22,7 +22,9 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 			return { ...state, callState: action.payload };
 		}
 		case RoomListActionsTypes.upsertRoomListSuccess: {
-			const room = action.payload.rooms.find((room) => state.baseRoom.id === room.id);
+			const room = action.payload.roomList.rooms.find(
+				(room) => state.baseRoom.id === room.id,
+			);
 			return roomAdapter.addAll(room.hardwares, {
 				...state,
 				activeHardware: room.activeHardware,
@@ -32,6 +34,10 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 		}
 		case RoomListActionsTypes.upsertRoomListWhenLeft: {
 			return initialRoomState;
+		}
+
+		case RoomActionTypes.updateOneHardwareSuccess: {
+			return roomAdapter.upsertOne(action.payload.hardware, state);
 		}
 		default:
 			return state;

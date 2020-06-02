@@ -5,6 +5,8 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Equipment } from '@models/equipment';
 import { FeatureKey } from '../state';
 import { RoomListStoreActions } from '@store/room-list';
+import { RoomStoreActions } from '@store/room';
+import { RoomActionTypes } from '../room-store/actions';
 
 export const hardwareFeatureKey: FeatureKey = 'hardware';
 
@@ -27,13 +29,14 @@ export const initialState: HardwareState = hardwareAdapter.getInitialState({
 
 export function reducer(
 	state = initialState,
-	action: HardwareActions | RoomListStoreActions.RoomsUnion,
+	action: HardwareActions | RoomListStoreActions.RoomsUnion | RoomStoreActions.RoomUnion,
 ): HardwareState {
 	switch (action.type) {
 		case HardwareActionTypes.LoadHardware:
 			return { ...state, callState: LoadingState.LOADING };
 
-		case HardwareActionTypes.LoadHardwareSuccess: {
+		case HardwareActionTypes.LoadHardwareSuccess:
+		case RoomActionTypes.updateOneHardwareSuccess: {
 			const { activeEquipment, equipments } = action.payload.hardware;
 			return hardwareAdapter.addAll(equipments, {
 				...state,
@@ -43,6 +46,7 @@ export function reducer(
 			});
 		}
 		case HardwareActionTypes.LoadHardwareFailure:
+		case RoomActionTypes.updateOneHardwareFailure:
 			return { ...state, callState: action.payload };
 
 		case RoomListStoreActions.RoomListActionsTypes.upsertRoomWhenLeft: {

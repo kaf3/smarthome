@@ -2,40 +2,37 @@
 	{{ (room$ | async).name }}
 </mat-toolbar>
 
-<div  class="hardware-list">
-		<a
-			*ngFor="let hardware of (room$ | async).hardwares"
-			#rla="routerLinkActive"
-			class="hardware"
-			[routerLink]="[hardware.id]"
-			routerLinkActive
-		>
-			<mat-expansion-panel *ngIf="rla.isActive">
-				<mat-expansion-panel-header collapsedHeight="100%" expandedHeight="100%" class="hardware-expansion-header">
-					<mat-card-header class="hardware-card-active">
-						<mat-card-title>
-							{{hardware.name}}
-						</mat-card-title>
-					</mat-card-header>
-				</mat-expansion-panel-header>
-				<mat-card>
-					<mat-card-header>
-						<mat-card-title>hello</mat-card-title>
-					</mat-card-header>
-				</mat-card>
-			</mat-expansion-panel>
-				<mat-card matRipple class="hardware-card" *ngIf="!rla?.isActive">
-					<mat-card-header>
-						<mat-card-title>
-							{{hardware.name}}
-						</mat-card-title>
-					</mat-card-header>
-				</mat-card>
+<div class="hardware-list">
+	<div *ngFor="let hardware of (room$ | async).hardwares" class="hardware">
+		<a #rla="routerLinkActive" [routerLink]="[hardware.id]" routerLinkActive>
+			<mat-card matRipple class="hardware-card" *ngIf="!rla?.isActive">
+				<mat-card-header>
+					<mat-card-title>
+						{{ hardware.name }}
+					</mat-card-title>
+				</mat-card-header>
+			</mat-card>
 		</a>
+		<mat-expansion-panel
+			*ngIf="rla?.isActive"
+			(opened)="openedId = hardware.id"
+			(closed)="openedId = null"
+			[expanded]="openedId === hardware.id"
+		>
+			<mat-expansion-panel-header
+				collapsedHeight="100%"
+				expandedHeight="100%"
+				class="hardware-expansion-header"
+			>
+				<mat-card-header class="hardware-card-active">
+					<mat-card-title>
+						{{ hardware.name }}
+					</mat-card-title>
+				</mat-card-header>
+			</mat-expansion-panel-header>
+			<app-hardware-form></app-hardware-form>
+		</mat-expansion-panel>
+	</div>
 </div>
 
 <router-outlet></router-outlet>
-
-
-
-

@@ -7,7 +7,13 @@
 </mat-toolbar>
 <div class="app-sidenav-super">
 	<mat-sidenav-container class="app-sidenav-container">
-		<mat-sidenav #sidenav mode="side" class="app-sidenav" (closed)="onClose()" (opened)="onOpen()">
+		<mat-sidenav
+			#sidenav
+			mode="side"
+			class="app-sidenav"
+			(closed)="onClose()"
+			(opened)="onOpen()"
+		>
 			<mat-nav-list>
 				<a
 					#rla="routerLinkActive"
@@ -16,7 +22,7 @@
 					[routerLink]="link.path"
 					routerLinkActive="app-sidenav-link-active"
 					*ngFor="let link of sidenavLinks"
-				>{{ link.name }}</a
+					>{{ link.name }}</a
 				>
 			</mat-nav-list>
 		</mat-sidenav>
@@ -25,4 +31,3 @@
 		</mat-sidenav-content>
 	</mat-sidenav-container>
 </div>
-

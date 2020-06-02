@@ -4,8 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { RoomList, RoomListDTO } from '@models/rooms';
-import { RoomDTO } from '@models/room';
+import { Room, RoomDTO } from '@models/room';
 import { Collection } from '@models/common';
+import { Hardware, HardwareDTO, HardwareDTOProps } from '@models/hardware';
+import { Equipment } from '@models/equipment';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 
@@ -35,6 +37,31 @@ export class HttpRoomsService {
 			.pipe(
 				map((roomCollection: Collection<RoomDTO>) => {
 					return new RoomListDTO({ roomCollection }).createDomain();
+				}),
+			);
+	}
+
+	public postHardware(hardware: Hardware, roomId: Room['id']): Observable<Hardware> {
+		const cashedActiveEquipment = new Equipment({
+			...hardware.activeEquipment,
+			value: hardware.activeEquipment.value,
+		});
+		return this.http
+			.put<HardwareDTOProps>(
+				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${roomId}/hardwareCollection/${hardware.id}/.json`,
+				hardware.createDTO(),
+			)
+			.pipe(
+				map((hardwareDTO) => {
+					const newHardware = new HardwareDTO({ ...hardwareDTO }).createDomain(
+						hardware.id,
+					);
+					if (
+						!!newHardware.equipments.find((eqp) => eqp.id === cashedActiveEquipment.id)
+					) {
+						newHardware.activeEquipment = cashedActiveEquipment;
+					}
+					return newHardware;
 				}),
 			);
 	}

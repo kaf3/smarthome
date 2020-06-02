@@ -1,6 +1,4 @@
 import { Room } from '../room/room';
-import { EquipmentDTO } from '@models/equipment';
-import { HardwareDTO } from '@models/hardware';
 import { RoomDTO } from '@models/room';
 import { Collection, OmitByPropType } from '@models/common';
 
@@ -17,7 +15,7 @@ export class RoomList {
 
 	public createRoomCollection(): Collection<RoomDTO> {
 		const roomMap = new Map<keyof Collection<RoomDTO>, RoomDTO>();
-		this.rooms.forEach((room) => {
+		/*		this.rooms.forEach((room) => {
 			const hardwareMap = new Map<keyof Collection<HardwareDTO>, HardwareDTO>();
 			room.hardwares.forEach((hardware) => {
 				const equipmentMap = new Map<keyof Collection<EquipmentDTO>, EquipmentDTO>();
@@ -30,7 +28,7 @@ export class RoomList {
 			});
 			const roomDTO = room.createDTO(Object.fromEntries(hardwareMap));
 			roomMap.set(room.id, roomDTO);
-		});
+		});*/
 		return Object.fromEntries(roomMap);
 	}
 }

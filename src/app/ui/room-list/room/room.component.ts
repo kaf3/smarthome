@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { EquipmentGroup } from '@models/equipment';
@@ -13,12 +13,9 @@ import { Room } from '@models/room';
 export class RoomComponent implements OnInit {
 	public room$: Observable<Room>;
 	public readonly DEVICE = EquipmentGroup.DEVICE;
+	public openedId: string | null = null;
 
-	constructor(
-		private readonly roomFacade: RoomFacade,
-		private readonly vcr: ViewContainerRef,
-		private cdr: ChangeDetectorRef,
-	) {}
+	constructor(private readonly roomFacade: RoomFacade) {}
 
 	ngOnInit(): void {
 		this.room$ = this.roomFacade.room$.pipe(filter((room) => !!room?.id));

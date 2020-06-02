@@ -43,20 +43,29 @@ export type HardwareProps = OmitByPropType<Hardware, Function>;
 
 export class Hardware extends BaseHardware {
 	public readonly equipments: Equipment[];
-	public readonly activeEquipment: Equipment;
+	public activeEquipment: Equipment;
 	constructor(source: HardwareProps | Hardware) {
 		super(source.id, source.name, source.mac, source.type);
 		this.equipments = [...source.equipments];
 		this.activeEquipment = new Equipment(source.activeEquipment);
 	}
-	public createDTO(equipmentCollection: HardwareDTO['equipmentCollection']): HardwareDTO {
+	public createDTO(): HardwareDTO {
 		return new HardwareDTO({
 			mac: this.mac,
 			type: this.type,
 			name: this.name,
 			numberOfEquip: this.equipments.length,
-			equipmentCollection,
+			equipmentCollection: this.createEquipmentCollection(),
 		});
+	}
+
+	private createEquipmentCollection(): Collection<EquipmentDTO> {
+		const equipmentMap = new Map<keyof Collection<EquipmentDTO>, EquipmentDTO>();
+		this.equipments.forEach((equipment) => {
+			const equipmentDTO = equipment.createDTO();
+			equipmentMap.set(equipment.id, equipmentDTO);
+		});
+		return Object.fromEntries(equipmentMap);
 	}
 
 	public getBase(): BaseHardware {

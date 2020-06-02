@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { HardwareFormActions, HardwareFormActionTypes, LoadHardwareFormSuccess } from './actions';
-import { RoomFacade } from '@store/room';
+import { RoomFacade, RoomStoreActions } from '@store/room';
 import { HardwareFacade } from '@store/hardware';
 import { HardwareFormFacade } from './facade';
 import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
-import { RoomList } from '@models/rooms';
 import { Hardware } from '@models/hardware';
 import { Action } from '@ngrx/store';
-import { checkById } from '@helpers';
 
 @Injectable()
 export class HardwareFormEffects {
@@ -38,15 +36,26 @@ export class HardwareFormEffects {
 				this.roomFacade.room$,
 				this.hardwareFacade.hardware$,
 			),
-			map(([formState, roomList, room, hardware]) => {
+			map(([formState, _roomList, _room, hardware]) => {
 				HardwareFormEffects.check(formState.isPristine);
 
 				const formControls = formState.controls;
 				const formValue = formState.value;
-				const newRoomList = new RoomList({ ...roomList });
+				//const newRoomList = new RoomList({ ...roomList });
 				const oldHardware = new Hardware({ ...hardware });
+				console.log(formControls.name.isDirty);
 
-				const oldRoomIndex = newRoomList.rooms.findIndex(checkById(room.id));
+				if (formControls.name.isDirty) {
+					oldHardware.name = formValue.name;
+				}
+
+				console.log(formControls.roomName.isPristine);
+
+				if (formControls.roomName.isPristine) {
+					return new RoomStoreActions.UpdateOneHardware({ hardware: oldHardware });
+				}
+
+				/*				const oldRoomIndex = newRoomList.rooms.findIndex(checkById(room.id));
 				HardwareFormEffects.check(oldRoomIndex);
 
 				const hardwareIndex = newRoomList.rooms[oldRoomIndex].hardwares.findIndex(
@@ -72,7 +81,7 @@ export class HardwareFormEffects {
 					newRoomList.rooms[oldRoomIndex].hardwares.splice(hardwareIndex, 1);
 				}
 
-				return RoomListStoreActions.UpsertRoomList({ obj: newRoomList });
+				return RoomListStoreActions.UpsertRoomList({ obj: newRoomList });*/
 			}),
 		),
 	);
