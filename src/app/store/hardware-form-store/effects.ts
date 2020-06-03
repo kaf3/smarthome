@@ -7,7 +7,8 @@ import { HardwareFacade } from '@store/hardware';
 import { HardwareFormFacade } from './facade';
 import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
 import { Hardware } from '@models/hardware';
-import { Action } from '@ngrx/store';
+import { Room } from '@models/room';
+import { RoomList } from '@models/rooms';
 
 @Injectable()
 export class HardwareFormEffects {
@@ -36,64 +37,37 @@ export class HardwareFormEffects {
 				this.roomFacade.room$,
 				this.hardwareFacade.hardware$,
 			),
-			map(([formState, _roomList, _room, hardware]) => {
-				HardwareFormEffects.check(formState.isPristine);
-
+			map(([formState, roomList, room, hardware]) => {
 				const formControls = formState.controls;
 				const formValue = formState.value;
-				//const newRoomList = new RoomList({ ...roomList });
 				const oldHardware = new Hardware({ ...hardware });
-				console.log(formControls.name.isDirty);
-
+				let oldRoomList = new RoomList({ ...roomList });
+				let oldRoom = new Room({ ...room });
 				if (formControls.name.isDirty) {
 					oldHardware.name = formValue.name;
 				}
 
-				console.log(formControls.roomName.isPristine);
-
-				if (formControls.roomName.isPristine) {
+				if (formControls.name.isDirty && formControls.roomName.isPristine) {
 					return new RoomStoreActions.UpdateOneHardware({ hardware: oldHardware });
 				}
 
-				/*				const oldRoomIndex = newRoomList.rooms.findIndex(checkById(room.id));
-				HardwareFormEffects.check(oldRoomIndex);
-
-				const hardwareIndex = newRoomList.rooms[oldRoomIndex].hardwares.findIndex(
-					checkById(hardware.id),
-				);
-				HardwareFormEffects.check(hardwareIndex);
-
-				if (formControls.name.isDirty) {
-					oldHardware.name = formValue.name;
-					newRoomList.rooms[oldRoomIndex].hardwares[hardwareIndex] = oldHardware;
-				}
-
 				if (formControls.roomName.isDirty) {
-					const newRoomIndex = newRoomList.rooms.findIndex(
-						(r) => r.name === formState.value.roomName,
-					);
-					HardwareFormEffects.check(newRoomIndex);
+					let newRoom = oldRoomList.rooms.find((r) => r.name === formValue.roomName);
+					oldRoomList.rooms.forEach((x) => console.log(x.name, x instanceof Room));
+					oldRoom = Room.deleteHardware(oldRoom, oldHardware);
+					oldRoom.activeHardware = Hardware.initial;
+					newRoom = Room.addHardware(newRoom, oldHardware);
 
-					HardwareFormEffects.check(
-						!!newRoomList.rooms[newRoomIndex].hardwares.find(checkById(hardware.id)),
-					);
-					newRoomList.rooms[newRoomIndex].hardwares.push(oldHardware);
-					newRoomList.rooms[oldRoomIndex].hardwares.splice(hardwareIndex, 1);
+					oldRoomList = RoomList.updateManyRoom(oldRoomList, [oldRoom, newRoom]);
+
+					return new RoomListStoreActions.UpsertRoomList({ roomList: oldRoomList });
 				}
 
-				return RoomListStoreActions.UpsertRoomList({ obj: newRoomList });*/
+				return new RoomListStoreActions.UpsertRoomListCanceled();
 			}),
 		),
 	);
 
-	private static check(condition: boolean | number): Action {
-		if (condition === -1) {
-			return new RoomListStoreActions.UpsertRoomListCanceled();
-		}
-		if (!!condition) {
-			return new RoomListStoreActions.UpsertRoomListCanceled();
-		}
-	}
 	constructor(
 		private readonly actions$: Actions<HardwareFormActions>,
 		private readonly roomFacade: RoomFacade,

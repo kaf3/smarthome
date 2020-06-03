@@ -6,8 +6,11 @@ import {
 	LoadRoomListSuccess,
 	OpenRoomList,
 	RoomListActionsTypes,
+	UpsertRoomList,
+	UpsertRoomListError,
+	UpsertRoomListSuccess,
 } from './actions';
-import { catchError, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { HttpRoomsService, SerializeService } from '@services';
@@ -29,10 +32,24 @@ export class RoomListEffects {
 		),
 	);
 
+	upsertRoomList$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType<UpsertRoomList>(RoomListActionsTypes.upsertRoomList),
+			concatMap((action) => this.httpRoomsService.postRoomList(action.payload.roomList)),
+			map((roomList) => new UpsertRoomListSuccess({ roomList })),
+			catchError(() =>
+				of(new UpsertRoomListError({ errorMsg: 'Error: could not update rooms' })),
+			),
+		),
+	);
+
 	errorHandler = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType<LoadRoomListError>(RoomListActionsTypes.loadRoomListError),
+				ofType(
+					RoomListActionsTypes.loadRoomListError,
+					RoomListActionsTypes.upsertRoomListError,
+				),
 				map((action: LoadRoomListError) =>
 					this.openSnackBar(action.payload.errorMsg, 'Error'),
 				),

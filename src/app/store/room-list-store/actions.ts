@@ -1,8 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Room } from '@models/room/room';
-import { Equipment } from '@models/equipment';
 import { RoomList } from '@models/rooms';
-import { Hardware } from '@models/hardware';
 
 export enum RoomListActionsTypes {
 	loadRoomList = '[Room list] Load Room List',
@@ -37,7 +35,7 @@ export class LoadRoomListError implements Action {
 export class UpsertRoomList implements Action {
 	readonly type = RoomListActionsTypes.upsertRoomList;
 
-	constructor(public payload: { obj: RoomList | Room | Equipment | Hardware }) {}
+	constructor(public payload: { roomList: RoomList }) {}
 }
 
 export class UpsertRoomListSuccess implements Action {

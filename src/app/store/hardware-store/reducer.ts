@@ -41,7 +41,7 @@ export function reducer(
 			return hardwareAdapter.addAll(equipments, {
 				...state,
 				activeEquipment,
-				baseHardware: action.payload.hardware.getBase(),
+				baseHardware: Hardware.getBase(action.payload.hardware),
 				callState: LoadingState.LOADED,
 			});
 		}

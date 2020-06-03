@@ -89,13 +89,13 @@ export class Equipment {
 		this.type = source.type;
 	}
 
-	public createDTO(): EquipmentDTO {
+	public static createDTO(equipment: Equipment): EquipmentDTO {
 		return new EquipmentDTO({
-			name: this.name,
-			value: this.value,
-			status: this.status,
-			type: Equipment.convertToDTOType[this.type],
-			group: this.group,
+			name: equipment.name,
+			value: equipment.value,
+			status: equipment.status,
+			type: this.convertToDTOType[equipment.type],
+			group: equipment.group,
 		});
 	}
 

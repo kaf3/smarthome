@@ -10,7 +10,6 @@ import {
 import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Equipment } from '@models/equipment';
 import { EquipmentFacade } from '@store/equipment';
-import { UpsertRoomList } from '../room-list-store/actions';
 import { EquipmentFormFacade } from './facade';
 
 @Injectable()
@@ -27,22 +26,24 @@ export class EquipmentFormEffects {
 		),
 	);
 
-	submitEquipmentForm$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType<SubmitEquipmentForm>(EquipmentFormActions.submitEquipmentForm),
-			switchMap(() => this.equipmentFormFacade.equipmentFormState$.pipe(take(1))),
-			switchMap((formState: EquipmentFormState) =>
-				this.equipmentFacade.equipment$.pipe(
-					take(1),
-					map((equipment: Equipment) => {
-						const eqp = new Equipment({ ...equipment, value: equipment.value });
-						eqp.name = formState.value.name;
-						eqp.value = formState.value.value;
-						return new UpsertRoomList({ obj: eqp });
-					}),
+	submitEquipmentForm$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType<SubmitEquipmentForm>(EquipmentFormActions.submitEquipmentForm),
+				switchMap(() => this.equipmentFormFacade.equipmentFormState$.pipe(take(1))),
+				switchMap((formState: EquipmentFormState) =>
+					this.equipmentFacade.equipment$.pipe(
+						take(1),
+						map((equipment: Equipment) => {
+							const eqp = new Equipment({ ...equipment, value: equipment.value });
+							eqp.name = formState.value.name;
+							eqp.value = formState.value.value;
+							//return new UpsertRoomList({ obj: eqp });
+						}),
+					),
 				),
 			),
-		),
+		{ dispatch: false },
 	);
 
 	constructor(

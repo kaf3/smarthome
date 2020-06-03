@@ -9,7 +9,7 @@ import {
 import { RoomListFacade } from '@store/room-list';
 import { takeUntil } from 'rxjs/operators';
 import { LoadingService } from '@services';
-import { race, Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 
 @Component({
 	selector: 'app-loading',
@@ -30,7 +30,7 @@ export class LoadingComponent implements OnDestroy, AfterViewInit {
 		this.roomListFacade.loading$.pipe(takeUntil(this.destroy$)).subscribe(() => {
 			this.load.open(this.loadRef, this.vcr);
 		});
-		race(this.roomListFacade.error$, this.roomListFacade.loaded$)
+		merge(this.roomListFacade.error$, this.roomListFacade.loaded$)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => {
 				this.load.close();

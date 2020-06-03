@@ -1,6 +1,7 @@
 import { Room } from '../room/room';
 import { RoomDTO } from '@models/room';
 import { Collection, OmitByPropType } from '@models/common';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export type RoomListProps = OmitByPropType<RoomList, Function>;
 
@@ -13,23 +14,26 @@ export class RoomList {
 		this.activeRoom = source.activeRoom;
 	}
 
-	public createRoomCollection(): Collection<RoomDTO> {
+	public static createRoomCollection(roomList: RoomList): Collection<RoomDTO> {
 		const roomMap = new Map<keyof Collection<RoomDTO>, RoomDTO>();
-		/*		this.rooms.forEach((room) => {
-			const hardwareMap = new Map<keyof Collection<HardwareDTO>, HardwareDTO>();
-			room.hardwares.forEach((hardware) => {
-				const equipmentMap = new Map<keyof Collection<EquipmentDTO>, EquipmentDTO>();
-				hardware.equipments.forEach((equipment) => {
-					const equipmentDTO = equipment.createDTO();
-					equipmentMap.set(equipment.id, equipmentDTO);
-				});
-				const hardwareDTO = hardware.createDTO(Object.fromEntries(equipmentMap));
-				hardwareMap.set(hardware.id, hardwareDTO);
-			});
-			const roomDTO = room.createDTO(Object.fromEntries(hardwareMap));
-			roomMap.set(room.id, roomDTO);
-		});*/
+		roomList.rooms.forEach((room) => {
+			roomMap.set(room.id, Room.createDTO(room));
+		});
 		return Object.fromEntries(roomMap);
+	}
+
+	private static readonly adapter: EntityAdapter<Room> = createEntityAdapter<Room>({
+		selectId: (room) => room.id,
+		sortComparer: false,
+	});
+
+	public static updateManyRoom(roomList: RoomList, rooms: Room[]): RoomList {
+		let entityRoom: EntityState<Room> = this.adapter.addAll(
+			roomList.rooms,
+			this.adapter.getInitialState(),
+		);
+		entityRoom = RoomList.adapter.upsertMany(rooms, entityRoom);
+		return new RoomList({ ...roomList, rooms: Object.values(entityRoom.entities) });
 	}
 }
 

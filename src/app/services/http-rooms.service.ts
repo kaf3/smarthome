@@ -49,7 +49,7 @@ export class HttpRoomsService {
 		return this.http
 			.put<HardwareDTOProps>(
 				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${roomId}/hardwareCollection/${hardware.id}/.json`,
-				hardware.createDTO(),
+				Hardware.createDTO(hardware),
 			)
 			.pipe(
 				map((hardwareDTO) => {
@@ -67,12 +67,26 @@ export class HttpRoomsService {
 	}
 
 	public postRoomList(roomList: RoomList): Observable<RoomList> {
+		/*const cashedActiveRoom = roomList.activeRoom;
+		const cashedActiveHardwares = new Map<Room['id'], Hardware>();
+		const cashedActiveEquipments = new Map<Hardware['id'], Equipment>();
+		roomList.rooms.forEach((room) => {
+			cashedActiveHardwares.set(room.id, room.activeHardware);
+			room.hardwares.forEach((hardware) =>
+				cashedActiveEquipments.set(hardware.id, hardware.activeEquipment),
+			);
+		});*/
 		return this.http
 			.put<Collection<RoomDTO>>(
-				`${FIREBASE_DATABASE_URL}/.json`,
-				roomList.createRoomCollection(),
+				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/.json`,
+				RoomList.createRoomCollection(roomList),
 			)
-			.pipe(map((roomCollection) => new RoomListDTO({ roomCollection }).createDomain()));
+			.pipe(
+				map((roomCollection) => {
+					console.log(roomCollection);
+					return new RoomListDTO({ roomCollection }).createDomain();
+				}),
+			);
 	}
 
 	/*	public postRooms(roomsDTO: Collection<RoomDTO>): Observable<Room[]> {

@@ -2,6 +2,7 @@ import { RoomActionTypes, RoomUnion } from './actions';
 import { initialRoomState, roomAdapter, RoomState } from './state';
 import { RoomListActionsTypes, RoomsUnion } from '../room-list-store/actions';
 import { LoadingState } from '@models/error-loading';
+import { Room } from '@models/room';
 
 export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsUnion): RoomState {
 	switch (action.type) {
@@ -13,7 +14,7 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 			const { hardwares, activeHardware } = action.payload.room;
 			return roomAdapter.addAll(hardwares, {
 				...state,
-				baseRoom: action.payload.room.getBase(),
+				baseRoom: Room.getBase(action.payload.room),
 				activeHardware,
 				callState: LoadingState.LOADED,
 			});
@@ -28,7 +29,7 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 			return roomAdapter.addAll(room.hardwares, {
 				...state,
 				activeHardware: room.activeHardware,
-				baseRoom: room.getBase(),
+				baseRoom: Room.getBase(room),
 				callState: LoadingState.LOADED,
 			});
 		}

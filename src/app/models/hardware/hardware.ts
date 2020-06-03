@@ -44,32 +44,31 @@ export type HardwareProps = OmitByPropType<Hardware, Function>;
 export class Hardware extends BaseHardware {
 	public readonly equipments: Equipment[];
 	public activeEquipment: Equipment;
-	constructor(source: HardwareProps | Hardware) {
+	constructor(source: Hardware) {
 		super(source.id, source.name, source.mac, source.type);
 		this.equipments = [...source.equipments];
 		this.activeEquipment = new Equipment(source.activeEquipment);
 	}
-	public createDTO(): HardwareDTO {
+	public static createDTO(hardware: Hardware): HardwareDTO {
 		return new HardwareDTO({
-			mac: this.mac,
-			type: this.type,
-			name: this.name,
-			numberOfEquip: this.equipments.length,
-			equipmentCollection: this.createEquipmentCollection(),
+			mac: hardware.mac,
+			type: hardware.type,
+			name: hardware.name,
+			numberOfEquip: hardware.equipments.length,
+			equipmentCollection: this.createEquipmentCollection(hardware),
 		});
 	}
 
-	private createEquipmentCollection(): Collection<EquipmentDTO> {
+	private static createEquipmentCollection(hardware: Hardware): Collection<EquipmentDTO> {
 		const equipmentMap = new Map<keyof Collection<EquipmentDTO>, EquipmentDTO>();
-		this.equipments.forEach((equipment) => {
-			const equipmentDTO = equipment.createDTO();
-			equipmentMap.set(equipment.id, equipmentDTO);
+		hardware.equipments.forEach((equipment) => {
+			equipmentMap.set(equipment.id, Equipment.createDTO(equipment));
 		});
 		return Object.fromEntries(equipmentMap);
 	}
 
-	public getBase(): BaseHardware {
-		return new BaseHardware(this.id, this.name, this.mac, this.type);
+	public static getBase(hardware: Hardware): BaseHardware {
+		return new BaseHardware(hardware.id, hardware.name, hardware.mac, hardware.type);
 	}
 
 	static readonly initial = new Hardware({
