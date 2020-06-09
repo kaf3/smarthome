@@ -7,6 +7,7 @@ import { FeatureKey } from '../state';
 import { RoomListStoreActions } from '@store/room-list';
 import { RoomStoreActions } from '@store/room';
 import { RoomActionTypes } from '../room-store/actions';
+import { RoomListActionsTypes } from '../room-list-store/actions';
 
 export const hardwareFeatureKey: FeatureKey = 'hardware';
 
@@ -52,6 +53,8 @@ export function reducer(
 		case RoomListStoreActions.RoomListActionsTypes.upsertRoomWhenLeft: {
 			return initialState;
 		}
+		case RoomListActionsTypes.moveHardwareSuccess:
+			return initialState;
 
 		default:
 			return state;

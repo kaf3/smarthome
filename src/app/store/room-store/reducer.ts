@@ -7,7 +7,7 @@ import { Room } from '@models/room';
 export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsUnion): RoomState {
 	switch (action.type) {
 		case RoomActionTypes.getRoom:
-		case RoomListActionsTypes.upsertRoomList: {
+		case RoomListActionsTypes.moveHardware: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
 		case RoomActionTypes.getRoomSuccess: {
@@ -22,7 +22,7 @@ export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsU
 		case RoomActionTypes.getRoomError: {
 			return { ...state, callState: action.payload };
 		}
-		case RoomListActionsTypes.upsertRoomListSuccess: {
+		case RoomListActionsTypes.moveHardwareSuccess: {
 			const room = action.payload.roomList.rooms.find(
 				(room) => state.baseRoom.id === room.id,
 			);

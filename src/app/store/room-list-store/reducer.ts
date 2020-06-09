@@ -5,11 +5,11 @@ import { LoadingState } from '@models/error-loading';
 export function roomsReducer(state = initialRoomListState, action: RoomsUnion): RoomListState {
 	switch (action.type) {
 		case RoomListActionsTypes.loadRoomList:
-		case RoomListActionsTypes.upsertRoomList: {
+		case RoomListActionsTypes.moveHardware: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
 		case RoomListActionsTypes.loadRoomListSuccess:
-		case RoomListActionsTypes.upsertRoomListSuccess: {
+		case RoomListActionsTypes.moveHardwareSuccess: {
 			const { rooms, activeRoom } = action.payload.roomList;
 			return roomsAdapter.addAll(rooms, {
 				...state,
@@ -19,7 +19,7 @@ export function roomsReducer(state = initialRoomListState, action: RoomsUnion): 
 		}
 
 		case RoomListActionsTypes.loadRoomListError:
-		case RoomListActionsTypes.upsertRoomListError: {
+		case RoomListActionsTypes.moveHardwareError: {
 			const { errorMsg } = action.payload;
 
 			return { ...state, callState: { errorMsg } };

@@ -6,6 +6,8 @@ import { filter, map, mapTo, take } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { RoomFacade, RoomStoreActions } from '@store/room';
+import { RoomListActionsTypes } from '../../../store/room-list-store/actions';
+import { RoomListStoreActions } from '@store/room-list';
 
 @Injectable()
 export class RoomUiEffects {
@@ -41,10 +43,23 @@ export class RoomUiEffects {
 				),
 				map((action) => {
 					const { id } = action.payload.room.activeHardware;
-					//console.log(action.payload.room.activeHardware);
 					if (!!id && !!/room\d+$/.test(this.router.url)) {
 						this.router.navigate([`${this.router.url}/${id}`]);
 					}
+				}),
+			),
+		{ dispatch: false },
+	);
+	redirectBack = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType<RoomListStoreActions.MoveHardwareSuccess>(
+					RoomListActionsTypes.moveHardwareSuccess,
+				),
+				map(() => {
+					const url = this.router.url.split('/');
+					url.pop();
+					this.router.navigate([url.join('/')]);
 				}),
 			),
 		{ dispatch: false },

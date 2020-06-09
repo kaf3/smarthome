@@ -59,8 +59,9 @@ export class HardwareFormEffects {
 					newRoom = Room.addHardware(newRoom, oldHardware);
 
 					oldRoomList = RoomList.updateManyRoom(oldRoomList, [oldRoom, newRoom]);
+					console.log(oldRoomList);
 
-					return new RoomListStoreActions.UpsertRoomList({ roomList: oldRoomList });
+					return new RoomListStoreActions.MoveHardware({ roomList: oldRoomList });
 				}
 
 				return new RoomListStoreActions.UpsertRoomListCanceled();

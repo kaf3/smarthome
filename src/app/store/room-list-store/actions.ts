@@ -6,9 +6,9 @@ export enum RoomListActionsTypes {
 	loadRoomList = '[Room list] Load Room List',
 	loadRoomListSuccess = '[Room list] Load Room List Success',
 	loadRoomListError = '[Room list] Load Room List Error',
-	upsertRoomList = '[Room list] Upsert Room List',
-	upsertRoomListSuccess = '[Room list] Upsert Room List Success',
-	upsertRoomListError = '[Room list] Upsert Room List Error',
+	moveHardware = '[Room list] Move Hardware',
+	moveHardwareSuccess = '[Room list] Move Hardware Success',
+	moveHardwareError = '[Room list] Move Hardware Error',
 	upsertRoom = '[Room list] Upsert Room',
 	upsertRoomWhenLeft = '[Room list] Upsert Room When Left',
 	upsertRoomListWhenLeft = '[Room list] Upsert RoomList When Left',
@@ -32,20 +32,20 @@ export class LoadRoomListError implements Action {
 	constructor(public payload: { errorMsg: string }) {}
 }
 
-export class UpsertRoomList implements Action {
-	readonly type = RoomListActionsTypes.upsertRoomList;
+export class MoveHardware implements Action {
+	readonly type = RoomListActionsTypes.moveHardware;
 
 	constructor(public payload: { roomList: RoomList }) {}
 }
 
-export class UpsertRoomListSuccess implements Action {
-	readonly type = RoomListActionsTypes.upsertRoomListSuccess;
+export class MoveHardwareSuccess implements Action {
+	readonly type = RoomListActionsTypes.moveHardwareSuccess;
 
 	constructor(public payload: { roomList: RoomList }) {}
 }
 
-export class UpsertRoomListError implements Action {
-	readonly type = RoomListActionsTypes.upsertRoomListError;
+export class MoveHardwareError implements Action {
+	readonly type = RoomListActionsTypes.moveHardwareError;
 
 	constructor(public payload: { errorMsg: string }) {}
 }
@@ -80,9 +80,9 @@ export type RoomsUnion =
 	| LoadRoomList
 	| LoadRoomListSuccess
 	| LoadRoomListError
-	| UpsertRoomList
-	| UpsertRoomListError
-	| UpsertRoomListSuccess
+	| MoveHardware
+	| MoveHardwareError
+	| MoveHardwareSuccess
 	| UpsertRoom
 	| UpsertRoomWhenLeft
 	| UpsertRoomListWhenLeft
