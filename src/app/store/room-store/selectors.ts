@@ -19,8 +19,6 @@ export const selectById = createSelector(
 
 export const selectCallState = createSelector(selectRoomState, (state) => state.callState);
 
-export const selectName = createSelector(selectRoomState, (state) => state.baseRoom.name);
-
 export const selectRoom = createSelector(
 	selectRoomState,
 	selectAll,

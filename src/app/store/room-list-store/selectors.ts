@@ -2,15 +2,17 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { ROOMLIST_FEATURE_KEY, RoomListState, roomsAdapter } from './state';
 import { Dictionary } from '@ngrx/entity';
 import { Room } from '@models/room';
-import { getError, isLoaded, isLoading } from '@helpers';
 import { AppState } from '../state';
+import { RoomList } from '@models/rooms';
 
 export const selectRoomListState = createFeatureSelector<AppState, RoomListState>(
 	ROOMLIST_FEATURE_KEY,
 );
 
-export const selectRooms = roomsAdapter.getSelectors(selectRoomListState).selectAll;
-export const selectRoomListEntities = roomsAdapter.getSelectors(selectRoomListState).selectEntities;
+export const {
+	selectAll: selectRooms,
+	selectEntities: selectRoomListEntities,
+} = roomsAdapter.getSelectors(selectRoomListState);
 
 export const selectRoomById = createSelector(
 	selectRoomListEntities,
@@ -20,8 +22,8 @@ export const selectRoomById = createSelector(
 
 export const selectCallState = createSelector(selectRoomListState, (state) => state.callState);
 
-export const selectLoading = createSelector(selectRoomListState, isLoading);
-
-export const selectLoaded = createSelector(selectRoomListState, isLoaded);
-
-export const selectError = createSelector(selectRoomListState, getError);
+export const selectRoomList = createSelector(
+	selectRoomListState,
+	selectRooms,
+	(state, rooms) => new RoomList({ activeRoom: state.activeRoom, rooms }),
+);

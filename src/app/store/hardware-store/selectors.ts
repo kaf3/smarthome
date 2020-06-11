@@ -4,6 +4,7 @@ import { hardwareAdapter } from './reducer';
 import { Dictionary } from '@ngrx/entity';
 import { Equipment } from '@models/equipment';
 import { AppState } from '../state';
+import { Hardware } from '@models/hardware';
 
 export const selectHardwareState = createFeatureSelector<AppState, fromHardware.HardwareState>(
 	fromHardware.hardwareFeatureKey,
@@ -19,3 +20,10 @@ export const selectById = createSelector(
 );
 
 export const selectCallState = createSelector(selectHardwareState, (state) => state.callState);
+
+export const selectHardware = createSelector(
+	selectHardwareState,
+	selectAll,
+	(state, equipments) =>
+		new Hardware({ ...state.baseHardware, activeEquipment: state.activeEquipment, equipments }),
+);

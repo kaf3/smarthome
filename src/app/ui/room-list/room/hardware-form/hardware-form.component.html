@@ -9,6 +9,12 @@
 			placeholder="Новое имя устройства"
 			[ngrxFormControlState]="(formState$ | async).controls.name"
 		/>
+		<mat-error *ngIf="(formState$ | async)?.controls.name.errors.required"
+			>У устройства должно быть имя</mat-error
+		>
+		<mat-error *ngIf="(formState$ | async)?.controls.name.errors.$exists"
+			>В выбранной комнате устройство, с таким именем уже есть</mat-error
+		>
 	</mat-form-field>
 	<mat-form-field>
 		<mat-label>
@@ -20,7 +26,11 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<button mat-button type="submit">
+	<button
+		mat-button
+		type="submit"
+		[disabled]="(formState$ | async).isInvalid || (formState$ | async).isValidationPending"
+	>
 		Сохранить
 	</button>
 	<button

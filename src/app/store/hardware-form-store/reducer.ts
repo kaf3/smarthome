@@ -2,7 +2,15 @@ import { HardwareFormActions, HardwareFormActionTypes } from './actions';
 import { FeatureKey } from '../state';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
-import { createFormGroupState, formGroupReducer, FormGroupState, setValue } from 'ngrx-forms';
+import {
+	createFormGroupState,
+	formGroupReducer,
+	FormGroupState,
+	setValue,
+	updateGroup,
+	validate,
+} from 'ngrx-forms';
+import { required } from 'ngrx-forms/validation';
 
 export const hardwareFormFeatureKey: FeatureKey = 'hardwareForm';
 
@@ -28,6 +36,9 @@ export function reducer(
 	action: HardwareFormActions,
 ): HardwareFormState {
 	state = formGroupReducer(state, action);
+	state = updateGroup<HardwareFormValue>({
+		name: validate(required),
+	})(state);
 
 	switch (action.type) {
 		case HardwareFormActionTypes.LoadHardwareForm:
