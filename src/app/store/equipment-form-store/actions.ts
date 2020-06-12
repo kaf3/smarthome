@@ -12,6 +12,8 @@ export enum EquipmentFormActions {
 
 export class LoadEquipmentForm implements Action {
 	readonly type = EquipmentFormActions.loadEquipmentForm;
+
+	constructor(public payload: { equipment: Equipment }) {}
 }
 
 export class LoadEquipmentFormSuccess implements Action {
@@ -30,6 +32,8 @@ export class UpdateEquipmentForm implements Action {
 
 export class SubmitEquipmentForm implements Action {
 	readonly type = EquipmentFormActions.submitEquipmentForm;
+
+	constructor(public payload: { equipment: Equipment }) {}
 }
 
 export class SubmitEquipmentFormSuccess implements Action {

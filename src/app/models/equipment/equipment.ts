@@ -64,29 +64,26 @@ type EquipmentProps = OmitByPropType<Equipment, Function>;
 
 export class Equipment {
 	public name: string;
-	private _value: string | number | boolean | null;
+	public readonly value: string | number | boolean | null;
 	public readonly type: string | null;
 	public readonly group: string | null;
 	public readonly id: string | null;
 	public readonly status: boolean;
-
-	set value(val: Equipment['_value']) {
-		if (this.group === EquipmentGroup.DEVICE) {
-			this._value = val;
-		}
-	}
-
-	get value(): Equipment['_value'] {
-		return this.group === EquipmentGroup.DEVICE ? !!this._value : this._value;
-	}
 
 	constructor(source: Equipment | EquipmentProps) {
 		this.name = source.name;
 		this.group = source.group;
 		this.id = source.id;
 		this.status = source.status;
-		this._value = source.value;
+		this.value = source.value;
 		this.type = source.type;
+	}
+
+	public static setValue(equipment: Equipment, val: Equipment['value']): Equipment {
+		if (equipment.group === EquipmentGroup.DEVICE && val !== null && val !== undefined) {
+			return new Equipment({ ...equipment, value: val });
+		}
+		return new Equipment({ ...equipment });
 	}
 
 	public static createDTO(equipment: Equipment): EquipmentDTO {

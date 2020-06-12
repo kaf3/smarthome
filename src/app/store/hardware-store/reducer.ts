@@ -56,6 +56,16 @@ export function reducer(
 		case RoomListActionsTypes.moveHardwareSuccess:
 			return initialState;
 
+		case HardwareActionTypes.UpdateOneEquipmentSuccess: {
+			return hardwareAdapter.upsertOne(action.payload.equipment, {
+				...state,
+				callState: LoadingState.LOADED,
+			});
+		}
+
+		case HardwareActionTypes.UpdateOneEquipmentFailure: {
+			return { ...state, callState: action.payload };
+		}
 		default:
 			return state;
 	}

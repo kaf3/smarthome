@@ -85,10 +85,6 @@ export class HardwareFormEffects {
 			distinctUntilKeyChanged('value'),
 			switchMap((fs) =>
 				timer(300).pipe(
-					map((x) => {
-						console.log(x);
-						return x;
-					}),
 					mapTo(new StartAsyncValidationAction(fs.controls.name.id, 'exists')),
 					withLatestFrom(
 						this.roomListFacade.rooms$,

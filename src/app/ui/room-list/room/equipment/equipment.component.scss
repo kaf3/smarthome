@@ -1,21 +1,10 @@
 @import '../../../../../styles/layout';
 @import '../../../../../styles/theming';
 
-.equip-detail {
+/*.equip-detail {
 	width: $layout13 * 5;
 	margin: $layout03;
-}
-
-.equip {
-	display: flex;
-	flex-wrap: wrap;
-	background-color: $app-bar;
-	border-bottom: 1px solid $border-light;
-}
-
-.equip-container {
-	border-top: 1px solid $border-light;
-}
+}*/
 
 .equip-detail-item {
 	@include space-between();

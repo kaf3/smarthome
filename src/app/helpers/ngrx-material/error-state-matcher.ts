@@ -5,7 +5,6 @@ import { MatChipList } from '@angular/material/chips';
 import { MatInput } from '@angular/material/input';
 
 @Directive({
-	// tslint:disable-next-line:directive-selector
 	selector: '[ngrxFormControlState]',
 })
 export class CustomErrorStateMatcherDirective {

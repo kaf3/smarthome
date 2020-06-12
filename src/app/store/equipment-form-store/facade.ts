@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { EquipmentFormState } from './state';
 import { selectEquipmentFormState } from './selectors';
 import { LoadEquipmentForm, SubmitEquipmentForm } from './actions';
+import { Equipment } from '@models/equipment';
 
 @Injectable()
 export class EquipmentFormFacade {
@@ -14,11 +15,11 @@ export class EquipmentFormFacade {
 		this.equipmentFormState$ = this.store.pipe(select(selectEquipmentFormState));
 	}
 
-	public loadEquipmentForm(): void {
-		this.store.dispatch(new LoadEquipmentForm());
+	public loadEquipmentForm(equipment: Equipment): void {
+		this.store.dispatch(new LoadEquipmentForm({ equipment }));
 	}
 
-	public submitEquipmentForm(): void {
-		this.store.dispatch(new SubmitEquipmentForm());
+	public submitEquipmentForm(equipment: Equipment): void {
+		this.store.dispatch(new SubmitEquipmentForm({ equipment }));
 	}
 }

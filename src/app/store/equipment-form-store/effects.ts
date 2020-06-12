@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EquipmentFormState } from './state';
-import {
-	EquipmentFormActions,
-	LoadEquipmentForm,
-	LoadEquipmentFormSuccess,
-	SubmitEquipmentForm,
-} from './actions';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { EquipmentFormActions, SubmitEquipmentForm } from './actions';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { Equipment } from '@models/equipment';
 import { EquipmentFacade } from '@store/equipment';
 import { EquipmentFormFacade } from './facade';
+import { HardwareStoreActions } from '@store/hardware';
 
 @Injectable()
 export class EquipmentFormEffects {
-	loadEquipmentForm$ = createEffect(() =>
+	/*	loadEquipmentForm$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<LoadEquipmentForm>(EquipmentFormActions.loadEquipmentForm),
 			switchMap(() =>
@@ -24,26 +19,23 @@ export class EquipmentFormEffects {
 				),
 			),
 		),
-	);
+	);*/
 
-	submitEquipmentForm$ = createEffect(
-		() =>
-			this.actions$.pipe(
-				ofType<SubmitEquipmentForm>(EquipmentFormActions.submitEquipmentForm),
-				switchMap(() => this.equipmentFormFacade.equipmentFormState$.pipe(take(1))),
-				switchMap((formState: EquipmentFormState) =>
-					this.equipmentFacade.equipment$.pipe(
-						take(1),
-						map((equipment: Equipment) => {
-							const eqp = new Equipment({ ...equipment, value: equipment.value });
-							eqp.name = formState.value.name;
-							eqp.value = formState.value.value;
-							//return new UpsertRoomList({ obj: eqp });
-						}),
-					),
-				),
-			),
-		{ dispatch: false },
+	submitEquipmentForm$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType<SubmitEquipmentForm>(EquipmentFormActions.submitEquipmentForm),
+			withLatestFrom(this.equipmentFormFacade.equipmentFormState$),
+			map(([action, fs]) => {
+				let equipment = new Equipment({
+					...action.payload.equipment,
+					value: action.payload.equipment.value,
+				});
+				equipment.name = fs.value.name;
+				equipment = Equipment.setValue(equipment, fs.value?.value);
+				console.log(equipment);
+				return new HardwareStoreActions.UpdateOneEquipment({ equipment });
+			}),
+		),
 	);
 
 	constructor(

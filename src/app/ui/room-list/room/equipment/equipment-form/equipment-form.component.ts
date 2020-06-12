@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EquipmentFormFacade, EquipmentFormStoreState } from '@store/equipment-form';
-import { Observable } from 'rxjs';
-import { Equipment, EquipmentGroup } from '@models/equipment';
-import { filter } from 'rxjs/operators';
-import { EquipmentFacade } from '@store/equipment';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Equipment } from '@models/equipment';
+import { distinctUntilKeyChanged, filter, take } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-equipment-form',
@@ -11,21 +10,28 @@ import { EquipmentFacade } from '@store/equipment';
 	styleUrls: ['./equipment-form.component.scss'],
 })
 export class EquipmentFormComponent {
+	private eqpSubject = new BehaviorSubject<Equipment | null>(null);
+	@Input() set equipment(eqp: Equipment) {
+		if (!!eqp && eqp?.id !== this.eqpSubject.getValue()?.id) {
+			this.eqpSubject.next(eqp);
+		}
+	}
+	get equipment$(): Observable<Equipment> {
+		return this.eqpSubject.asObservable().pipe(distinctUntilKeyChanged('id'));
+	}
+
 	public readonly formState$: Observable<EquipmentFormStoreState.EquipmentFormState>;
-	public readonly equipment$: Observable<Equipment>;
-	public readonly DEVICE = EquipmentGroup.DEVICE;
 
-	constructor(
-		public readonly equipmentFacade: EquipmentFacade,
-		public readonly equipmentFormFacade: EquipmentFormFacade,
-	) {
+	constructor(public readonly equipmentFormFacade: EquipmentFormFacade) {
 		this.formState$ = this.equipmentFormFacade.equipmentFormState$;
-		this.equipment$ = this.equipmentFacade.equipment$.pipe(filter((eqp) => !!eqp.id));
-
-		this.equipmentFormFacade.loadEquipmentForm();
 	}
 
 	public submitForm(): void {
-		this.equipmentFormFacade.submitEquipmentForm();
+		this.equipment$
+			.pipe(
+				filter((eqp) => !!eqp?.id),
+				take(1),
+			)
+			.subscribe((eqp) => this.equipmentFormFacade.submitEquipmentForm(eqp));
 	}
 }

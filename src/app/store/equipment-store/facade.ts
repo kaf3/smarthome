@@ -6,6 +6,7 @@ import { selectCallState, selectEquipment } from './selectors';
 import { Observable } from 'rxjs';
 import { Equipment } from '@models/equipment';
 import { LoadableFacade } from '@models/common';
+import { GetEquipmentSuccess } from './actions';
 
 @Injectable()
 export class EquipmentFacade extends LoadableFacade<EquipmentState> {
@@ -15,5 +16,9 @@ export class EquipmentFacade extends LoadableFacade<EquipmentState> {
 		super(store, selectCallState);
 
 		this.equipment$ = this.store.pipe(select(selectEquipment));
+	}
+
+	public loadEquipment(equipment: Equipment): void {
+		this.store.dispatch(new GetEquipmentSuccess({ equipment }));
 	}
 }

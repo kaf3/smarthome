@@ -5,19 +5,25 @@ import {
 	removeGroupControl,
 	reset,
 	setValue,
+	updateGroup,
+	validate,
 } from 'ngrx-forms';
 import { EquipmentFormState, EquipmentFormValue, initialEquipmentFormState } from './state';
 import { EquipmentFormActions, EquipmentFormUnion } from './actions';
 import { EquipmentGroup } from '@models/equipment';
+import { required } from 'ngrx-forms/validation';
 
 export const equipmentFormReducer = function (
 	state: EquipmentFormState = initialEquipmentFormState,
 	action: EquipmentFormUnion | Actions<EquipmentFormValue>,
 ): EquipmentFormState {
 	state = formGroupReducer(state, action);
+	state = updateGroup<EquipmentFormValue>({
+		name: validate(required),
+	})(state);
 
 	switch (action.type) {
-		case EquipmentFormActions.loadEquipmentFormSuccess: {
+		case EquipmentFormActions.loadEquipmentForm: {
 			const { group, name, value } = action.payload.equipment;
 
 			if (!state.controls.value) {
@@ -25,23 +31,23 @@ export const equipmentFormReducer = function (
 			}
 
 			if (group === EquipmentGroup.DEVICE) {
-				return setValue(state, { name, value });
+				return setValue(reset(state), { name, value });
 			}
 			state = removeGroupControl(state, 'value');
 
-			return setValue(state, { name });
+			return setValue(reset(state), { name });
 		}
 		case EquipmentFormActions.loadEquipmentFormError: {
 			return state;
 		}
 
-		case EquipmentFormActions.submitEquipmentForm: {
+		/*case EquipmentFormActions.submitEquipmentForm: {
 			//disable to check state in effects
 			return reset(state);
 		}
 		case EquipmentFormActions.submitEquipmentFormSuccess: {
 			return reset(state);
-		}
+		}*/
 		default:
 			return state;
 	}

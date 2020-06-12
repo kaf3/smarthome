@@ -1,10 +1,14 @@
 import { Action } from '@ngrx/store';
 import { Hardware } from '@models/hardware';
+import { Equipment } from '@models/equipment';
 
 export enum HardwareActionTypes {
 	LoadHardware = '[Hardware] Load Hardware',
 	LoadHardwareSuccess = '[Hardware] Load Hardware Success',
 	LoadHardwareFailure = '[Hardware] Load Hardware Failure',
+	UpdateOneEquipment = '[Hardware] Update One Equipment',
+	UpdateOneEquipmentSuccess = '[Hardware] Update One Equipment Success',
+	UpdateOneEquipmentFailure = '[Hardware] Update One Equipment Failure',
 }
 
 export class LoadHardware implements Action {
@@ -23,4 +27,25 @@ export class LoadHardwareFailure implements Action {
 	constructor(public payload: { errorMsg: string }) {}
 }
 
-export type HardwareActions = LoadHardware | LoadHardwareSuccess | LoadHardwareFailure;
+export class UpdateOneEquipment implements Action {
+	readonly type = HardwareActionTypes.UpdateOneEquipment;
+	constructor(public payload: { equipment: Equipment }) {}
+}
+
+export class UpdateOneEquipmentSuccess implements Action {
+	readonly type = HardwareActionTypes.UpdateOneEquipmentSuccess;
+	constructor(public payload: { equipment: Equipment }) {}
+}
+
+export class UpdateOneEquipmentFailure implements Action {
+	readonly type = HardwareActionTypes.UpdateOneEquipmentFailure;
+	constructor(public payload: { errorMsg: string }) {}
+}
+
+export type HardwareActions =
+	| LoadHardware
+	| LoadHardwareSuccess
+	| LoadHardwareFailure
+	| UpdateOneEquipment
+	| UpdateOneEquipmentFailure
+	| UpdateOneEquipmentSuccess;

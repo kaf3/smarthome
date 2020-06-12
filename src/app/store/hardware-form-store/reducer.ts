@@ -6,6 +6,7 @@ import {
 	createFormGroupState,
 	formGroupReducer,
 	FormGroupState,
+	reset,
 	setValue,
 	updateGroup,
 	validate,
@@ -44,8 +45,9 @@ export function reducer(
 		case HardwareFormActionTypes.LoadHardwareForm:
 			return state;
 
-		case HardwareFormActionTypes.LoadHardwareFormSuccess:
-			return setValue(state, action.payload.value);
+		case HardwareFormActionTypes.LoadHardwareFormSuccess: {
+			return setValue(reset(state), action.payload.value);
+		}
 
 		case HardwareFormActionTypes.LoadHardwareFormFailure:
 			return state;

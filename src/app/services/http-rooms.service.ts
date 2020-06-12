@@ -7,7 +7,7 @@ import { RoomList, RoomListDTO } from '@models/rooms';
 import { Room, RoomDTO } from '@models/room';
 import { Collection } from '@models/common';
 import { Hardware, HardwareDTO, HardwareDTOProps } from '@models/hardware';
-import { Equipment } from '@models/equipment';
+import { Equipment, EquipmentDTO, EquipmentDTOProps } from '@models/equipment';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 
@@ -66,6 +66,23 @@ export class HttpRoomsService {
 			);
 	}
 
+	public postEquipment(
+		equipment: Equipment,
+		hardwareId: Hardware['id'],
+		roomId: Room['id'],
+	): Observable<Equipment> {
+		return this.http
+			.put<EquipmentDTOProps>(
+				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${roomId}/hardwareCollection/${hardwareId}/equipmentCollection/${equipment.id}/.json`,
+				Equipment.createDTO(equipment),
+			)
+			.pipe(
+				map((equipmentDTO) =>
+					new EquipmentDTO({ ...equipmentDTO }).createDomain(equipment.id),
+				),
+			);
+	}
+
 	public postRoomList(roomList: RoomList): Observable<RoomList> {
 		/*const cashedActiveRoom = roomList.activeRoom;
 		const cashedActiveHardwares = new Map<Room['id'], Hardware>();
@@ -83,7 +100,6 @@ export class HttpRoomsService {
 			)
 			.pipe(
 				map((roomCollection) => {
-					console.log(roomCollection);
 					return new RoomListDTO({ roomCollection }).createDomain();
 				}),
 			);

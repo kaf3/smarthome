@@ -2,13 +2,16 @@
 	<mat-toolbar>{{ (hardware$ | async).name }}</mat-toolbar>
 	<div class="hardware">
 		<mat-accordion>
-			<mat-expansion-panel *ngFor="let equipment of (hardware$ | async).equipments">
+			<mat-expansion-panel
+				*ngFor="let equipment of (hardware$ | async).equipments"
+				(opened)="onOpen(equipment)"
+			>
 				<mat-expansion-panel-header>
 					<mat-panel-title>
-						{{ equipment.id }}
+						{{ equipment.name || equipment.id }}
 					</mat-panel-title>
 					<mat-panel-description>
-						{{ equipment.value }}
+						{{ equipment.value | unit: equipment }}
 					</mat-panel-description>
 				</mat-expansion-panel-header>
 				<mat-list>
@@ -27,6 +30,7 @@
 					</mat-list-item>
 					<mat-divider></mat-divider>
 				</mat-list>
+				<app-equipment-form [equipment]="equipment"></app-equipment-form>
 			</mat-expansion-panel>
 		</mat-accordion>
 	</div>
