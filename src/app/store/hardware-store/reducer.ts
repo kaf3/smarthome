@@ -30,7 +30,7 @@ export const initialState: HardwareState = hardwareAdapter.getInitialState({
 
 export function reducer(
 	state = initialState,
-	action: HardwareActions | RoomListStoreActions.RoomsUnion | RoomStoreActions.RoomUnion,
+	action: HardwareActions | RoomListStoreActions.RoomListActions | RoomStoreActions.RoomActions,
 ): HardwareState {
 	switch (action.type) {
 		case HardwareActionTypes.LoadHardware:

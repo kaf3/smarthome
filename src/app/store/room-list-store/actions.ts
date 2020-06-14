@@ -76,7 +76,7 @@ export class UpsertRoomListCanceled implements Action {
 	readonly type = RoomListActionsTypes.UpsertRoomListCanceled;
 }
 
-export type RoomsUnion =
+export type RoomListActions =
 	| LoadRoomList
 	| LoadRoomListSuccess
 	| LoadRoomListError

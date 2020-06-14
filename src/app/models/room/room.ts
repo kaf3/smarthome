@@ -68,7 +68,6 @@ export class Room extends BaseRoom {
 	public static deleteHardware(room: Room, hardware: Hardware): Room {
 		let entityHardware: EntityState<Hardware> = this.createEntityState(room);
 		entityHardware = this.adapter.removeOne(hardware.id, entityHardware);
-
 		return new Room({
 			...room,
 			hardwares: Object.values(entityHardware.entities),
@@ -77,9 +76,16 @@ export class Room extends BaseRoom {
 
 	public static addHardware(room: Room, hardware: Hardware): Room {
 		let entityHardware: EntityState<Hardware> = this.createEntityState(room);
-
 		entityHardware = this.adapter.addOne(hardware, entityHardware);
+		return new Room({
+			...room,
+			hardwares: Object.values(entityHardware.entities),
+		});
+	}
 
+	public static updateHardware(room: Room, hardware: Hardware): Room {
+		let entityHardware: EntityState<Hardware> = this.createEntityState(room);
+		entityHardware = this.adapter.upsertOne(hardware, entityHardware);
 		return new Room({
 			...room,
 			hardwares: Object.values(entityHardware.entities),

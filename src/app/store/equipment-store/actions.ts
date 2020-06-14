@@ -25,4 +25,4 @@ export class GetEquipmentError implements Action {
 	constructor(public payload: { errorMsg: string }) {}
 }
 
-export type EquipmentUnion = GetEquipment | GetEquipmentSuccess | GetEquipmentError;
+export type EquipmentActions = GetEquipment | GetEquipmentSuccess | GetEquipmentError;

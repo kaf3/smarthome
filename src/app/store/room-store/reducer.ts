@@ -1,16 +1,26 @@
-import { RoomActionTypes, RoomUnion } from './actions';
+import { RoomActions, RoomActionTypes } from './actions';
 import { initialRoomState, roomAdapter, RoomState } from './state';
-import { RoomListActionsTypes, RoomsUnion } from '../room-list-store/actions';
+import { RoomListActionsTypes } from '../room-list-store/actions';
 import { LoadingState } from '@models/error-loading';
 import { Room } from '@models/room';
+import { HardwareStoreActions } from '@store/hardware';
+import { RoomListStoreActions } from '@store/room-list';
+import { HardwareActionTypes } from '../hardware-store/actions';
 
-export function roomReducer(state = initialRoomState, action: RoomUnion | RoomsUnion): RoomState {
+export function roomReducer(
+	state = initialRoomState,
+	action:
+		| RoomActions
+		| RoomListStoreActions.RoomListActions
+		| HardwareStoreActions.HardwareActions,
+): RoomState {
 	switch (action.type) {
 		case RoomActionTypes.getRoom:
 		case RoomListActionsTypes.moveHardware: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
-		case RoomActionTypes.getRoomSuccess: {
+		case RoomActionTypes.getRoomSuccess:
+		case HardwareActionTypes.UpdateOneEquipmentSuccess: {
 			const { hardwares, activeHardware } = action.payload.room;
 			return roomAdapter.addAll(hardwares, {
 				...state,

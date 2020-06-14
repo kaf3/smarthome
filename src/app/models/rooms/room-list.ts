@@ -27,12 +27,19 @@ export class RoomList {
 		sortComparer: false,
 	});
 
-	public static updateManyRoom(roomList: RoomList, rooms: Room[]): RoomList {
-		let entityRoom: EntityState<Room> = this.adapter.addAll(
-			roomList.rooms,
-			this.adapter.getInitialState(),
-		);
+	private static createEntityState(roomList: RoomList): EntityState<Room> {
+		return this.adapter.addAll(roomList.rooms, this.adapter.getInitialState());
+	}
+
+	public static updateManyRooms(roomList: RoomList, rooms: Room[]): RoomList {
+		let entityRoom: EntityState<Room> = this.createEntityState(roomList);
 		entityRoom = RoomList.adapter.upsertMany(rooms, entityRoom);
+		return new RoomList({ ...roomList, rooms: Object.values(entityRoom.entities) });
+	}
+
+	public static updateRoom(roomList: RoomList, room: Room): RoomList {
+		let entityRoom: EntityState<Room> = this.createEntityState(roomList);
+		entityRoom = RoomList.adapter.upsertOne(room, entityRoom);
 		return new RoomList({ ...roomList, rooms: Object.values(entityRoom.entities) });
 	}
 }

@@ -58,7 +58,12 @@ export class HardwareFormEffects {
 				}
 
 				if (isNameChanged && !isRoomNameChanged) {
-					return new RoomStoreActions.UpdateOneHardware({ hardware: oldHardware });
+					oldRoom = Room.updateHardware(oldRoom, oldHardware);
+					oldRoomList = RoomList.updateRoom(oldRoomList, oldRoom);
+					return new RoomStoreActions.UpdateOneHardware({
+						hardware: oldHardware,
+						roomList: oldRoomList,
+					});
 				}
 
 				if (isRoomNameChanged) {
@@ -67,8 +72,7 @@ export class HardwareFormEffects {
 					oldRoom.activeHardware = Hardware.initial;
 					newRoom = Room.addHardware(newRoom, oldHardware);
 
-					oldRoomList = RoomList.updateManyRoom(oldRoomList, [oldRoom, newRoom]);
-					console.log(oldRoomList);
+					oldRoomList = RoomList.updateManyRooms(oldRoomList, [oldRoom, newRoom]);
 
 					return new RoomListStoreActions.MoveHardware({ roomList: oldRoomList });
 				}

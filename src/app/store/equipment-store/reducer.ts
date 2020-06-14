@@ -1,11 +1,11 @@
 import { EquipmentState, initialEquipmentState } from './state';
-import { EquipmentActionsTypes, EquipmentUnion } from './actions';
+import { EquipmentActions, EquipmentActionsTypes } from './actions';
 import { LoadingState } from '@models/error-loading';
 import { RoomListStoreActions } from '@store/room-list';
 
 export function equipmentReducer(
 	state: EquipmentState = initialEquipmentState,
-	action: EquipmentUnion | RoomListStoreActions.RoomsUnion,
+	action: EquipmentActions | RoomListStoreActions.RoomListActions,
 ): EquipmentState {
 	switch (action.type) {
 		case EquipmentActionsTypes.getEquipment: {

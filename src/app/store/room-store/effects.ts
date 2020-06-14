@@ -41,9 +41,16 @@ export class RoomEffects {
 			ofType<UpdateOneHardware>(RoomActionTypes.updateOneHardware),
 			withLatestFrom(this.roomFacade.room$),
 			concatMap(([action, room]) =>
-				this.httpRoomsService.postHardware(action.payload.hardware, room.id),
+				this.httpRoomsService.postHardware(action.payload.hardware, room.id).pipe(
+					map(
+						(hardware) =>
+							new UpdateOneHardwareSuccess({
+								hardware,
+								roomList: action.payload.roomList,
+							}),
+					),
+				),
 			),
-			map((hardware) => new UpdateOneHardwareSuccess({ hardware })),
 			catchError(() =>
 				of(new UpdateOneHardwareFailure({ errorMsg: 'could not update hardware' })),
 			),

@@ -1,6 +1,8 @@
 import { Action } from '@ngrx/store';
 import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
+import { RoomList } from '@models/rooms';
+import { Room } from '@models/room';
 
 export enum HardwareActionTypes {
 	LoadHardware = '[Hardware] Load Hardware',
@@ -29,12 +31,12 @@ export class LoadHardwareFailure implements Action {
 
 export class UpdateOneEquipment implements Action {
 	readonly type = HardwareActionTypes.UpdateOneEquipment;
-	constructor(public payload: { equipment: Equipment }) {}
+	constructor(public payload: { equipment: Equipment; room: Room; roomList: RoomList }) {}
 }
 
 export class UpdateOneEquipmentSuccess implements Action {
 	readonly type = HardwareActionTypes.UpdateOneEquipmentSuccess;
-	constructor(public payload: { equipment: Equipment }) {}
+	constructor(public payload: { equipment: Equipment; room: Room; roomList: RoomList }) {}
 }
 
 export class UpdateOneEquipmentFailure implements Action {

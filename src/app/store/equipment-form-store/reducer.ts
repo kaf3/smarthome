@@ -9,13 +9,13 @@ import {
 	validate,
 } from 'ngrx-forms';
 import { EquipmentFormState, EquipmentFormValue, initialEquipmentFormState } from './state';
-import { EquipmentFormActions, EquipmentFormUnion } from './actions';
+import { EquipmentFormActions, EquipmentFormActionTypes } from './actions';
 import { EquipmentGroup } from '@models/equipment';
 import { required } from 'ngrx-forms/validation';
 
 export const equipmentFormReducer = function (
 	state: EquipmentFormState = initialEquipmentFormState,
-	action: EquipmentFormUnion | Actions<EquipmentFormValue>,
+	action: EquipmentFormActions | Actions<EquipmentFormValue>,
 ): EquipmentFormState {
 	state = formGroupReducer(state, action);
 	state = updateGroup<EquipmentFormValue>({
@@ -23,7 +23,7 @@ export const equipmentFormReducer = function (
 	})(state);
 
 	switch (action.type) {
-		case EquipmentFormActions.loadEquipmentForm: {
+		case EquipmentFormActionTypes.loadEquipmentForm: {
 			const { group, name, value } = action.payload.equipment;
 
 			if (!state.controls.value) {
@@ -37,7 +37,7 @@ export const equipmentFormReducer = function (
 
 			return setValue(reset(state), { name });
 		}
-		case EquipmentFormActions.loadEquipmentFormError: {
+		case EquipmentFormActionTypes.loadEquipmentFormError: {
 			return state;
 		}
 

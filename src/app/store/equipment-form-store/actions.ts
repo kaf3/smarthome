@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Equipment } from '@models/equipment';
 
-export enum EquipmentFormActions {
+export enum EquipmentFormActionTypes {
 	loadEquipmentForm = '[Equipment Form] Load Form',
 	loadEquipmentFormSuccess = '[Equipment Form] Load Form Success',
 	loadEquipmentFormError = '[Equipment Form] Load Form error',
@@ -11,36 +11,36 @@ export enum EquipmentFormActions {
 }
 
 export class LoadEquipmentForm implements Action {
-	readonly type = EquipmentFormActions.loadEquipmentForm;
+	readonly type = EquipmentFormActionTypes.loadEquipmentForm;
 
 	constructor(public payload: { equipment: Equipment }) {}
 }
 
 export class LoadEquipmentFormSuccess implements Action {
-	readonly type = EquipmentFormActions.loadEquipmentFormSuccess;
+	readonly type = EquipmentFormActionTypes.loadEquipmentFormSuccess;
 
 	constructor(public payload: { equipment: Equipment }) {}
 }
 
 export class LoadEquipmentFormError implements Action {
-	readonly type = EquipmentFormActions.loadEquipmentFormError;
+	readonly type = EquipmentFormActionTypes.loadEquipmentFormError;
 }
 
 export class UpdateEquipmentForm implements Action {
-	readonly type = EquipmentFormActions.updateEquipmentForm;
+	readonly type = EquipmentFormActionTypes.updateEquipmentForm;
 }
 
 export class SubmitEquipmentForm implements Action {
-	readonly type = EquipmentFormActions.submitEquipmentForm;
+	readonly type = EquipmentFormActionTypes.submitEquipmentForm;
 
 	constructor(public payload: { equipment: Equipment }) {}
 }
 
 export class SubmitEquipmentFormSuccess implements Action {
-	readonly type = EquipmentFormActions.submitEquipmentFormSuccess;
+	readonly type = EquipmentFormActionTypes.submitEquipmentFormSuccess;
 }
 
-export type EquipmentFormUnion =
+export type EquipmentFormActions =
 	| UpdateEquipmentForm
 	| SubmitEquipmentForm
 	| LoadEquipmentForm

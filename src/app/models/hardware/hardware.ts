@@ -1,6 +1,7 @@
 import { Equipment, EquipmentDTO, EquipmentDTOProps } from '@models/equipment';
 import { BaseDomain } from '@models/common/baseDomain';
 import { Collection, OmitByPropType } from '@models/common';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export class BaseHardware extends BaseDomain {
 	protected constructor(
@@ -76,6 +77,24 @@ export class Hardware extends BaseHardware {
 		equipments: [],
 		activeEquipment: Equipment.initial,
 	});
+
+	private static readonly adapter: EntityAdapter<Equipment> = createEntityAdapter<Equipment>({
+		selectId: (eqp) => eqp.id,
+		sortComparer: false,
+	});
+
+	private static createEntityState(hardware: Hardware): EntityState<Equipment> {
+		return this.adapter.addAll(hardware.equipments, this.adapter.getInitialState());
+	}
+
+	public static updateEquipment(hardware: Hardware, equipment: Equipment): Hardware {
+		let entityEquipment: EntityState<Equipment> = this.createEntityState(hardware);
+		entityEquipment = this.adapter.upsertOne(equipment, entityEquipment);
+		return new Hardware({
+			...hardware,
+			equipments: Object.values(entityEquipment.entities),
+		});
+	}
 }
 
 HardwareDTO.prototype.createDomain = function (id: Hardware['id']): Hardware {
