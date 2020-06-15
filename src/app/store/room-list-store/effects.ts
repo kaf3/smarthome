@@ -26,13 +26,10 @@ import { Router } from '@angular/router';
 import { RoomListFacade } from './facade';
 import { RoomList } from '@models/rooms';
 import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
-
-/*import { RoomStoreActions } from '@store/room';
-import { HardwareStoreActions } from '@store/hardware';
-import { HardwareFormStoreActions } from '@store/hardware-form';*/
+import { ErrorEffects } from '@models/common';
 
 @Injectable()
-export class RoomListEffects {
+export class RoomListEffects extends ErrorEffects {
 	loadRooms$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<LoadRoomList>(RoomListActionsTypes.loadRoomList),
@@ -55,29 +52,14 @@ export class RoomListEffects {
 		),
 	);
 
-	errorHandler = createEffect(
-		() =>
-			this.actions$.pipe(
-				ofType(
-					RoomListActionsTypes.loadRoomListError,
-					RoomListActionsTypes.moveHardwareError,
-					/*					RoomStoreActions.RoomActionTypes.getRoomError,
-					HardwareStoreActions.HardwareActionTypes.LoadHardwareFailure,
-					HardwareFormStoreActions.HardwareFormActionTypes.LoadHardwareFormFailure,
-					HardwareStoreActions.HardwareActionTypes.UpdateOneEquipmentFailure,
-					RoomStoreActions.RoomActionTypes.updateOneHardwareFailure,*/
-				),
-				map((action: LoadRoomListError) =>
-					this.openSnackBar(action.payload.errorMsg, 'Error'),
-				),
-			),
-		{ dispatch: false },
+	errorHandler = this.createErrorHandler(
+		RoomListActionsTypes.loadRoomListError,
+		RoomListActionsTypes.moveHardwareError,
 	);
 
 	redirectToActiveRoom = createEffect(
 		() =>
 			this.actions$.pipe(
-				/*ofType<OpenRoomList>(RoomListActionsTypes.openRoomList),*/
 				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
 				filter((action) => action.payload.routerState.url.endsWith('/rooms')),
 				withLatestFrom(this.roomListFacade.roomList$),
@@ -91,19 +73,15 @@ export class RoomListEffects {
 		{ dispatch: false },
 	);
 
-	private openSnackBar(message: string, action: string): void {
-		this._snackBar.open(message, action, {
-			duration: 2000,
-		});
-	}
-
 	constructor(
-		private readonly actions$: Actions,
+		readonly actions$: Actions,
 		private readonly httpRoomsService: HttpRoomsService,
 		private readonly httpRooms: HttpRoomsService,
 		private readonly serializer: SerializeService,
-		private readonly _snackBar: MatSnackBar,
+		readonly snackBar: MatSnackBar,
 		private readonly router: Router,
 		private readonly roomListFacade: RoomListFacade,
-	) {}
+	) {
+		super(snackBar, actions$);
+	}
 }

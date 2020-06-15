@@ -9,13 +9,27 @@ import {
 	UpdateOneHardwareFailure,
 	UpdateOneHardwareSuccess,
 } from './actions';
-import { catchError, concatMap, map, switchMap, take } from 'rxjs/operators';
-import { RoomListFacade } from '@store/room-list';
+import {
+	catchError,
+	concatMap,
+	filter,
+	map,
+	switchMap,
+	take,
+	withLatestFrom,
+} from 'rxjs/operators';
+import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
 import { HttpRoomsService } from '@services';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
+import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
+import { RoomFacade } from './facade';
+import { RoomListActionsTypes } from '../room-list-store/actions';
+import { ErrorEffects } from '@models/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
-export class RoomEffects {
+export class RoomEffects extends ErrorEffects {
 	getRoom$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<GetRoom>(RoomActionTypes.getRoom),
@@ -51,16 +65,58 @@ export class RoomEffects {
 								room: payload.room,
 							}),
 					),
+					catchError(() =>
+						of(new UpdateOneHardwareFailure({ errorMsg: 'could not update hardware' })),
+					),
 				),
-			),
-			catchError(() =>
-				of(new UpdateOneHardwareFailure({ errorMsg: 'could not update hardware' })),
 			),
 		),
 	);
+
+	redirectToActiveHardware$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
+				filter((action) => !!/room\d+$/.test(action.payload.routerState.url)),
+				withLatestFrom(this.roomFacade.room$),
+				map(([_action, room]) => {
+					const { id } = room.activeHardware;
+					if (!!id) {
+						this.router.navigate([`${this.router.url}/${id}`]);
+					}
+				}),
+			),
+		{ dispatch: false },
+	);
+
+	redirectBack = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType<RoomListStoreActions.MoveHardwareSuccess>(
+					RoomListActionsTypes.moveHardwareSuccess,
+				),
+				map(() => {
+					const url = this.router.url.split('/');
+					url.pop();
+					this.router.navigate([url.join('/')]);
+				}),
+			),
+		{ dispatch: false },
+	);
+
+	errorHandler$ = this.createErrorHandler(
+		RoomActionTypes.getRoomError,
+		RoomActionTypes.updateOneHardwareFailure,
+	);
+
 	constructor(
-		private readonly actions$: Actions,
+		readonly actions$: Actions,
 		private readonly roomListFacade: RoomListFacade,
+		private readonly roomFacade: RoomFacade,
 		private readonly httpRoomsService: HttpRoomsService,
-	) {}
+		private readonly router: Router,
+		readonly snackBar: MatSnackBar,
+	) {
+		super(snackBar, actions$);
+	}
 }

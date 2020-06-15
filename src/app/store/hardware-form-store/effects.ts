@@ -18,9 +18,11 @@ import { Room } from '@models/room';
 import { RoomList } from '@models/rooms';
 import { ClearAsyncErrorAction, SetAsyncErrorAction, StartAsyncValidationAction } from 'ngrx-forms';
 import { timer } from 'rxjs';
+import { ErrorEffects } from '@models/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
-export class HardwareFormEffects {
+export class HardwareFormEffects extends ErrorEffects {
 	loadHarwdareForm$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(HardwareFormActionTypes.LoadHardwareForm),
@@ -116,11 +118,16 @@ export class HardwareFormEffects {
 		),
 	);
 
+	errorHandler = this.createErrorHandler(HardwareFormActionTypes.LoadHardwareFormFailure);
+
 	constructor(
-		private readonly actions$: Actions<HardwareFormActions>,
+		readonly actions$: Actions<HardwareFormActions>,
 		private readonly roomFacade: RoomFacade,
 		private readonly hardwareFacade: HardwareFacade,
 		private readonly hardwareFormFacade: HardwareFormFacade,
 		private readonly roomListFacade: RoomListFacade,
-	) {}
+		readonly snackBar: MatSnackBar,
+	) {
+		super(snackBar, actions$);
+	}
 }

@@ -12,9 +12,11 @@ import {
 import { RoomFacade } from '@store/room';
 import { HttpRoomsService } from '@services';
 import { of } from 'rxjs';
+import { ErrorEffects } from '@models/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
-export class HardwareEffects {
+export class HardwareEffects extends ErrorEffects {
 	getHardware$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(HardwareActionTypes.LoadHardware),
@@ -52,16 +54,28 @@ export class HardwareEffects {
 									hardware: payload.hardware,
 								}),
 						),
+						catchError(() =>
+							of(
+								new UpdateOneEquipmentFailure({
+									errorMsg: 'could not update equipment',
+								}),
+							),
+						),
 					),
-			),
-			catchError(() =>
-				of(new UpdateOneEquipmentFailure({ errorMsg: 'could not update equipment' })),
 			),
 		),
 	);
+
+	errorHandler = this.createErrorHandler(
+		HardwareActionTypes.UpdateOneEquipmentFailure,
+		HardwareActionTypes.LoadHardwareFailure,
+	);
 	constructor(
-		private readonly actions$: Actions<HardwareActions>,
+		readonly actions$: Actions<HardwareActions>,
 		private readonly roomFacade: RoomFacade,
 		private readonly httpRoomsService: HttpRoomsService,
-	) {}
+		readonly snackBar: MatSnackBar,
+	) {
+		super(snackBar, actions$);
+	}
 }
