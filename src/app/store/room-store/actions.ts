@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Room } from '@models/room/room';
 import { Hardware } from '@models/hardware';
-import { RoomList } from '@models/rooms';
 
 export enum RoomActionTypes {
 	getRoom = '[Room] Get Room',
@@ -33,13 +32,13 @@ export class GetRoomError implements Action {
 export class UpdateOneHardware implements Action {
 	readonly type = RoomActionTypes.updateOneHardware;
 
-	constructor(public payload: { hardware: Hardware; roomList: RoomList }) {}
+	constructor(public payload: { hardware: Hardware; room: Room }) {}
 }
 
 export class UpdateOneHardwareSuccess implements Action {
 	readonly type = RoomActionTypes.updateOneHardwareSuccess;
 
-	constructor(public payload: { hardware: Hardware; roomList: RoomList }) {}
+	constructor(public payload: { hardware: Hardware; room: Room }) {}
 }
 
 export class UpdateOneHardwareFailure implements Action {

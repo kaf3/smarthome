@@ -32,7 +32,7 @@ export class RoomListEffects {
 		),
 	);
 
-	upsertRoomList$ = createEffect(() =>
+	moveHardware$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<MoveHardware>(RoomListActionsTypes.moveHardware),
 			concatMap((action) => this.httpRoomsService.postRoomList(action.payload.roomList)),

@@ -8,18 +8,9 @@ import {
 	UpdateOneHardwareFailure,
 	UpdateOneHardwareSuccess,
 } from './actions';
-import {
-	catchError,
-	concatMap,
-	filter,
-	map,
-	switchMap,
-	take,
-	withLatestFrom,
-} from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, take } from 'rxjs/operators';
 import { RoomListFacade } from '@store/room-list';
 import { HttpRoomsService } from '@services';
-import { RoomFacade } from './facade';
 import { of } from 'rxjs';
 
 @Injectable()
@@ -39,14 +30,13 @@ export class RoomEffects {
 	updateHardware$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<UpdateOneHardware>(RoomActionTypes.updateOneHardware),
-			withLatestFrom(this.roomFacade.room$),
-			concatMap(([action, room]) =>
-				this.httpRoomsService.postHardware(action.payload.hardware, room.id).pipe(
+			concatMap(({ payload }) =>
+				this.httpRoomsService.postHardware(payload.hardware, payload.room.id).pipe(
 					map(
 						(hardware) =>
 							new UpdateOneHardwareSuccess({
 								hardware,
-								roomList: action.payload.roomList,
+								room: payload.room,
 							}),
 					),
 				),
@@ -60,6 +50,5 @@ export class RoomEffects {
 		private readonly actions$: Actions,
 		private readonly roomListFacade: RoomListFacade,
 		private readonly httpRoomsService: HttpRoomsService,
-		private readonly roomFacade: RoomFacade,
 	) {}
 }

@@ -18,9 +18,7 @@ export function roomsReducer(
 			return { ...state, callState: LoadingState.LOADING };
 		}
 		case RoomListActionsTypes.loadRoomListSuccess:
-		case RoomListActionsTypes.moveHardwareSuccess:
-		case RoomActionTypes.updateOneHardwareSuccess:
-		case HardwareActionTypes.UpdateOneEquipmentSuccess: {
+		case RoomListActionsTypes.moveHardwareSuccess: {
 			const { rooms, activeRoom } = action.payload.roomList;
 			return roomsAdapter.addAll(rooms, {
 				...state,
@@ -36,8 +34,13 @@ export function roomsReducer(
 			return { ...state, callState: action.payload };
 
 		case RoomListActionsTypes.upsertRoom:
-		case RoomListActionsTypes.upsertRoomWhenLeft: {
-			return roomsAdapter.upsertOne(action.payload.room, state);
+		case RoomListActionsTypes.upsertRoomWhenLeft:
+		case HardwareActionTypes.UpdateOneEquipmentSuccess:
+		case RoomActionTypes.updateOneHardwareSuccess: {
+			return roomsAdapter.upsertOne(action.payload.room, {
+				...state,
+				callState: LoadingState.LOADED,
+			});
 		}
 
 		case RoomListActionsTypes.upsertRoomListWhenLeft: {

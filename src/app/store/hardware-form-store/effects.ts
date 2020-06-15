@@ -59,10 +59,9 @@ export class HardwareFormEffects {
 
 				if (isNameChanged && !isRoomNameChanged) {
 					oldRoom = Room.updateHardware(oldRoom, oldHardware);
-					oldRoomList = RoomList.updateRoom(oldRoomList, oldRoom);
 					return new RoomStoreActions.UpdateOneHardware({
 						hardware: oldHardware,
-						roomList: oldRoomList,
+						room: oldRoom,
 					});
 				}
 

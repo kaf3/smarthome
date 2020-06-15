@@ -8,7 +8,6 @@ import { HardwareFacade, HardwareStoreActions } from '@store/hardware';
 import { RoomFacade } from '@store/room';
 import { RoomListFacade } from '@store/room-list';
 import { Hardware } from '@models/hardware';
-import { RoomList } from '@models/rooms';
 import { Room } from '@models/room';
 
 @Injectable()
@@ -30,11 +29,10 @@ export class EquipmentFormEffects {
 			ofType<SubmitEquipmentForm>(EquipmentFormActionTypes.submitEquipmentForm),
 			withLatestFrom(
 				this.equipmentFormFacade.equipmentFormState$,
-				this.roomListFacade.roomList$,
 				this.roomFacade.room$,
 				this.hardwareFacade.hardware$,
 			),
-			map(([action, fs, roomList, room, hardware]) => {
+			map(([action, fs, room, hardware]) => {
 				let equipment = new Equipment({
 					...action.payload.equipment,
 					value: action.payload.equipment.value,
@@ -43,10 +41,9 @@ export class EquipmentFormEffects {
 				equipment = Equipment.setValue(equipment, fs.value?.value);
 				const updatedHardware = Hardware.updateEquipment(hardware, equipment);
 				const updatedRoom = Room.updateHardware(room, updatedHardware);
-				const updatedRoomList = RoomList.updateRoom(roomList, updatedRoom);
 				return new HardwareStoreActions.UpdateOneEquipment({
 					equipment,
-					roomList: updatedRoomList,
+					hardware: updatedHardware,
 					room: updatedRoom,
 				});
 			}),

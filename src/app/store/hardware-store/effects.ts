@@ -1,14 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-	catchError,
-	concatMap,
-	filter,
-	map,
-	switchMap,
-	take,
-	withLatestFrom,
-} from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, take } from 'rxjs/operators';
 import {
 	HardwareActions,
 	HardwareActionTypes,
@@ -17,7 +9,6 @@ import {
 	UpdateOneEquipmentSuccess,
 } from './actions';
 import { RoomFacade } from '@store/room';
-import { HardwareFacade } from './facade';
 import { HttpRoomsService } from '@services';
 import { of } from 'rxjs';
 
@@ -45,17 +36,16 @@ export class HardwareEffects {
 	updateEquipment$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(HardwareActionTypes.UpdateOneEquipment),
-			withLatestFrom(this.hardwareFacade.hardware$, this.roomFacade.room$),
-			concatMap(([action, hardware, room]) =>
+			concatMap(({ payload }) =>
 				this.httpRoomsService
-					.postEquipment(action.payload.equipment, hardware.id, room.id)
+					.postEquipment(payload.equipment, payload.hardware.id, payload.room.id)
 					.pipe(
 						map(
 							(equipment) =>
 								new UpdateOneEquipmentSuccess({
 									equipment,
-									room: action.payload.room,
-									roomList: action.payload.roomList,
+									room: payload.room,
+									hardware: payload.hardware,
 								}),
 						),
 					),
@@ -68,7 +58,6 @@ export class HardwareEffects {
 	constructor(
 		private readonly actions$: Actions<HardwareActions>,
 		private readonly roomFacade: RoomFacade,
-		private readonly hardwareFacade: HardwareFacade,
 		private readonly httpRoomsService: HttpRoomsService,
 	) {}
 }
