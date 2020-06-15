@@ -7,10 +7,17 @@ import {
 	MoveHardware,
 	MoveHardwareError,
 	MoveHardwareSuccess,
-	OpenRoomList,
 	RoomListActionsTypes,
 } from './actions';
-import { catchError, concatMap, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import {
+	catchError,
+	concatMap,
+	filter,
+	map,
+	switchMap,
+	take,
+	withLatestFrom,
+} from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { HttpRoomsService, SerializeService } from '@services';
@@ -18,6 +25,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { RoomListFacade } from './facade';
 import { RoomList } from '@models/rooms';
+import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
+
+/*import { RoomStoreActions } from '@store/room';
+import { HardwareStoreActions } from '@store/hardware';
+import { HardwareFormStoreActions } from '@store/hardware-form';*/
 
 @Injectable()
 export class RoomListEffects {
@@ -49,6 +61,11 @@ export class RoomListEffects {
 				ofType(
 					RoomListActionsTypes.loadRoomListError,
 					RoomListActionsTypes.moveHardwareError,
+					/*					RoomStoreActions.RoomActionTypes.getRoomError,
+					HardwareStoreActions.HardwareActionTypes.LoadHardwareFailure,
+					HardwareFormStoreActions.HardwareFormActionTypes.LoadHardwareFormFailure,
+					HardwareStoreActions.HardwareActionTypes.UpdateOneEquipmentFailure,
+					RoomStoreActions.RoomActionTypes.updateOneHardwareFailure,*/
 				),
 				map((action: LoadRoomListError) =>
 					this.openSnackBar(action.payload.errorMsg, 'Error'),
@@ -60,7 +77,9 @@ export class RoomListEffects {
 	redirectToActiveRoom = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType<OpenRoomList>(RoomListActionsTypes.openRoomList),
+				/*ofType<OpenRoomList>(RoomListActionsTypes.openRoomList),*/
+				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
+				filter((action) => action.payload.routerState.url.endsWith('/rooms')),
 				withLatestFrom(this.roomListFacade.roomList$),
 				map(([_a, roomList]) => {
 					const { id } = roomList.activeRoom;

@@ -16,8 +16,7 @@ export const {
 
 export const selectRoomById = createSelector(
 	selectRoomListEntities,
-	(roomEntities: Dictionary<Room>, id: Room['id']) =>
-		!!roomEntities[id] && new Room({ ...roomEntities[id] }),
+	(roomEntities: Dictionary<Room>, id: Room['id']) => roomEntities[id], // && new Room({ ...roomEntities[id] }),
 );
 
 export const selectCallState = createSelector(selectRoomListState, (state) => state.callState);

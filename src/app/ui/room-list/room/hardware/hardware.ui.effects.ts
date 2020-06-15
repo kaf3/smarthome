@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect } from '@ngrx/effects';
-import { HardwareStoreActions } from '@store/hardware';
-import { navigation } from '@nrwl/angular';
-import { HardwareComponent } from './hardware.component';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { Actions } from '@ngrx/effects';
 import { RoomFacade } from '@store/room';
 
 @Injectable()
 export class HardwareUiEffects {
-	navigationHardware = createEffect(() =>
+	/*	navigationHardware = createEffect(() =>
 		this.actions$.pipe(
 			navigation(HardwareComponent, {
 				run: (a: ActivatedRouteSnapshot) =>
@@ -20,7 +16,7 @@ export class HardwareUiEffects {
 				},
 			}),
 		),
-	);
+	);*/
 
 	constructor(private readonly actions$: Actions, private readonly roomFacade: RoomFacade) {}
 }

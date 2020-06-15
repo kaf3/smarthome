@@ -37,17 +37,6 @@ export const equipmentFormReducer = function (
 
 			return setValue(reset(state), { name });
 		}
-		case EquipmentFormActionTypes.loadEquipmentFormError: {
-			return state;
-		}
-
-		/*case EquipmentFormActions.submitEquipmentForm: {
-			//disable to check state in effects
-			return reset(state);
-		}
-		case EquipmentFormActions.submitEquipmentFormSuccess: {
-			return reset(state);
-		}*/
 		default:
 			return state;
 	}

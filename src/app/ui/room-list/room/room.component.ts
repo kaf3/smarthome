@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { EquipmentGroup } from '@models/equipment';
 import { RoomFacade } from '@store/room';
 import { Room } from '@models/room';
 
@@ -12,7 +11,6 @@ import { Room } from '@models/room';
 })
 export class RoomComponent implements OnInit {
 	public room$: Observable<Room>;
-	public readonly DEVICE = EquipmentGroup.DEVICE;
 	public openedId: string | null = null;
 
 	constructor(private readonly roomFacade: RoomFacade) {}

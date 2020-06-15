@@ -39,7 +39,7 @@ export class HardwareFormComponent implements OnDestroy {
 		this.hardwareFormFacade.loadHardwareForm();
 	}
 
-	ngOnDestroy() {
+	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
 	}

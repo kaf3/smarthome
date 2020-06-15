@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
 	GetRoom,
+	GetRoomError,
 	GetRoomSuccess,
 	RoomActionTypes,
 	UpdateOneHardware,
 	UpdateOneHardwareFailure,
 	UpdateOneHardwareSuccess,
 } from './actions';
-import { catchError, concatMap, filter, map, switchMap, take } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap, take } from 'rxjs/operators';
 import { RoomListFacade } from '@store/room-list';
 import { HttpRoomsService } from '@services';
 import { of } from 'rxjs';
@@ -20,9 +21,20 @@ export class RoomEffects {
 			ofType<GetRoom>(RoomActionTypes.getRoom),
 			switchMap((action) =>
 				this.roomListFacade.roomById$(action.payload.id).pipe(
-					filter((room) => !!room),
+					map((room) => {
+						if (!room) throw new Error();
+						return room;
+					}),
+					//filter((room) => !!room?.id),
 					take(1),
 					map((room) => new GetRoomSuccess({ room })),
+					catchError(() =>
+						of(
+							new GetRoomError({
+								errorMsg: 'Ошибка: Комната не найдена',
+							}),
+						),
+					),
 				),
 			),
 		),

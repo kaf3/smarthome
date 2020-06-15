@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, filter, map, switchMap, take } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap, take } from 'rxjs/operators';
 import {
 	HardwareActions,
 	HardwareActionTypes,
+	LoadHardwareFailure,
 	LoadHardwareSuccess,
 	UpdateOneEquipmentFailure,
 	UpdateOneEquipmentSuccess,
@@ -19,18 +20,21 @@ export class HardwareEffects {
 			ofType(HardwareActionTypes.LoadHardware),
 			switchMap((action) =>
 				this.roomFacade.hardwareById$(action.payload.id).pipe(
-					filter((hardware) => !!hardware?.id),
+					map((hardware) => {
+						if (!hardware) throw new Error();
+						return hardware;
+					}),
 					take(1),
 					map((hardware) => new LoadHardwareSuccess({ hardware })),
+					catchError(() =>
+						of(
+							new LoadHardwareFailure({
+								errorMsg: 'Ошибка, устройство не найдено',
+							}),
+						),
+					),
 				),
 			),
-			/*			catchError(() =>
-				of(
-					new LoadHardwareFailure({
-						errorMsg: 'could not load hardware',
-					}),
-				),
-			),*/
 		),
 	);
 	updateEquipment$ = createEffect(() =>

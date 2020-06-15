@@ -8,6 +8,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { RoomListRoutingModule } from './room-list.routing.module';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RoomGuard } from './room/room.guard';
+import { HardwareGuard } from './room/hardware/hardware.guard';
 
 @NgModule({
 	declarations: [RoomListComponent],
@@ -21,6 +22,6 @@ import { RoomGuard } from './room/room.guard';
 		MatGridListModule,
 		MatProgressBarModule,
 	],
-	providers: [RoomGuard],
+	providers: [RoomGuard, HardwareGuard],
 })
 export class RoomListModule {}

@@ -12,18 +12,6 @@ import { Room } from '@models/room';
 
 @Injectable()
 export class EquipmentFormEffects {
-	/*	loadEquipmentForm$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType<LoadEquipmentForm>(EquipmentFormActions.loadEquipmentForm),
-			switchMap(() =>
-				this.equipmentFacade.equipment$.pipe(
-					filter((equipment) => !!equipment.id),
-					map((equipment) => new LoadEquipmentFormSuccess({ equipment })),
-				),
-			),
-		),
-	);*/
-
 	submitEquipmentForm$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<SubmitEquipmentForm>(EquipmentFormActionTypes.submitEquipmentForm),

@@ -1,9 +1,9 @@
 <mat-toolbar>
-	{{ (room$ | async).name }}
+	{{ (room$ | async)?.name }}
 </mat-toolbar>
 
 <div class="hardware-list">
-	<div *ngFor="let hardware of (room$ | async).hardwares" class="hardware">
+	<div *ngFor="let hardware of (room$ | async)?.hardwares" class="hardware">
 		<a #rla="routerLinkActive" [routerLink]="[hardware.id]" routerLinkActive>
 			<mat-card matRipple class="hardware-card" *ngIf="!rla?.isActive">
 				<mat-card-header>

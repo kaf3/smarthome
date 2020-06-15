@@ -12,7 +12,6 @@ export enum RoomListActionsTypes {
 	upsertRoom = '[Room list] Upsert Room',
 	upsertRoomWhenLeft = '[Room list] Upsert Room When Left',
 	upsertRoomListWhenLeft = '[Room list] Upsert RoomList When Left',
-	openRoomList = '[Room list] Open Room List',
 	UpsertRoomListCanceled = '[Room List] Upsert Room List Canceled',
 }
 
@@ -68,10 +67,6 @@ export class UpsertRoomListWhenLeft implements Action {
 	constructor(public payload: { roomList: RoomList }) {}
 }
 
-export class OpenRoomList implements Action {
-	readonly type = RoomListActionsTypes.openRoomList;
-}
-
 export class UpsertRoomListCanceled implements Action {
 	readonly type = RoomListActionsTypes.UpsertRoomListCanceled;
 }
@@ -86,5 +81,4 @@ export type RoomListActions =
 	| UpsertRoom
 	| UpsertRoomWhenLeft
 	| UpsertRoomListWhenLeft
-	| OpenRoomList
 	| UpsertRoomListCanceled;

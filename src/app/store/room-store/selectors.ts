@@ -13,8 +13,7 @@ export const { selectIds, selectEntities, selectAll, selectTotal } = roomAdapter
 
 export const selectById = createSelector(
 	selectEntities,
-	(hardwareCollection: Dictionary<Hardware>, id: string) =>
-		!!hardwareCollection[id] && new Hardware({ ...hardwareCollection[id] }),
+	(hardwareCollection: Dictionary<Hardware>, id: string) => hardwareCollection[id],
 );
 
 export const selectCallState = createSelector(selectRoomState, (state) => state.callState);

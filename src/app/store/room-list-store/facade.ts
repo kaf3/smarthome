@@ -4,13 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../state';
 import { selectCallState, selectRoomById, selectRoomList, selectRooms } from './selectors';
 import { Observable } from 'rxjs';
-import {
-	LoadRoomList,
-	OpenRoomList,
-	UpsertRoom,
-	UpsertRoomListWhenLeft,
-	UpsertRoomWhenLeft,
-} from './actions';
+import { LoadRoomList, UpsertRoom, UpsertRoomListWhenLeft, UpsertRoomWhenLeft } from './actions';
 import { LoadableFacade } from '@models/common';
 import { RoomList } from '@models/rooms';
 import { Room } from '@models/room';
@@ -45,9 +39,5 @@ export class RoomListFacade extends LoadableFacade<RoomListState> {
 
 	public loadRooms(): void {
 		this.store.dispatch(new LoadRoomList());
-	}
-
-	public openRoomList(): void {
-		this.store.dispatch(new OpenRoomList());
 	}
 }

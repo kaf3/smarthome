@@ -29,8 +29,6 @@ export function roomsReducer(
 
 		case RoomListActionsTypes.loadRoomListError:
 		case RoomListActionsTypes.moveHardwareError:
-		case RoomActionTypes.updateOneHardwareFailure:
-		case HardwareActionTypes.UpdateOneEquipmentFailure:
 			return { ...state, callState: action.payload };
 
 		case RoomListActionsTypes.upsertRoom:

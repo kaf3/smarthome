@@ -24,7 +24,6 @@ export class RoomListComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit(): void {
-		this.roomListFacade.openRoomList();
 		this.rooms$ = this.roomListFacade.rooms$.pipe(filter((rooms) => !!rooms.length));
 		this.alignSidenav();
 	}

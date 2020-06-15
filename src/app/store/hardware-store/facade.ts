@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { Equipment } from '@models/equipment';
 import { Hardware } from '@models/hardware';
 import { HardwareState } from './reducer';
+import { LoadHardware } from './actions';
 
 @Injectable()
 export class HardwareFacade extends LoadableFacade<HardwareState> {
@@ -19,5 +20,9 @@ export class HardwareFacade extends LoadableFacade<HardwareState> {
 
 	public equipmentById(id: Equipment['id']): Observable<Equipment> {
 		return this.store.pipe(select(selectById, id));
+	}
+
+	public loadHardware(id: Hardware['id']): void {
+		this.store.dispatch(new LoadHardware({ id }));
 	}
 }

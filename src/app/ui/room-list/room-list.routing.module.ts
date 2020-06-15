@@ -6,6 +6,7 @@ import { RoomListComponent } from './room-list.component';
 import { RoomGuard } from './room/room.guard';
 import { RoomListLoadGuard } from './room-list.load.guard';
 import { HardwareComponent } from './room/hardware/hardware.component';
+import { HardwareGuard } from './room/hardware/hardware.guard';
 
 const routes: Routes = [
 	{
@@ -17,10 +18,12 @@ const routes: Routes = [
 				path: ':id',
 				component: RoomComponent,
 				canDeactivate: [RoomGuard],
+				canActivate: [RoomGuard],
 				children: [
 					{
 						path: ':hardwareId',
 						component: HardwareComponent,
+						canActivate: [HardwareGuard],
 					},
 				],
 			},
