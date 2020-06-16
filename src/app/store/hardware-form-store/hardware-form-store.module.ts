@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EffectsModule } from '@ngrx/effects';
 import { HardwareFormEffects } from './effects';
 import { StoreModule } from '@ngrx/store';
-import { hardwareFormFeatureKey, reducer } from './reducer';
+import { hardwareFormFeatureKey, initialHardwareFormState, reducer } from './reducer';
 import { HardwareFormFacade } from './facade';
 
 @NgModule({
@@ -11,7 +11,9 @@ import { HardwareFormFacade } from './facade';
 	imports: [
 		CommonModule,
 		EffectsModule.forFeature([HardwareFormEffects]),
-		StoreModule.forFeature(hardwareFormFeatureKey, reducer),
+		StoreModule.forFeature(hardwareFormFeatureKey, reducer, {
+			initialState: initialHardwareFormState,
+		}),
 	],
 })
 export class HardwareFormStoreModule {

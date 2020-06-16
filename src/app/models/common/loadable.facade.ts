@@ -1,12 +1,10 @@
-import { AppState } from '../../store/state';
 import { MemoizedSelector, select, Store } from '@ngrx/store';
-import { valueof } from './utility-types';
 import { Observable } from 'rxjs';
 import { CallState } from '../error-loading/error.loading';
 import { filter, map } from 'rxjs/operators';
 import { getError, isInit, isLoaded, isLoading } from '@helpers';
 
-export abstract class LoadableFacade<TFeatureState extends valueof<AppState>> {
+export abstract class LoadableFacade<TFeatureState> {
 	public readonly callState$: Observable<CallState>;
 	public readonly init$: Observable<CallState>;
 	public readonly loading$: Observable<CallState>;
@@ -14,8 +12,8 @@ export abstract class LoadableFacade<TFeatureState extends valueof<AppState>> {
 	public readonly error$: Observable<string | null>;
 
 	protected constructor(
-		protected readonly store: Store<AppState>,
-		callStateSelector: MemoizedSelector<AppState, any>,
+		protected readonly store: Store<TFeatureState>,
+		callStateSelector: MemoizedSelector<TFeatureState, CallState>,
 	) {
 		this.callState$ = this.store.pipe(select(callStateSelector));
 		this.init$ = this.callState$.pipe(filter((callState) => isInit({ callState })));

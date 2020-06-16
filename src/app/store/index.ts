@@ -1,6 +1,6 @@
 import { RootStoreModule } from './root-store.module';
-import * as RootStoreState from './state';
-import { AppState, ROUTER_FEATURE_KEY } from './state';
+import * as RootStoreState from './reducer';
+import { AppState, ROUTER_FEATURE_KEY } from './reducer';
 import { createFeatureSelector } from '@ngrx/store';
 import { RouterReducerState } from '@ngrx/router-store';
 

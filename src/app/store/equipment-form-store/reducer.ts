@@ -1,20 +1,37 @@
 import {
 	Actions,
 	addGroupControl,
+	createFormGroupState,
 	formGroupReducer,
+	FormGroupState,
 	removeGroupControl,
 	reset,
 	setValue,
 	updateGroup,
 	validate,
 } from 'ngrx-forms';
-import { EquipmentFormState, EquipmentFormValue, initialEquipmentFormState } from './state';
 import { EquipmentFormActions, EquipmentFormActionTypes } from './actions';
-import { EquipmentGroup } from '@models/equipment';
+import { Equipment, EquipmentGroup } from '@models/equipment';
 import { required } from 'ngrx-forms/validation';
 
+export const EQUIPMENT_FORM_FEATURE_KEY = 'equipmentForm';
+
+export interface EquipmentFormValue {
+	name: Equipment['name'] | null;
+	value?: Equipment['value'] | null;
+}
+
+export const initialEquipmentFormValue: EquipmentFormValue = {
+	name: null,
+	value: null,
+};
+export type EquipmentFormState = FormGroupState<EquipmentFormValue>;
+export const initialState: EquipmentFormState = createFormGroupState<EquipmentFormValue>(
+	'EquipmentForm',
+	initialEquipmentFormValue,
+);
 export const equipmentFormReducer = function (
-	state: EquipmentFormState = initialEquipmentFormState,
+	state: EquipmentFormState = initialState,
 	action: EquipmentFormActions | Actions<EquipmentFormValue>,
 ): EquipmentFormState {
 	state = formGroupReducer(state, action);

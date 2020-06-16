@@ -4,7 +4,7 @@ import { EMPTY, Observable, of, race } from 'rxjs';
 import { RoomListFacade } from '@store/room-list';
 import { map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { RoomFacade } from '@store/room';
-import { RoomList } from '@models/rooms';
+import { RoomList } from '@models/room-list';
 import { CallState } from '@models/error-loading';
 
 @Injectable()

@@ -2,16 +2,17 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { equipmentFormReducer } from './reducer';
+import { EQUIPMENT_FORM_FEATURE_KEY, equipmentFormReducer, initialState } from './reducer';
 import { EquipmentFormEffects } from './effects';
-import { EQUIPMENT_FORM_FEATURE_KEY } from './state';
 import { EquipmentFormFacade } from './facade';
 
 @NgModule({
 	declarations: [],
 	imports: [
 		CommonModule,
-		StoreModule.forFeature(EQUIPMENT_FORM_FEATURE_KEY, equipmentFormReducer),
+		StoreModule.forFeature(EQUIPMENT_FORM_FEATURE_KEY, equipmentFormReducer, {
+			initialState,
+		}),
 		EffectsModule.forFeature([EquipmentFormEffects]),
 	],
 })

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { LoadableFacade } from '@models/common';
-import { AppState } from '../state';
 import { select, Store } from '@ngrx/store';
 import { selectById, selectCallState, selectHardware } from './selectors';
 import { Observable } from 'rxjs';
@@ -13,7 +12,7 @@ import { LoadHardware } from './actions';
 export class HardwareFacade extends LoadableFacade<HardwareState> {
 	public readonly hardware$: Observable<Hardware>;
 
-	constructor(store: Store<AppState>) {
+	constructor(store: Store<HardwareState>) {
 		super(store, selectCallState);
 		this.hardware$ = this.store.pipe(select(selectHardware));
 	}

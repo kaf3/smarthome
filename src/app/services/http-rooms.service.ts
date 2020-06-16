@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { RoomList, RoomListDTO } from '@models/rooms';
+import { RoomList, RoomListDTO } from '@models/room-list';
 import { Room, RoomDTO } from '@models/room';
 import { Collection } from '@models/common';
 import { Hardware, HardwareDTO, HardwareDTOProps } from '@models/hardware';
@@ -84,7 +84,7 @@ export class HttpRoomsService {
 	}
 
 	public postRoomList(roomList: RoomList): Observable<RoomList> {
-		/*const cashedActiveRoom = roomList.activeRoom;
+		/*		const cashedActiveRoom = roomList.activeRoom;
 		const cashedActiveHardwares = new Map<Room['id'], Hardware>();
 		const cashedActiveEquipments = new Map<Hardware['id'], Equipment>();
 		roomList.rooms.forEach((room) => {
@@ -104,22 +104,4 @@ export class HttpRoomsService {
 				}),
 			);
 	}
-
-	/*	public postRooms(roomsDTO: Collection<RoomDTO>): Observable<Room[]> {
-		const roomsDTOcopy = { ...roomsDTO };
-
-		return this.http.put<Collection<RoomDTO>>(`${FIREBASE_DATABASE_URL}/.json`, roomsDTOcopy).pipe(
-			map((rooms: Collection<RoomDTO>) =>
-				Object.entries(rooms).map(
-					([roomName, roomDTO]: [keyof Collection<RoomDTO>, RoomDTO], id) => {
-						return {
-							roomName,
-							id,
-							equipment: this.equipmentPartition.partition(roomDTO),
-						} as Room;
-					},
-				),
-			),
-		);
-	}*/
 }

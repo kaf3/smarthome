@@ -3,13 +3,12 @@ import { BaseHardware, Hardware } from '@models/hardware';
 import { CallState, LoadingState } from '@models/error-loading';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Equipment } from '@models/equipment';
-import { FeatureKey } from '../state';
 import { RoomListStoreActions } from '@store/room-list';
 import { RoomStoreActions } from '@store/room';
 import { RoomActionTypes } from '../room-store/actions';
 import { RoomListActionsTypes } from '../room-list-store/actions';
 
-export const hardwareFeatureKey: FeatureKey = 'hardware';
+export const hardwareFeatureKey = 'hardware';
 
 export interface HardwareState extends EntityState<Equipment> {
 	baseHardware: BaseHardware;

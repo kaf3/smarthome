@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
-import { RoomListState } from './state';
 import { select, Store } from '@ngrx/store';
-import { AppState } from '../state';
 import { selectCallState, selectRoomById, selectRoomList, selectRooms } from './selectors';
 import { Observable } from 'rxjs';
 import { LoadRoomList, UpsertRoom, UpsertRoomListWhenLeft, UpsertRoomWhenLeft } from './actions';
 import { LoadableFacade } from '@models/common';
-import { RoomList } from '@models/rooms';
+import { RoomList } from '@models/room-list';
 import { Room } from '@models/room';
+import { RoomListState } from './reducer';
 
 @Injectable()
 export class RoomListFacade extends LoadableFacade<RoomListState> {
 	public readonly rooms$: Observable<Room[]>;
 	public readonly roomList$: Observable<RoomList>;
 
-	constructor(store: Store<AppState>) {
+	constructor(store: Store<RoomListState>) {
 		super(store, selectCallState);
 
 		this.rooms$ = this.store.pipe(select(selectRooms));

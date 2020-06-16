@@ -1,5 +1,5 @@
 import * as RoomListStoreActions from './actions';
-import * as RoomListStoreState from './state';
+import * as RoomListStoreState from './reducer';
 
 import { RoomListStoreModule } from './room-list-store.module';
 

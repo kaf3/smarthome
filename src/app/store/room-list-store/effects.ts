@@ -24,7 +24,7 @@ import { HttpRoomsService, SerializeService } from '@services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { RoomListFacade } from './facade';
-import { RoomList } from '@models/rooms';
+import { RoomList } from '@models/room-list';
 import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
 import { ErrorEffects } from '@models/common';
 

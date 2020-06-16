@@ -15,7 +15,7 @@ import { HardwareFormFacade } from './facade';
 import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
-import { RoomList } from '@models/rooms';
+import { RoomList } from '@models/room-list';
 import { ClearAsyncErrorAction, SetAsyncErrorAction, StartAsyncValidationAction } from 'ngrx-forms';
 import { timer } from 'rxjs';
 import { ErrorEffects } from '@models/common';

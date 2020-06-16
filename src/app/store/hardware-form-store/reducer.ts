@@ -1,5 +1,4 @@
 import { HardwareFormActions, HardwareFormActionTypes } from './actions';
-import { FeatureKey } from '../state';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
 import {
@@ -13,7 +12,7 @@ import {
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
 
-export const hardwareFormFeatureKey: FeatureKey = 'hardwareForm';
+export const hardwareFormFeatureKey = 'hardwareForm';
 
 export interface HardwareFormValue {
 	name: Hardware['name'] | null;

@@ -42,6 +42,13 @@ export class RoomList {
 		entityRoom = RoomList.adapter.upsertOne(room, entityRoom);
 		return new RoomList({ ...roomList, rooms: Object.values(entityRoom.entities) });
 	}
+
+	public static getRoom(id: Room['id'], roomList?: RoomList): Room | undefined {
+		if (roomList) {
+			return this.createEntityState(roomList).entities[id];
+		}
+		return undefined;
+	}
 }
 
 export type RoomListDTOProps = OmitByPropType<RoomListDTO, Function>;
@@ -53,13 +60,13 @@ export class RoomListDTO {
 		this.roomCollection = { ...source.roomCollection };
 	}
 
-	public createDomain(): RoomList {
+	public createDomain(oldRoomList?: RoomList): RoomList {
 		const rooms = Object.entries(this.roomCollection).map(([id, roomDTO]) =>
 			new RoomDTO({ ...roomDTO }).createDomain(id),
 		);
 
 		return new RoomList({
-			activeRoom: rooms[0], //when you open roomlist firstly
+			activeRoom: oldRoomList?.activeRoom ?? rooms[0], //when you open roomlist firstly
 			rooms,
 		});
 	}

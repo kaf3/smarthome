@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Room } from '@models/room/room';
-import { RoomList } from '@models/rooms';
+import { RoomList } from '@models/room-list';
 
 export enum RoomListActionsTypes {
 	loadRoomList = '[Room list] Load Room List',

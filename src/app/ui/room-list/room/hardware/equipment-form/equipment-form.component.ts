@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { EquipmentFormFacade, EquipmentFormStoreState } from '@store/equipment-form';
+import { EquipmentFormFacade } from '@store/equipment-form';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Equipment } from '@models/equipment';
 import { distinctUntilKeyChanged, filter, take } from 'rxjs/operators';
+import { EquipmentFormState } from '../../../../../store/equipment-form-store/reducer';
 
 @Component({
 	selector: 'app-equipment-form',
@@ -20,7 +21,7 @@ export class EquipmentFormComponent {
 		return this.eqpSubject.asObservable().pipe(distinctUntilKeyChanged('id'));
 	}
 
-	public readonly formState$: Observable<EquipmentFormStoreState.EquipmentFormState>;
+	public readonly formState$: Observable<EquipmentFormState>;
 
 	constructor(public readonly equipmentFormFacade: EquipmentFormFacade) {
 		this.formState$ = this.equipmentFormFacade.equipmentFormState$;

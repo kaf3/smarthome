@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 import { EffectsModule } from '@ngrx/effects';
 import { HardwareEffects } from './effects';
 import { StoreModule } from '@ngrx/store';
-import * as fromHardware from './reducer';
+
 import { HardwareFacade } from './facade';
+import { hardwareFeatureKey, initialState, reducer } from './reducer';
 
 @NgModule({
 	declarations: [],
 	imports: [
 		CommonModule,
 		EffectsModule.forFeature([HardwareEffects]),
-		StoreModule.forFeature(fromHardware.hardwareFeatureKey, fromHardware.reducer, {
-			initialState: fromHardware.initialState,
+		StoreModule.forFeature(hardwareFeatureKey, reducer, {
+			initialState,
 		}),
 	],
 })

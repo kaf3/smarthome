@@ -1,11 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ROOM_FEATURE_KEY, roomAdapter, RoomState } from './state';
 import { Dictionary } from '@ngrx/entity';
-import { AppState } from '../state';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
+import { ROOM_FEATURE_KEY, roomAdapter, RoomState } from './reducer';
 
-export const selectRoomState = createFeatureSelector<AppState, RoomState>(ROOM_FEATURE_KEY);
+export const selectRoomState = createFeatureSelector<RoomState>(ROOM_FEATURE_KEY);
 
 export const { selectIds, selectEntities, selectAll, selectTotal } = roomAdapter.getSelectors(
 	selectRoomState,

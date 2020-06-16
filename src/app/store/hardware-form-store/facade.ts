@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HardwareFormState } from './reducer';
-import { AppState } from '../state';
 import { select, Store } from '@ngrx/store';
 import { selectHardwareFormState } from './selectors';
 import { LoadHardwareForm, SubmitHardwareForm } from './actions';
@@ -10,7 +9,7 @@ import { LoadHardwareForm, SubmitHardwareForm } from './actions';
 export class HardwareFormFacade {
 	public readonly hardwareFormState$: Observable<HardwareFormState>;
 
-	constructor(private readonly store: Store<AppState>) {
+	constructor(private readonly store: Store<HardwareFormState>) {
 		this.hardwareFormState$ = this.store.pipe(select(selectHardwareFormState));
 	}
 

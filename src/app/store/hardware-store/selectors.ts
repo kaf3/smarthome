@@ -3,10 +3,9 @@ import * as fromHardware from './reducer';
 import { hardwareAdapter } from './reducer';
 import { Dictionary } from '@ngrx/entity';
 import { Equipment } from '@models/equipment';
-import { AppState } from '../state';
 import { Hardware } from '@models/hardware';
 
-export const selectHardwareState = createFeatureSelector<AppState, fromHardware.HardwareState>(
+export const selectHardwareState = createFeatureSelector<fromHardware.HardwareState>(
 	fromHardware.hardwareFeatureKey,
 );
 

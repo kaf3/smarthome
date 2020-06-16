@@ -1,10 +1,22 @@
-import { EquipmentState, initialEquipmentState } from './state';
 import { EquipmentActions, EquipmentActionsTypes } from './actions';
-import { LoadingState } from '@models/error-loading';
+import { CallState, LoadingState } from '@models/error-loading';
 import { RoomListStoreActions } from '@store/room-list';
+import { Equipment } from '@models/equipment';
+
+export const EQUIPMENT_FEATURE_KEY = 'equipment';
+
+export interface EquipmentState {
+	equipment: Equipment;
+	callState: CallState;
+}
+
+export const initialState: EquipmentState = {
+	equipment: Equipment.initial,
+	callState: LoadingState.INIT,
+};
 
 export function equipmentReducer(
-	state: EquipmentState = initialEquipmentState,
+	state: EquipmentState = initialState,
 	action: EquipmentActions | RoomListStoreActions.RoomListActions,
 ): EquipmentState {
 	switch (action.type) {
