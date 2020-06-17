@@ -1,4 +1,4 @@
-export type valueof<T> = T[keyof T];
+export type valueof<T extends any> = T[keyof T];
 export type ExcludePropsByType<T, U> = valueof<
 	{
 		[P in keyof T]: T[P] extends U ? never : P;

@@ -1,15 +1,21 @@
 import { Room } from '../room/room';
 import { RoomDTO } from '@models/room';
-import { Collection, OmitByPropType } from '@models/common';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { Collection, HostDomain, HostDomainConstructor, OmitByPropType } from '@models/common';
 
 export type RoomListProps = OmitByPropType<RoomList, Function>;
 
-export class RoomList {
+const RoomListWithChildren: HostDomainConstructor<RoomList, Room> = HostDomain<
+	RoomList,
+	Room,
+	'rooms'
+>('rooms');
+
+export class RoomList extends RoomListWithChildren {
 	public readonly rooms: Room[];
 	public readonly activeRoom: Room;
 
 	constructor(source: RoomList | RoomListProps) {
+		super();
 		this.rooms = source.rooms;
 		this.activeRoom = source.activeRoom;
 	}
@@ -21,39 +27,12 @@ export class RoomList {
 		});
 		return Object.fromEntries(roomMap);
 	}
-
-	private static readonly adapter: EntityAdapter<Room> = createEntityAdapter<Room>({
-		selectId: (room) => room.id ?? '',
-		sortComparer: false,
-	});
-
-	private static createEntityState(roomList: RoomList): EntityState<Room> {
-		return this.adapter.addAll(roomList.rooms, this.adapter.getInitialState());
-	}
-
 	public static updateManyRooms(roomList: RoomList, rooms: Room[]): RoomList {
-		let entityRoom: EntityState<Room> = this.createEntityState(roomList);
-		entityRoom = this.adapter.upsertMany(rooms, entityRoom);
-		return new RoomList({
-			...roomList,
-			rooms: Object.values(entityRoom.entities as { [s: string]: Room }),
-		});
-	}
-
-	public static updateRoom(roomList: RoomList, room: Room): RoomList {
-		let entityRoom: EntityState<Room> = this.createEntityState(roomList);
-		entityRoom = this.adapter.upsertOne(room, entityRoom);
-		return new RoomList({
-			...roomList,
-			rooms: Object.values(entityRoom.entities as { [s: string]: Room }),
-		});
+		return super.updateManyChild(roomList, rooms);
 	}
 
 	public static getRoom(id: Room['id'], roomList?: RoomList): Room | undefined {
-		if (roomList) {
-			return this.createEntityState(roomList).entities[id ?? ''];
-		}
-		return undefined;
+		return super.getChild(id, roomList);
 	}
 }
 
