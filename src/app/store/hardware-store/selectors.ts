@@ -15,7 +15,9 @@ export const { selectIds, selectEntities, selectAll, selectTotal } = hardwareAda
 
 export const selectById = createSelector(
 	selectEntities,
-	(equipmentCollection: Dictionary<Equipment>, id: Equipment['id']) => equipmentCollection[id],
+	(equipmentCollection: Dictionary<Equipment>, id: Equipment['id']) =>
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		equipmentCollection[id ?? '']!,
 );
 
 export const selectCallState = createSelector(selectHardwareState, (state) => state.callState);

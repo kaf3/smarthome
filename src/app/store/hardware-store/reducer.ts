@@ -17,7 +17,7 @@ export interface HardwareState extends EntityState<Equipment> {
 }
 
 export const hardwareAdapter: EntityAdapter<Equipment> = createEntityAdapter<Equipment>({
-	selectId: (equipment: Equipment) => equipment.id,
+	selectId: (equipment: Equipment) => equipment.id ?? '',
 	sortComparer: false,
 });
 

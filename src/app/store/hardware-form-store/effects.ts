@@ -56,7 +56,7 @@ export class HardwareFormEffects extends ErrorEffects {
 				const isNameChanged = formValue.name !== oldHardware.name;
 				const isRoomNameChanged = formValue.roomName !== oldRoom.name;
 				if (isNameChanged) {
-					oldHardware.name = formValue.name;
+					oldHardware.name = formValue.name ?? oldHardware.name;
 				}
 
 				if (isNameChanged && !isRoomNameChanged) {
@@ -69,12 +69,12 @@ export class HardwareFormEffects extends ErrorEffects {
 
 				if (isRoomNameChanged) {
 					let newRoom = oldRoomList.rooms.find((r) => r.name === formValue.roomName);
-					oldRoom = Room.deleteHardware(oldRoom, oldHardware);
-					oldRoom.activeHardware = Hardware.initial;
-					newRoom = Room.addHardware(newRoom, oldHardware);
-
-					oldRoomList = RoomList.updateManyRooms(oldRoomList, [oldRoom, newRoom]);
-
+					if (newRoom) {
+						oldRoom = Room.deleteHardware(oldRoom, oldHardware);
+						oldRoom.activeHardware = Hardware.initial;
+						newRoom = Room.addHardware(newRoom, oldHardware);
+						oldRoomList = RoomList.updateManyRooms(oldRoomList, [oldRoom, newRoom]);
+					}
 					return new RoomListStoreActions.MoveHardware({ roomList: oldRoomList });
 				}
 
@@ -100,7 +100,7 @@ export class HardwareFormEffects extends ErrorEffects {
 						let isExists: boolean;
 						if (fs.value.roomName !== room.name) {
 							const selectedRoom = rooms.find((rm) => rm.name === fs.value.roomName);
-							isExists = !!selectedRoom.hardwares.find(
+							isExists = !!selectedRoom?.hardwares.find(
 								(hrd) => hrd.name === fs.value.name,
 							);
 						} else {

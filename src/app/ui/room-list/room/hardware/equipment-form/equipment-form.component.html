@@ -1,38 +1,36 @@
-<mat-card class="mat-elevation-z0">
-	<mat-card-header>
-		<mat-card-title>
-			Редактировать
-		</mat-card-title>
-	</mat-card-header>
-	<form [ngrxFormState]="formState$ | async" (ngSubmit)="submitForm()">
-		<mat-card-content>
-			<mat-form-field>
-				<mat-label>Name</mat-label>
-				<input
-					type="text"
-					matInput
-					placeholder="custom name for your device"
-					[ngrxFormControlState]="(formState$ | async)?.controls.name"
-				/>
-			</mat-form-field>
-			<mat-slide-toggle
-				*ngIf="!!(formState$ | async)?.controls.value"
-				class="form-toggle"
-				(change)="submitForm()"
-				[ngrxFormControlState]="(formState$ | async)?.controls.value"
-			></mat-slide-toggle>
-		</mat-card-content>
-		<mat-card-footer>
-			<button
-				mat-button
-				[disabled]="
-					(formState$ | async).isInvalid ||
-					(formState$ | async).isValidationPending ||
-					(formState$ | async).isPristine
-				"
-			>
-				Сохранить
-			</button>
-		</mat-card-footer>
-	</form>
-</mat-card>
+<ng-container *ngIf="formState$ | async as fs">
+	<mat-card class="mat-elevation-z0">
+		<mat-card-header>
+			<mat-card-title>
+				Редактировать
+			</mat-card-title>
+		</mat-card-header>
+		<form [ngrxFormState]="fs" (ngSubmit)="submitForm()">
+			<mat-card-content>
+				<mat-form-field>
+					<mat-label>Name</mat-label>
+					<input
+						type="text"
+						matInput
+						placeholder="custom name for your device"
+						[ngrxFormControlState]="fs?.controls.name"
+					/>
+				</mat-form-field>
+				<mat-slide-toggle
+					*ngIf="!!fs?.controls.value"
+					class="form-toggle"
+					(change)="submitForm()"
+					[ngrxFormControlState]="fs?.controls.value"
+				></mat-slide-toggle>
+			</mat-card-content>
+			<mat-card-footer>
+				<button
+					mat-button
+					[disabled]="fs.isInvalid || fs.isValidationPending || fs.isPristine"
+				>
+					Сохранить
+				</button>
+			</mat-card-footer>
+		</form>
+	</mat-card>
+</ng-container>

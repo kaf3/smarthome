@@ -7,6 +7,7 @@ import { RoomListStoreActions } from '@store/room-list';
 import { HardwareActionTypes } from '../hardware-store/actions';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Hardware } from '@models/hardware';
+import { RoomList } from '@models/room-list';
 
 export const ROOM_FEATURE_KEY = 'room';
 
@@ -17,7 +18,7 @@ export interface RoomState extends EntityState<Hardware> {
 }
 
 export const roomAdapter: EntityAdapter<Hardware> = createEntityAdapter<Hardware>({
-	selectId: (hardware: Hardware) => hardware.id,
+	selectId: (hardware: Hardware) => hardware.id ?? '',
 	sortComparer: false,
 });
 export const initialState: RoomState = roomAdapter.getInitialState({
@@ -51,15 +52,16 @@ export function roomReducer(
 			return { ...state, callState: action.payload };
 		}
 		case RoomListActionsTypes.moveHardwareSuccess: {
-			const room = action.payload.roomList.rooms.find(
-				(room) => state.baseRoom.id === room.id,
-			);
-			return roomAdapter.addAll(room.hardwares, {
-				...state,
-				activeHardware: room.activeHardware,
-				baseRoom: Room.getBase(room),
-				callState: LoadingState.LOADED,
-			});
+			const room = RoomList.getRoom(state.baseRoom.id, action.payload.roomList);
+			if (!!room) {
+				return roomAdapter.addAll(room.hardwares, {
+					...state,
+					activeHardware: room.activeHardware,
+					baseRoom: Room.getBase(room),
+					callState: LoadingState.LOADED,
+				});
+			}
+			return { ...state, callState: LoadingState.LOADED };
 		}
 		case RoomListActionsTypes.upsertRoomListWhenLeft: {
 			return initialState;

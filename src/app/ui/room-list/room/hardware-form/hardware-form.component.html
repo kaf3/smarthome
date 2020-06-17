@@ -1,51 +1,49 @@
-<form [ngrxFormState]="formState$ | async" (submit)="submitForm()">
-	<mat-form-field class="form-field">
-		<mat-label>
-			Имя
-		</mat-label>
-		<input
-			type="text"
-			matInput
-			placeholder="Новое имя устройства"
-			[ngrxFormControlState]="(formState$ | async).controls.name"
-		/>
-		<mat-error *ngIf="(formState$ | async)?.controls.name.errors.required"
-			>У устройства должно быть имя</mat-error
+<ng-container *ngIf="formState$ | async as fs">
+	<form [ngrxFormState]="fs" (submit)="submitForm()">
+		<mat-form-field class="form-field">
+			<mat-label>
+				Имя
+			</mat-label>
+			<input
+				type="text"
+				matInput
+				placeholder="Новое имя устройства"
+				[ngrxFormControlState]="fs.controls.name"
+			/>
+			<mat-error *ngIf="fs?.controls.name.errors.required"
+				>У устройства должно быть имя</mat-error
+			>
+			<mat-error *ngIf="fs?.controls.name.errors.$exists"
+				>Устройство, с таким именем уже есть</mat-error
+			>
+		</mat-form-field>
+		<mat-form-field class="form-field">
+			<mat-label>
+				Комната
+			</mat-label>
+			<mat-select [ngrxFormControlState]="fs?.controls.roomName">
+				<mat-option *ngFor="let room of rooms$ | async" [value]="room.name">
+					{{ room.name }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<button
+			mat-button
+			type="submit"
+			class="button"
+			[disabled]="fs.isInvalid || fs.isValidationPending || fs.isPristine"
 		>
-		<mat-error *ngIf="(formState$ | async)?.controls.name.errors.$exists"
-			>Устройство, с таким именем уже есть</mat-error
+			Сохранить
+		</button>
+		<button
+			mat-raised-button
+			color="accent"
+			type="button"
+			class="button"
+			(click)="reset()"
+			[disabled]="fs.isInvalid && fs.isSubmitted"
 		>
-	</mat-form-field>
-	<mat-form-field class="form-field">
-		<mat-label>
-			Комната
-		</mat-label>
-		<mat-select [ngrxFormControlState]="(formState$ | async)?.controls.roomName">
-			<mat-option *ngFor="let room of rooms$ | async" [value]="room.name">
-				{{ room.name }}
-			</mat-option>
-		</mat-select>
-	</mat-form-field>
-	<button
-		mat-button
-		type="submit"
-		class="button"
-		[disabled]="
-			(formState$ | async).isInvalid ||
-			(formState$ | async).isValidationPending ||
-			(formState$ | async).isPristine
-		"
-	>
-		Сохранить
-	</button>
-	<button
-		mat-raised-button
-		color="accent"
-		type="button"
-		class="button"
-		(click)="reset()"
-		[disabled]="(formState$ | async).isInvalid && (formState$ | async).isSubmitted"
-	>
-		Отмена
-	</button>
-</form>
+			Отмена
+		</button>
+	</form>
+</ng-container>

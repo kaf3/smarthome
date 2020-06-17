@@ -17,12 +17,12 @@ import { required } from 'ngrx-forms/validation';
 export const EQUIPMENT_FORM_FEATURE_KEY = 'equipmentForm';
 
 export interface EquipmentFormValue {
-	name: Equipment['name'] | null;
-	value?: Equipment['value'] | null;
+	name: Equipment['name'];
+	value?: Equipment['value'];
 }
 
 export const initialEquipmentFormValue: EquipmentFormValue = {
-	name: null,
+	name: '',
 	value: null,
 };
 export type EquipmentFormState = FormGroupState<EquipmentFormValue>;

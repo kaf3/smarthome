@@ -12,7 +12,8 @@ export const { selectIds, selectEntities, selectAll, selectTotal } = roomAdapter
 
 export const selectById = createSelector(
 	selectEntities,
-	(hardwareCollection: Dictionary<Hardware>, id: string) => hardwareCollection[id],
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	(hardwareCollection: Dictionary<Hardware>, id: string) => hardwareCollection[id ?? '']!,
 );
 
 export const selectCallState = createSelector(selectRoomState, (state) => state.callState);

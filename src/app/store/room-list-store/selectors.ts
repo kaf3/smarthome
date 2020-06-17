@@ -13,7 +13,8 @@ export const {
 
 export const selectRoomById = createSelector(
 	selectRoomListEntities,
-	(roomEntities: Dictionary<Room>, id: Room['id']) => roomEntities[id],
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	(roomEntities: Dictionary<Room>, id: Room['id']) => roomEntities[id ?? '']!,
 );
 
 export const selectCallState = createSelector(selectRoomListState, (state) => state.callState);

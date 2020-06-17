@@ -12,7 +12,7 @@ export type RoomDTOProps = OmitByPropType<RoomDTO, Function>;
 export class RoomDTO {
 	public readonly name: string;
 	public readonly hardwareCollection: Collection<HardwareDTO>;
-	createDomain: (id: Room['id']) => Room;
+	createDomain: (id: Room['id'], oldRoom?: Room) => Room;
 
 	constructor(source: RoomDTO | RoomDTOProps) {
 		this.name = source.name;
@@ -45,7 +45,7 @@ export class Room extends BaseRoom {
 	private static createHardwareCollection(room: Room): Collection<HardwareDTO> {
 		const hardwareMap = new Map<keyof Collection<HardwareDTO>, HardwareDTO>();
 		room.hardwares.forEach((hardware) => {
-			hardwareMap.set(hardware.id, Hardware.createDTO(hardware));
+			hardwareMap.set(hardware.id ?? '', Hardware.createDTO(hardware));
 		});
 		return Object.fromEntries(hardwareMap);
 	}
@@ -57,7 +57,7 @@ export class Room extends BaseRoom {
 	});
 
 	private static readonly adapter: EntityAdapter<Hardware> = createEntityAdapter<Hardware>({
-		selectId: (hardware) => hardware.id,
+		selectId: (hardware) => hardware.id ?? '',
 		sortComparer: false,
 	});
 
@@ -67,10 +67,10 @@ export class Room extends BaseRoom {
 
 	public static deleteHardware(room: Room, hardware: Hardware): Room {
 		let entityHardware: EntityState<Hardware> = this.createEntityState(room);
-		entityHardware = this.adapter.removeOne(hardware.id, entityHardware);
+		entityHardware = this.adapter.removeOne(hardware.id ?? '', entityHardware);
 		return new Room({
 			...room,
-			hardwares: Object.values(entityHardware.entities),
+			hardwares: Object.values(entityHardware.entities as Collection<Hardware>),
 		});
 	}
 
@@ -79,7 +79,7 @@ export class Room extends BaseRoom {
 		entityHardware = this.adapter.addOne(hardware, entityHardware);
 		return new Room({
 			...room,
-			hardwares: Object.values(entityHardware.entities),
+			hardwares: Object.values(entityHardware.entities as Collection<Hardware>),
 		});
 	}
 
@@ -88,20 +88,27 @@ export class Room extends BaseRoom {
 		entityHardware = this.adapter.upsertOne(hardware, entityHardware);
 		return new Room({
 			...room,
-			hardwares: Object.values(entityHardware.entities),
+			hardwares: Object.values(entityHardware.entities as Collection<Hardware>),
 		});
+	}
+
+	public static getHardware(id: Hardware['id'], room?: Room): Hardware | undefined {
+		if (room) {
+			return this.createEntityState(room).entities[id ?? ''];
+		}
+		return undefined;
 	}
 }
 
-RoomDTO.prototype.createDomain = function (id: Room['id']): Room {
-	const hardwares = Object.entries(
+RoomDTO.prototype.createDomain = function (id: Room['id'], oldRoom?: Room): Room {
+	const hardwares = Object.entries<HardwareDTOProps>(
 		this.hardwareCollection,
 	).map(([hardwareId, hardwareDTO]: [Hardware['id'], HardwareDTOProps]) =>
-		new HardwareDTO({ ...hardwareDTO }).createDomain(hardwareId),
+		new HardwareDTO({ ...hardwareDTO }).createDomain(hardwareId, Room.getHardware(id, oldRoom)),
 	);
 	return new Room({
 		name: this.name,
-		activeHardware: Hardware.initial,
+		activeHardware: oldRoom?.activeHardware ?? Hardware.initial,
 		id,
 		hardwares,
 	});

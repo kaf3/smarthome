@@ -18,7 +18,7 @@ export class EquipmentFormComponent {
 		}
 	}
 	get equipment$(): Observable<Equipment> {
-		return this.eqpSubject.asObservable().pipe(distinctUntilKeyChanged('id'));
+		return this.eqpSubject.asObservable().pipe(distinctUntilKeyChanged<Equipment>('id'));
 	}
 
 	public readonly formState$: Observable<EquipmentFormState>;

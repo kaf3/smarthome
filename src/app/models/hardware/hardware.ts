@@ -24,12 +24,12 @@ export class BaseHardware extends BaseDomain {
 export type HardwareDTOProps = OmitByPropType<HardwareDTO, Function>;
 
 export class HardwareDTO {
-	public readonly mac: number | string;
+	public readonly mac: number | string | null;
 	public readonly name: string;
-	public readonly type: string;
+	public readonly type: string | null;
 	public readonly numberOfEquip: number;
 	public readonly equipmentCollection: Collection<EquipmentDTO>;
-	public createDomain: (id: Hardware['id']) => Hardware;
+	public createDomain: (id: Hardware['id'], oldHardware?: Hardware) => Hardware;
 
 	constructor(source: HardwareDTO | HardwareDTOProps) {
 		this.equipmentCollection = { ...source.equipmentCollection };
@@ -63,7 +63,7 @@ export class Hardware extends BaseHardware {
 	private static createEquipmentCollection(hardware: Hardware): Collection<EquipmentDTO> {
 		const equipmentMap = new Map<keyof Collection<EquipmentDTO>, EquipmentDTO>();
 		hardware.equipments.forEach((equipment) => {
-			equipmentMap.set(equipment.id, Equipment.createDTO(equipment));
+			equipmentMap.set(String(equipment.id), Equipment.createDTO(equipment));
 		});
 		return Object.fromEntries(equipmentMap);
 	}
@@ -79,7 +79,7 @@ export class Hardware extends BaseHardware {
 	});
 
 	private static readonly adapter: EntityAdapter<Equipment> = createEntityAdapter<Equipment>({
-		selectId: (eqp) => eqp.id,
+		selectId: (eqp) => eqp.id ?? '',
 		sortComparer: false,
 	});
 
@@ -92,13 +92,16 @@ export class Hardware extends BaseHardware {
 		entityEquipment = this.adapter.upsertOne(equipment, entityEquipment);
 		return new Hardware({
 			...hardware,
-			equipments: Object.values(entityEquipment.entities),
+			equipments: Object.values(entityEquipment.entities as { [p: string]: Equipment }),
 		});
 	}
 }
 
-HardwareDTO.prototype.createDomain = function (id: Hardware['id']): Hardware {
-	const equipments = Object.entries(
+HardwareDTO.prototype.createDomain = function (
+	id: Hardware['id'],
+	oldHardware?: Hardware,
+): Hardware {
+	const equipments = Object.entries<EquipmentDTO>(
 		this.equipmentCollection,
 	).map(([equipmentId, equipmentDTO]: [Equipment['id'], EquipmentDTOProps]) =>
 		new EquipmentDTO({ ...equipmentDTO }).createDomain(equipmentId),
@@ -109,6 +112,6 @@ HardwareDTO.prototype.createDomain = function (id: Hardware['id']): Hardware {
 		name: this.name,
 		id,
 		equipments,
-		activeEquipment: Equipment.initial,
+		activeEquipment: oldHardware?.activeEquipment ?? Equipment.initial,
 	});
 };

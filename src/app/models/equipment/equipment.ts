@@ -43,11 +43,11 @@ export type EquipmentDTOProps = OmitByPropType<EquipmentDTO, Function>;
 
 export class EquipmentDTO {
 	public readonly name: string;
-	public readonly group: string;
-	public readonly type: string;
+	public readonly group: string | null;
+	public readonly type: string | null;
 	public readonly status: boolean;
-	public readonly value: boolean | string | number;
-	public createDomain: (id: Equipment['id']) => Equipment;
+	public readonly value: boolean | string | number | null;
+	public createDomain: (id: Equipment['id'], oldEquipment?: Equipment) => Equipment;
 
 	constructor(source: EquipmentDTO | EquipmentDTOProps) {
 		this.name = source.name;
@@ -79,7 +79,7 @@ export class Equipment {
 		this.type = source.type;
 	}
 
-	public static setValue(equipment: Equipment, val: Equipment['value']): Equipment {
+	public static setValue(equipment: Equipment, val?: Equipment['value']): Equipment {
 		if (equipment.group === EquipmentGroup.DEVICE && val !== null && val !== undefined) {
 			return new Equipment({ ...equipment, value: val });
 		}
@@ -91,7 +91,7 @@ export class Equipment {
 			name: equipment.name,
 			value: equipment.value,
 			status: equipment.status,
-			type: this.convertToDTOType[equipment.type],
+			type: this.convertToDTOType[equipment.type ?? ''],
 			group: equipment.group,
 		});
 	}
@@ -108,10 +108,13 @@ export class Equipment {
 	static readonly convertToDTOType = toDTODictionary(equipmentTypeDictionary);
 }
 
-EquipmentDTO.prototype.createDomain = function (id: Equipment['id']): Equipment {
+EquipmentDTO.prototype.createDomain = function (
+	id: Equipment['id'],
+	_oldEquipment?: Equipment,
+): Equipment {
 	return new Equipment({
 		name: this.name,
-		type: EquipmentDTO.convertToDomainType[this.type],
+		type: EquipmentDTO.convertToDomainType[this.type ?? ''],
 		group: this.group,
 		status: this.status,
 		value: this.value,

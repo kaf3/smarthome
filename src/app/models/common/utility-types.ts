@@ -5,4 +5,11 @@ export type ExcludePropsByType<T, U> = valueof<
 	}
 >;
 
+export type ExtractPropsByType<T, U> = valueof<
+	{
+		[P in keyof T]: T[P] extends U ? P : never;
+	}
+>;
+
 export type OmitByPropType<T, U> = Pick<T, ExcludePropsByType<T, U>>;
+export type PickByPropType<T, U> = Pick<T, ExtractPropsByType<T, U>>;

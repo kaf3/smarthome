@@ -42,27 +42,15 @@ export class HttpRoomsService {
 	}
 
 	public postHardware(hardware: Hardware, roomId: Room['id']): Observable<Hardware> {
-		const cashedActiveEquipment = new Equipment({
-			...hardware.activeEquipment,
-			value: hardware.activeEquipment.value,
-		});
 		return this.http
 			.put<HardwareDTOProps>(
 				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${roomId}/hardwareCollection/${hardware.id}/.json`,
 				Hardware.createDTO(hardware),
 			)
 			.pipe(
-				map((hardwareDTO) => {
-					const newHardware = new HardwareDTO({ ...hardwareDTO }).createDomain(
-						hardware.id,
-					);
-					if (
-						!!newHardware.equipments.find((eqp) => eqp.id === cashedActiveEquipment.id)
-					) {
-						newHardware.activeEquipment = cashedActiveEquipment;
-					}
-					return newHardware;
-				}),
+				map((hardwareDTO) =>
+					new HardwareDTO({ ...hardwareDTO }).createDomain(hardware.id, hardware),
+				),
 			);
 	}
 
@@ -84,15 +72,6 @@ export class HttpRoomsService {
 	}
 
 	public postRoomList(roomList: RoomList): Observable<RoomList> {
-		/*		const cashedActiveRoom = roomList.activeRoom;
-		const cashedActiveHardwares = new Map<Room['id'], Hardware>();
-		const cashedActiveEquipments = new Map<Hardware['id'], Equipment>();
-		roomList.rooms.forEach((room) => {
-			cashedActiveHardwares.set(room.id, room.activeHardware);
-			room.hardwares.forEach((hardware) =>
-				cashedActiveEquipments.set(hardware.id, hardware.activeEquipment),
-			);
-		});*/
 		return this.http
 			.put<Collection<RoomDTO>>(
 				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/.json`,
@@ -100,7 +79,7 @@ export class HttpRoomsService {
 			)
 			.pipe(
 				map((roomCollection) => {
-					return new RoomListDTO({ roomCollection }).createDomain();
+					return new RoomListDTO({ roomCollection }).createDomain(roomList);
 				}),
 			);
 	}
