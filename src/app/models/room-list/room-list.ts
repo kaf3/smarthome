@@ -1,10 +1,10 @@
 import { Room } from '../room/room';
 import { RoomDTO } from '@models/room';
-import { Collection, HostDomain, HostDomainConstructor, OmitByPropType } from '@models/common';
+import { Collection, Empty, host, HostConstructor, OmitByPropType } from '@models/common';
 
 export type RoomListProps = OmitByPropType<RoomList, Function>;
 
-const RoomListWithChildren: HostDomainConstructor<RoomList, Room> = HostDomain<
+const RoomListWithChildren: HostConstructor<RoomList, Room, typeof Empty> = host<
 	RoomList,
 	Room,
 	'rooms'

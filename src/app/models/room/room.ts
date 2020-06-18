@@ -1,11 +1,17 @@
 import { Hardware, HardwareDTO, HardwareDTOProps } from '@models/hardware';
 import { BaseDomain } from '@models/common/baseDomain';
-import { Collection, OmitByPropType } from '@models/common';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { Collection, HostConstructor, mixinHost, OmitByPropType } from '@models/common';
 
 export class BaseRoom extends BaseDomain {
 	static readonly initial = new BaseRoom(BaseDomain.initial.id, BaseDomain.initial.name);
 }
+
+const hostRoom = mixinHost<typeof BaseRoom>(BaseRoom);
+const RoomWithChildren: HostConstructor<Room, Hardware, typeof BaseRoom> = hostRoom<
+	Room,
+	Hardware,
+	'hardwares'
+>('hardwares');
 
 export type RoomDTOProps = OmitByPropType<RoomDTO, Function>;
 
@@ -22,7 +28,7 @@ export class RoomDTO {
 
 export type RoomProps = OmitByPropType<Room, Function>;
 
-export class Room extends BaseRoom {
+export class Room extends RoomWithChildren {
 	public readonly hardwares: Hardware[];
 	public activeHardware: Hardware;
 	constructor(source: Room) {
@@ -56,47 +62,20 @@ export class Room extends BaseRoom {
 		hardwares: [],
 	});
 
-	private static readonly adapter: EntityAdapter<Hardware> = createEntityAdapter<Hardware>({
-		selectId: (hardware) => hardware.id ?? '',
-		sortComparer: false,
-	});
-
-	private static createEntityState(room: Room): EntityState<Hardware> {
-		return this.adapter.addAll(room.hardwares, this.adapter.getInitialState());
-	}
-
 	public static deleteHardware(room: Room, hardware: Hardware): Room {
-		let entityHardware: EntityState<Hardware> = this.createEntityState(room);
-		entityHardware = this.adapter.removeOne(hardware.id ?? '', entityHardware);
-		return new Room({
-			...room,
-			hardwares: Object.values(entityHardware.entities as Collection<Hardware>),
-		});
+		return super.deleteChild(room, hardware);
 	}
 
 	public static addHardware(room: Room, hardware: Hardware): Room {
-		let entityHardware: EntityState<Hardware> = this.createEntityState(room);
-		entityHardware = this.adapter.addOne(hardware, entityHardware);
-		return new Room({
-			...room,
-			hardwares: Object.values(entityHardware.entities as Collection<Hardware>),
-		});
+		return super.addChild(room, hardware);
 	}
 
 	public static updateHardware(room: Room, hardware: Hardware): Room {
-		let entityHardware: EntityState<Hardware> = this.createEntityState(room);
-		entityHardware = this.adapter.upsertOne(hardware, entityHardware);
-		return new Room({
-			...room,
-			hardwares: Object.values(entityHardware.entities as Collection<Hardware>),
-		});
+		return super.updateChild(room, hardware);
 	}
 
 	public static getHardware(id: Hardware['id'], room?: Room): Hardware | undefined {
-		if (room) {
-			return this.createEntityState(room).entities[id ?? ''];
-		}
-		return undefined;
+		return super.getChild(id, room);
 	}
 }
 

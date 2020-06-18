@@ -1,10 +1,9 @@
 import { Equipment, EquipmentDTO, EquipmentDTOProps } from '@models/equipment';
 import { BaseDomain } from '@models/common/baseDomain';
-import { Collection, OmitByPropType } from '@models/common';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { Collection, HostConstructor, mixinHost, OmitByPropType } from '@models/common';
 
 export class BaseHardware extends BaseDomain {
-	protected constructor(
+	constructor(
 		id: BaseDomain['id'],
 		name: BaseDomain['name'],
 		public readonly mac: number | string | null,
@@ -20,6 +19,13 @@ export class BaseHardware extends BaseDomain {
 		null,
 	);
 }
+
+const hostHardware = mixinHost<typeof BaseHardware>(BaseHardware);
+const HardwareWithChildren: HostConstructor<
+	Hardware,
+	Equipment,
+	typeof BaseHardware
+> = hostHardware<Hardware, Equipment, 'equipments'>('equipments');
 
 export type HardwareDTOProps = OmitByPropType<HardwareDTO, Function>;
 
@@ -42,7 +48,7 @@ export class HardwareDTO {
 
 export type HardwareProps = OmitByPropType<Hardware, Function>;
 
-export class Hardware extends BaseHardware {
+export class Hardware extends HardwareWithChildren {
 	public readonly equipments: Equipment[];
 	public activeEquipment: Equipment;
 	constructor(source: Hardware) {
@@ -78,22 +84,8 @@ export class Hardware extends BaseHardware {
 		activeEquipment: Equipment.initial,
 	});
 
-	private static readonly adapter: EntityAdapter<Equipment> = createEntityAdapter<Equipment>({
-		selectId: (eqp) => eqp.id ?? '',
-		sortComparer: false,
-	});
-
-	private static createEntityState(hardware: Hardware): EntityState<Equipment> {
-		return this.adapter.addAll(hardware.equipments, this.adapter.getInitialState());
-	}
-
 	public static updateEquipment(hardware: Hardware, equipment: Equipment): Hardware {
-		let entityEquipment: EntityState<Equipment> = this.createEntityState(hardware);
-		entityEquipment = this.adapter.upsertOne(equipment, entityEquipment);
-		return new Hardware({
-			...hardware,
-			equipments: Object.values(entityEquipment.entities as { [p: string]: Equipment }),
-		});
+		return super.updateChild(hardware, equipment);
 	}
 }
 

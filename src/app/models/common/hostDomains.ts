@@ -4,23 +4,27 @@ import { ExtractPropsByType } from './utility-types';
 import { Ctor } from './constructor';
 import { Collection } from './collection';
 
-export interface HostDomainConstructor<THost, TChild extends BaseDomain> {
-	new (...args): {};
-	//adapter: EntityAdapter<TChild>;
-	//createEntityState: (host: THost) => EntityState<TChild>;
-	updateChild: (host: THost, child: TChild) => THost;
-	addChild: (host: THost, child: TChild) => THost;
-	updateManyChild: (host: THost, children: TChild[]) => THost;
-	deleteChild: (host: THost, child: TChild) => THost;
-	getChild: (id: TChild['id'], host?: THost) => TChild | undefined;
+export interface Host<THost, TChild extends BaseDomain, TBase extends Ctor<{}>> {
+	updateChild(host: THost, child: TChild): THost;
+	addChild(host: THost, child: TChild): THost;
+	updateManyChild(host: THost, children: TChild[]): THost;
+	deleteChild(host: THost, child: TChild): THost;
+	getChild(id: TChild['id'], host?: THost): TChild | undefined;
 }
 
-export function mixinHostDomain<TBase extends Ctor<{}>>(base: TBase) {
-	return function HostDomainFactory<
+export type HostConstructor<THost, TChild extends BaseDomain, TBase extends Ctor<{}>> = Host<
+	THost,
+	TChild,
+	TBase
+> &
+	TBase;
+
+export function mixinHost<TBase extends Ctor<{}>>(base: TBase) {
+	return function HostFactory<
 		THost extends Record<TChildNames, TChild[]>,
 		TChild extends BaseDomain,
 		TChildNames extends ExtractPropsByType<THost, TChild[]>
-	>(childNames: TChildNames): HostDomainConstructor<THost, TChild> & TBase {
+	>(childNames: TChildNames): HostConstructor<THost, TChild, TBase> {
 		return class extends base {
 			private static adapter = createEntityAdapter<TChild>({
 				selectId: (child) => child.id ?? '',
@@ -80,7 +84,7 @@ export function mixinHostDomain<TBase extends Ctor<{}>>(base: TBase) {
 	};
 }
 
-class Base {}
+export class Empty {}
 
-export const HostDomain = mixinHostDomain(Base);
-export const HostBaseDomain = mixinHostDomain(BaseDomain);
+export const host = mixinHost<typeof Empty>(Empty);
+export const hostDomain = mixinHost<typeof BaseDomain>(BaseDomain);
