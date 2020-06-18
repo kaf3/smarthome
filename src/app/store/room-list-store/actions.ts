@@ -9,7 +9,9 @@ export enum RoomListActionsTypes {
 	moveHardware = '[Room list] Move Hardware',
 	moveHardwareSuccess = '[Room list] Move Hardware Success',
 	moveHardwareError = '[Room list] Move Hardware Error',
-	upsertRoom = '[Room list] Upsert Room',
+	updateRoom = '[Room list] Update Room',
+	updateRoomSuccess = '[Room list] Update Room Success',
+	updateRoomFailure = '[Room list] Update Room Failure',
 	upsertRoomWhenLeft = '[Room list] Upsert Room When Left',
 	upsertRoomListWhenLeft = '[Room list] Upsert RoomList When Left',
 	UpsertRoomListCanceled = '[Room List] Upsert Room List Canceled',
@@ -49,10 +51,22 @@ export class MoveHardwareError implements Action {
 	constructor(public payload: { errorMsg: string }) {}
 }
 
-export class UpsertRoom implements Action {
-	readonly type = RoomListActionsTypes.upsertRoom;
+export class UpdateRoom implements Action {
+	readonly type = RoomListActionsTypes.updateRoom;
 
 	constructor(public payload: { room: Room }) {}
+}
+
+export class UpdateRoomSuccess implements Action {
+	readonly type = RoomListActionsTypes.updateRoomSuccess;
+
+	constructor(public payload: { room: Room }) {}
+}
+
+export class UpdateRoomFailure implements Action {
+	readonly type = RoomListActionsTypes.updateRoomFailure;
+
+	constructor(public payload: { errorMsg: string }) {}
 }
 
 export class UpsertRoomWhenLeft implements Action {
@@ -78,7 +92,9 @@ export type RoomListActions =
 	| MoveHardware
 	| MoveHardwareError
 	| MoveHardwareSuccess
-	| UpsertRoom
+	| UpdateRoom
+	| UpdateRoomSuccess
+	| UpdateRoomFailure
 	| UpsertRoomWhenLeft
 	| UpsertRoomListWhenLeft
 	| UpsertRoomListCanceled;

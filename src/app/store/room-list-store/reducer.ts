@@ -31,6 +31,7 @@ export function roomsReducer(
 		case RoomListActionsTypes.loadRoomList:
 		case RoomListActionsTypes.moveHardware:
 		case RoomActionTypes.updateOneHardware:
+		case RoomListActionsTypes.updateRoom:
 		case HardwareActionTypes.UpdateOneEquipment: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
@@ -46,9 +47,10 @@ export function roomsReducer(
 
 		case RoomListActionsTypes.loadRoomListError:
 		case RoomListActionsTypes.moveHardwareError:
+		case RoomListActionsTypes.updateRoomFailure:
 			return { ...state, callState: action.payload };
 
-		case RoomListActionsTypes.upsertRoom:
+		case RoomListActionsTypes.updateRoomSuccess:
 		case RoomListActionsTypes.upsertRoomWhenLeft:
 		case HardwareActionTypes.UpdateOneEquipmentSuccess:
 		case RoomActionTypes.updateOneHardwareSuccess: {

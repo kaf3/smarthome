@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { selectCallState, selectRoomById, selectRoomList, selectRooms } from './selectors';
 import { Observable } from 'rxjs';
-import { LoadRoomList, UpsertRoom, UpsertRoomListWhenLeft, UpsertRoomWhenLeft } from './actions';
+import { LoadRoomList, UpdateRoom, UpsertRoomListWhenLeft, UpsertRoomWhenLeft } from './actions';
 import { LoadableFacade } from '@models/common';
 import { RoomList } from '@models/room-list';
 import { Room } from '@models/room';
@@ -25,7 +25,7 @@ export class RoomListFacade extends LoadableFacade<RoomListState> {
 	}
 
 	public upsertRoom(room: Room): void {
-		this.store.dispatch(new UpsertRoom({ room }));
+		this.store.dispatch(new UpdateRoom({ room }));
 	}
 
 	public upsertRoomWhenLeft(room: Room): void {

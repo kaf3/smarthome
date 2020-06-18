@@ -39,3 +39,12 @@
 	padding-top: $layout03;
 	padding-bottom: $layout03;
 }
+
+.room-toolbar {
+	min-height: $layout11;
+	height: 100%;
+}
+
+.room-expansion-panel {
+	background-color: $app-bar;
+}

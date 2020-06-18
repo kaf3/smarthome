@@ -86,7 +86,6 @@ export class HardwareFormEffects extends ErrorEffects {
 	uniqueName = createEffect(() =>
 		this.hardwareFormFacade.hardwareFormState$.pipe(
 			filter((fs) => !!fs.value.name),
-			//distinct((fs) => fs.value.name),
 			distinctUntilKeyChanged('value'),
 			switchMap((fs) =>
 				timer(300).pipe(

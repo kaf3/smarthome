@@ -8,6 +8,9 @@ import {
 	MoveHardwareError,
 	MoveHardwareSuccess,
 	RoomListActionsTypes,
+	UpdateRoom,
+	UpdateRoomFailure,
+	UpdateRoomSuccess,
 } from './actions';
 import {
 	catchError,
@@ -36,7 +39,7 @@ export class RoomListEffects extends ErrorEffects {
 			switchMap(() => this.httpRoomsService.loadRoomList().pipe(take(1))),
 			switchMap((roomList: RoomList) => of(new LoadRoomListSuccess({ roomList }))),
 			catchError(() =>
-				of(new LoadRoomListError({ errorMsg: 'Error: could not load rooms' })),
+				of(new LoadRoomListError({ errorMsg: 'Ошибка: не удалось загрузить комнаты' })),
 			),
 		),
 	);
@@ -47,7 +50,18 @@ export class RoomListEffects extends ErrorEffects {
 			concatMap((action) => this.httpRoomsService.postRoomList(action.payload.roomList)),
 			map((roomList) => new MoveHardwareSuccess({ roomList })),
 			catchError(() =>
-				of(new MoveHardwareError({ errorMsg: 'Error: could not update rooms' })),
+				of(new MoveHardwareError({ errorMsg: 'Ошибка: не удалось обновить комнаты' })),
+			),
+		),
+	);
+
+	updateRoom$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType<UpdateRoom>(RoomListActionsTypes.updateRoom),
+			concatMap((action) => this.httpRoomsService.postRoom(action.payload.room)),
+			map((room) => new UpdateRoomSuccess({ room })),
+			catchError(() =>
+				of(new UpdateRoomFailure({ errorMsg: 'Ошибка: не удалось обновить комнату' })),
 			),
 		),
 	);
@@ -55,6 +69,7 @@ export class RoomListEffects extends ErrorEffects {
 	errorHandler = this.createErrorHandler(
 		RoomListActionsTypes.loadRoomListError,
 		RoomListActionsTypes.moveHardwareError,
+		RoomListActionsTypes.updateRoomFailure,
 	);
 
 	redirectToActiveRoom = createEffect(

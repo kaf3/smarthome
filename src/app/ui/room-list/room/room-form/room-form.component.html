@@ -1,0 +1,33 @@
+<ng-container *ngIf="formState$ | async as fs">
+	<form [ngrxFormState]="fs" (submit)="submitForm()">
+		<mat-form-field>
+			<mat-label>Имя комнаты</mat-label>
+			<input
+				type="text"
+				matInput
+				placeholder="Введите имя комнаты"
+				[ngrxFormControlState]="fs.controls.name"
+			/>
+			<mat-error *ngIf="fs?.controls.name.errors?.required"
+				>У комнаты должно быть имя</mat-error
+			>
+			<mat-error *ngIf="fs?.controls.name.errors?.$roomExists">Имя занято</mat-error>
+		</mat-form-field>
+		<button
+			mat-button
+			type="submit"
+			[disabled]="fs.isInvalid || fs.isPristine || fs.isSubmitted || fs.isValidationPending"
+		>
+			Сохранить
+		</button>
+		<button
+			(click)="reset()"
+			[disabled]="fs.isPristine || fs.isSubmitted"
+			mat-button
+			color="accent"
+			type="button"
+		>
+			Отмена
+		</button>
+	</form>
+</ng-container>

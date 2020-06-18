@@ -9,6 +9,7 @@ import { PipesModule } from '@pipes';
 import { HardwareModule } from './hardware/hardware.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { HardwareFormModule } from './hardware-form/hardware-form.module';
+import { RoomFormModule } from './room-form/room-form.module';
 
 @NgModule({
 	declarations: [RoomComponent],
@@ -16,6 +17,7 @@ import { HardwareFormModule } from './hardware-form/hardware-form.module';
 		CommonModule,
 		HardwareModule,
 		HardwareFormModule,
+		RoomFormModule,
 		MatToolbarModule,
 		MatRippleModule,
 		MatCardModule,

@@ -6,6 +6,7 @@ import { EquipmentStoreModule } from '@store/equipment';
 import { EquipmentFormStoreModule } from '@store/equipment-form';
 import { HardwareStoreModule } from '@store/hardware';
 import { HardwareFormStoreModule } from '@store/hardware-form';
+import { RoomFormStoreModule } from '@store/room-form';
 
 @NgModule({
 	imports: [
@@ -16,6 +17,7 @@ import { HardwareFormStoreModule } from '@store/hardware-form';
 		EquipmentFormStoreModule.forRoot(),
 		HardwareStoreModule.forRoot(),
 		HardwareFormStoreModule.forRoot(),
+		RoomFormStoreModule.forRoot(),
 	],
 })
 export class FeatureStoreModule {}

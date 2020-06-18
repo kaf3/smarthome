@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { RoomList, RoomListDTO } from '@models/room-list';
-import { Room, RoomDTO } from '@models/room';
+import { Room, RoomDTO, RoomDTOProps } from '@models/room';
 import { Collection } from '@models/common';
 import { Hardware, HardwareDTO, HardwareDTOProps } from '@models/hardware';
 import { Equipment, EquipmentDTO, EquipmentDTOProps } from '@models/equipment';
@@ -69,6 +69,15 @@ export class HttpRoomsService {
 					new EquipmentDTO({ ...equipmentDTO }).createDomain(equipment.id),
 				),
 			);
+	}
+
+	public postRoom(room: Room): Observable<Room> {
+		return this.http
+			.put<RoomDTOProps>(
+				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${room.id}/.json`,
+				Room.createDTO(room),
+			)
+			.pipe(map((roomDTO) => new RoomDTO({ ...roomDTO }).createDomain(room.id, room)));
 	}
 
 	public postRoomList(roomList: RoomList): Observable<RoomList> {

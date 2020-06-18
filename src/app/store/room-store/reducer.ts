@@ -39,7 +39,8 @@ export function roomReducer(
 		case RoomListActionsTypes.moveHardware: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
-		case RoomActionTypes.getRoomSuccess: {
+		case RoomActionTypes.getRoomSuccess:
+		case RoomListActionsTypes.updateRoomSuccess: {
 			const { hardwares, activeHardware } = action.payload.room;
 			return roomAdapter.addAll(hardwares, {
 				...state,

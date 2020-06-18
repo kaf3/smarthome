@@ -1,6 +1,11 @@
 <ng-container *ngIf="room$ | async as room">
-	<mat-toolbar>
-		{{ room?.name }}
+	<mat-toolbar class="room-toolbar">
+		<mat-expansion-panel class="mat-elevation-z0 room-expansion-panel">
+			<mat-expansion-panel-header collapsedHeight="64px">
+				<h2>{{ room?.name }}</h2>
+			</mat-expansion-panel-header>
+			<app-room-form></app-room-form>
+		</mat-expansion-panel>
 	</mat-toolbar>
 	<div class="hardware-list">
 		<div *ngFor="let hardware of room?.hardwares" class="hardware">
