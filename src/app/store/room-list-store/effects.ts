@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+	AddRoom,
+	AddRoomFailure,
+	AddRoomSuccess,
 	LoadRoomList,
 	LoadRoomListError,
 	LoadRoomListSuccess,
@@ -66,10 +69,22 @@ export class RoomListEffects extends ErrorEffects {
 		),
 	);
 
+	addRoom$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType<AddRoom>(RoomListActionsTypes.addRoom),
+			concatMap((action) => this.httpRoomsService.postRoom(action.payload.room)),
+			map((room) => new AddRoomSuccess({ room })),
+			catchError(() =>
+				of(new AddRoomFailure({ errorMsg: 'Ошибка: не удалось добавить комнату' })),
+			),
+		),
+	);
+
 	errorHandler = this.createErrorHandler(
 		RoomListActionsTypes.loadRoomListError,
 		RoomListActionsTypes.moveHardwareError,
 		RoomListActionsTypes.updateRoomFailure,
+		RoomListActionsTypes.addRoomFailure,
 	);
 
 	redirectToActiveRoom = createEffect(

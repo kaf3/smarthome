@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Добавить комнату</h2>
+<form [formGroup]="addForm" (ngSubmit)="submitForm()">
+	<div mat-dialog-content>
+		<mat-form-field>
+			<mat-label>Имя комнаты</mat-label>
+			<input
+				matInput
+				type="text"
+				placeholder="Введите имя комнаты"
+				formControlName="nameControl"
+			/>
+			<mat-error *ngIf="nameControl?.errors?.required">У комнаты должно быть имя</mat-error>
+			<mat-error *ngIf="nameControl?.errors?.notUnique">Такая комната уже есть</mat-error>
+		</mat-form-field>
+	</div>
+	<div mat-dialog-actions>
+		<button mat-button mat-dialog-close>Отмена</button>
+		<button type="submit" mat-button [disabled]="addForm.invalid || addForm.pristine">
+			Создать
+		</button>
+	</div>
+</form>

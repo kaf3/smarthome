@@ -9,9 +9,15 @@ import { RoomListRoutingModule } from './room-list.routing.module';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RoomGuard } from './room/room.guard';
 import { HardwareGuard } from './room/hardware/hardware.guard';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { AddRoomComponent } from './add-room/add-room.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-	declarations: [RoomListComponent],
+	declarations: [RoomListComponent, AddRoomComponent],
 	exports: [RoomListComponent],
 	imports: [
 		CommonModule,
@@ -21,6 +27,11 @@ import { HardwareGuard } from './room/hardware/hardware.guard';
 		MatTabsModule,
 		MatGridListModule,
 		MatProgressBarModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatButtonModule,
+		MatDialogModule,
+		ReactiveFormsModule,
 	],
 	providers: [RoomGuard, HardwareGuard],
 })

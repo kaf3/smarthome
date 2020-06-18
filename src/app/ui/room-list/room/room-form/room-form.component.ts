@@ -1,8 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { RoomFormFacade, RoomFormStoreState } from '@store/room-form';
 import { Observable, Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { filter, share, take, takeUntil } from 'rxjs/operators';
 import { RoomFacade } from '@store/room';
+import { Room } from '@models/room';
 
 @Component({
 	selector: 'app-room-form',
@@ -12,12 +13,14 @@ import { RoomFacade } from '@store/room';
 export class RoomFormComponent implements OnDestroy {
 	public readonly formState$: Observable<RoomFormStoreState.RoomFormState>;
 	private readonly destroy$ = new Subject();
+	public room$: Observable<Room>;
 
 	constructor(
 		public readonly roomFormFacade: RoomFormFacade,
 		public readonly roomFacade: RoomFacade,
 	) {
 		this.formState$ = this.roomFormFacade.roomFormState$;
+		this.room$ = this.roomFacade.room$.pipe(share());
 	}
 
 	submitForm(): void {

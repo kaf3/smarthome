@@ -12,6 +12,9 @@ export enum RoomListActionsTypes {
 	updateRoom = '[Room list] Update Room',
 	updateRoomSuccess = '[Room list] Update Room Success',
 	updateRoomFailure = '[Room list] Update Room Failure',
+	addRoom = '[Room list] Add Room',
+	addRoomSuccess = '[Room list] Add Room Success',
+	addRoomFailure = '[Room list] Add Room Failure',
 	upsertRoomWhenLeft = '[Room list] Upsert Room When Left',
 	upsertRoomListWhenLeft = '[Room list] Upsert RoomList When Left',
 	UpsertRoomListCanceled = '[Room List] Upsert Room List Canceled',
@@ -85,6 +88,24 @@ export class UpsertRoomListCanceled implements Action {
 	readonly type = RoomListActionsTypes.UpsertRoomListCanceled;
 }
 
+export class AddRoom implements Action {
+	readonly type = RoomListActionsTypes.addRoom;
+
+	constructor(public payload: { room: Room }) {}
+}
+
+export class AddRoomSuccess implements Action {
+	readonly type = RoomListActionsTypes.addRoomSuccess;
+
+	constructor(public payload: { room: Room }) {}
+}
+
+export class AddRoomFailure implements Action {
+	readonly type = RoomListActionsTypes.addRoomFailure;
+
+	constructor(public payload: { errorMsg: string }) {}
+}
+
 export type RoomListActions =
 	| LoadRoomList
 	| LoadRoomListSuccess
@@ -97,4 +118,7 @@ export type RoomListActions =
 	| UpdateRoomFailure
 	| UpsertRoomWhenLeft
 	| UpsertRoomListWhenLeft
-	| UpsertRoomListCanceled;
+	| UpsertRoomListCanceled
+	| AddRoom
+	| AddRoomSuccess
+	| AddRoomFailure;

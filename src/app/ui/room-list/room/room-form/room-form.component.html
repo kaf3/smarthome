@@ -29,5 +29,14 @@
 		>
 			Отмена
 		</button>
+		<button
+			[disabled]="!!(room$ | async)?.hardwares?.length"
+			mat-button
+			color="warn"
+			type="button"
+			matTooltip="Удалять можно только пустые комнаты"
+		>
+			Удалить
+		</button>
 	</form>
 </ng-container>

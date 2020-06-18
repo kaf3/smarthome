@@ -6,6 +6,8 @@ import { RoomListFacade } from '@store/room-list';
 import { Observable, Subject } from 'rxjs';
 import { MatTabNav } from '@angular/material/tabs';
 import { SidenavService } from '@services';
+import { MatDialog } from '@angular/material/dialog';
+import { AddRoomComponent } from './add-room/add-room.component';
 
 @Component({
 	selector: 'app-room-list',
@@ -21,6 +23,7 @@ export class RoomListComponent implements OnInit, OnDestroy {
 	constructor(
 		private readonly roomListFacade: RoomListFacade,
 		private readonly sidenavService: SidenavService,
+		private readonly matDialog: MatDialog,
 	) {}
 
 	ngOnInit(): void {
@@ -46,5 +49,9 @@ export class RoomListComponent implements OnInit, OnDestroy {
 			.subscribe(() => {
 				this.alignInkNavBar();
 			});
+	}
+
+	addRoom(): void {
+		this.matDialog.open(AddRoomComponent);
 	}
 }
