@@ -44,7 +44,7 @@ export class HardwareEffects extends ErrorEffects {
 			ofType(HardwareActionTypes.UpdateOneEquipment),
 			concatMap(({ payload }) =>
 				this.httpRoomsService
-					.postEquipment(payload.equipment, payload.hardware.id, payload.room.id)
+					.patchEquipment(payload.equipment, payload.hardware.id, payload.room.id)
 					.pipe(
 						map(
 							(equipment) =>

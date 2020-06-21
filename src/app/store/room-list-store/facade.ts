@@ -10,6 +10,7 @@ import {
 import { Observable } from 'rxjs';
 import {
 	AddRoom,
+	DeleteRoom,
 	LoadRoomList,
 	UpdateRoom,
 	UpsertRoomListWhenLeft,
@@ -46,6 +47,10 @@ export class RoomListFacade extends LoadableFacade<RoomListState> {
 
 	public addRoom(room: Room): void {
 		this.store.dispatch(new AddRoom({ room }));
+	}
+
+	public deleteRoom(room: Room): void {
+		this.store.dispatch(new DeleteRoom({ room }));
 	}
 
 	public upsertRoomWhenLeft(room: Room): void {

@@ -1,28 +1,33 @@
-<ng-container *ngIf="formState$ | async as fs">
-	<form [ngrxFormState]="fs" (submit)="submitForm()">
+<ng-container *ngIf="{ fs: formState$ | async, room: room$ | async } as data">
+	<form [ngrxFormState]="data.fs" (submit)="submitForm()">
 		<mat-form-field>
 			<mat-label>Имя комнаты</mat-label>
 			<input
 				type="text"
 				matInput
 				placeholder="Введите имя комнаты"
-				[ngrxFormControlState]="fs.controls.name"
+				[ngrxFormControlState]="data.fs.controls.name"
 			/>
-			<mat-error *ngIf="fs?.controls.name.errors?.required"
+			<mat-error *ngIf="data.fs?.controls.name.errors?.required"
 				>У комнаты должно быть имя</mat-error
 			>
-			<mat-error *ngIf="fs?.controls.name.errors?.$roomExists">Имя занято</mat-error>
+			<mat-error *ngIf="data.fs?.controls.name.errors?.$roomExists">Имя занято</mat-error>
 		</mat-form-field>
 		<button
 			mat-button
 			type="submit"
-			[disabled]="fs.isInvalid || fs.isPristine || fs.isSubmitted || fs.isValidationPending"
+			[disabled]="
+				data.fs.isInvalid ||
+				data.fs.isPristine ||
+				data.fs.isSubmitted ||
+				data.fs.isValidationPending
+			"
 		>
 			Сохранить
 		</button>
 		<button
-			(click)="reset()"
-			[disabled]="fs.isPristine || fs.isSubmitted"
+			(click)="reset(data.room)"
+			[disabled]="data.fs.isPristine || data.fs.isSubmitted"
 			mat-button
 			color="accent"
 			type="button"
@@ -30,11 +35,12 @@
 			Отмена
 		</button>
 		<button
-			[disabled]="!!(room$ | async)?.hardwares?.length"
+			[disabled]="!!data.room.hardwares.length"
 			mat-button
 			color="warn"
 			type="button"
 			matTooltip="Удалять можно только пустые комнаты"
+			(click)="delete(data.room)"
 		>
 			Удалить
 		</button>

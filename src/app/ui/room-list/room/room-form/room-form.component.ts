@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { filter, share, take, takeUntil } from 'rxjs/operators';
 import { RoomFacade } from '@store/room';
 import { Room } from '@models/room';
+import { RoomListFacade } from '@store/room-list';
 
 @Component({
 	selector: 'app-room-form',
@@ -18,6 +19,7 @@ export class RoomFormComponent implements OnDestroy {
 	constructor(
 		public readonly roomFormFacade: RoomFormFacade,
 		public readonly roomFacade: RoomFacade,
+		public readonly roomListFacade: RoomListFacade,
 	) {
 		this.formState$ = this.roomFormFacade.roomFormState$;
 		this.room$ = this.roomFacade.room$.pipe(share());
@@ -33,14 +35,16 @@ export class RoomFormComponent implements OnDestroy {
 			.subscribe(() => this.roomFormFacade.submitRoomForm());
 	}
 
-	reset(): void {
-		this.roomFacade.room$
-			.pipe(take(1), takeUntil(this.destroy$))
-			.subscribe((room) => this.roomFormFacade.loadRoomForm({ name: room.name }));
+	reset(room: Room): void {
+		this.roomFormFacade.loadRoomForm({ name: room.name });
 	}
 
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
+	}
+
+	delete(room: Room): void {
+		this.roomListFacade.deleteRoom(room);
 	}
 }

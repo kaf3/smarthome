@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { RoomList, RoomListDTO } from '@models/room-list';
 import { Room, RoomDTO, RoomDTOProps } from '@models/room';
@@ -41,7 +41,7 @@ export class HttpRoomsService {
 			);
 	}
 
-	public postHardware(hardware: Hardware, roomId: Room['id']): Observable<Hardware> {
+	public patchHardware(hardware: Hardware, roomId: Room['id']): Observable<Hardware> {
 		return this.http
 			.put<HardwareDTOProps>(
 				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${roomId}/hardwareCollection/${hardware.id}/.json`,
@@ -54,7 +54,7 @@ export class HttpRoomsService {
 			);
 	}
 
-	public postEquipment(
+	public patchEquipment(
 		equipment: Equipment,
 		hardwareId: Hardware['id'],
 		roomId: Room['id'],
@@ -71,7 +71,7 @@ export class HttpRoomsService {
 			);
 	}
 
-	public postRoom(room: Room): Observable<Room> {
+	public patchRoom(room: Room): Observable<Room> {
 		return this.http
 			.put<RoomDTOProps>(
 				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${room.id}/.json`,
@@ -80,7 +80,27 @@ export class HttpRoomsService {
 			.pipe(map((roomDTO) => new RoomDTO({ ...roomDTO }).createDomain(room.id, room)));
 	}
 
-	public postRoomList(roomList: RoomList): Observable<RoomList> {
+	public postRoom(room: Room): Observable<Room> {
+		return this.http
+			.post<{ name: string }>(
+				`${FIREBASE_DATABASE_URL}/users/user_id/rooms.json`,
+				Room.createDTO(room),
+			)
+			.pipe(
+				tap((z) => {
+					console.log(z);
+				}),
+				map((response) => new Room({ ...room, id: response.name })),
+			);
+	}
+
+	public deleteRoom(room: Room): Observable<{ room: Room; response: null }> {
+		return this.http
+			.delete<null>(`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${room.id}.json`)
+			.pipe(map((response) => ({ room, response })));
+	}
+
+	public patchRoomList(roomList: RoomList): Observable<RoomList> {
 		return this.http
 			.put<Collection<RoomDTO>>(
 				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/.json`,

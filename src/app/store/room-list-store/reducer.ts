@@ -33,7 +33,8 @@ export function roomsReducer(
 		case RoomActionTypes.updateOneHardware:
 		case RoomListActionsTypes.updateRoom:
 		case RoomListActionsTypes.addRoom:
-		case HardwareActionTypes.UpdateOneEquipment: {
+		case HardwareActionTypes.UpdateOneEquipment:
+		case RoomListActionsTypes.DeleteRoom: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
 		case RoomListActionsTypes.loadRoomListSuccess:
@@ -50,6 +51,7 @@ export function roomsReducer(
 		case RoomListActionsTypes.moveHardwareError:
 		case RoomListActionsTypes.updateRoomFailure:
 		case RoomListActionsTypes.addRoomFailure:
+		case RoomListActionsTypes.DeleteRoomFailure:
 			return { ...state, callState: action.payload };
 
 		case RoomListActionsTypes.updateRoomSuccess:
@@ -75,6 +77,12 @@ export function roomsReducer(
 				activeRoom,
 			});
 		}
+
+		case RoomListActionsTypes.DeleteRoomSuccess:
+			return roomsAdapter.removeOne(action.payload.room.id ?? '', {
+				...state,
+				callState: LoadingState.LOADED,
+			});
 
 		default:
 			return state;

@@ -21,7 +21,7 @@ import {
 import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
 import { HttpRoomsService } from '@services';
 import { of } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
 import { RoomFacade } from './facade';
 import { RoomListActionsTypes } from '../room-list-store/actions';
@@ -57,7 +57,7 @@ export class RoomEffects extends ErrorEffects {
 		this.actions$.pipe(
 			ofType<UpdateOneHardware>(RoomActionTypes.updateOneHardware),
 			concatMap(({ payload }) =>
-				this.httpRoomsService.postHardware(payload.hardware, payload.room.id).pipe(
+				this.httpRoomsService.patchHardware(payload.hardware, payload.room.id).pipe(
 					map(
 						(hardware) =>
 							new UpdateOneHardwareSuccess({
@@ -77,7 +77,12 @@ export class RoomEffects extends ErrorEffects {
 		() =>
 			this.actions$.pipe(
 				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
-				filter((action) => !!/room\d+$/.test(action.payload.routerState.url)),
+				filter((action) => {
+					const _url = action.payload.routerState.url.split('/');
+
+					console.log(this.route.children, _url);
+					return /room\d+$/.test(action.payload.routerState.url);
+				}),
 				withLatestFrom(this.roomFacade.room$),
 				map(([_action, room]) => {
 					const { id } = room.activeHardware;
@@ -115,6 +120,7 @@ export class RoomEffects extends ErrorEffects {
 		private readonly roomFacade: RoomFacade,
 		private readonly httpRoomsService: HttpRoomsService,
 		private readonly router: Router,
+		private readonly route: ActivatedRoute,
 		readonly snackBar: MatSnackBar,
 	) {
 		super(snackBar, actions$);

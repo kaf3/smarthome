@@ -53,7 +53,6 @@ export class Room extends RoomWithChildren {
 		room.hardwares.forEach((hardware) => {
 			hardwareMap.set(hardware.id ?? '', Hardware.createDTO(hardware));
 		});
-		console.log(Object.fromEntries(hardwareMap));
 		return Object.fromEntries(hardwareMap);
 	}
 

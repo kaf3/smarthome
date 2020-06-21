@@ -4,12 +4,16 @@ import {
 	AddRoom,
 	AddRoomFailure,
 	AddRoomSuccess,
+	DeleteRoom,
+	DeleteRoomFailure,
+	DeleteRoomSuccess,
 	LoadRoomList,
 	LoadRoomListError,
 	LoadRoomListSuccess,
 	MoveHardware,
 	MoveHardwareError,
 	MoveHardwareSuccess,
+	RoomListActions,
 	RoomListActionsTypes,
 	UpdateRoom,
 	UpdateRoomFailure,
@@ -25,7 +29,7 @@ import {
 	withLatestFrom,
 } from 'rxjs/operators';
 
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpRoomsService, SerializeService } from '@services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -33,6 +37,7 @@ import { RoomListFacade } from './facade';
 import { RoomList } from '@models/room-list';
 import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
 import { ErrorEffects } from '@models/common';
+import { Room } from '@models/room';
 
 @Injectable()
 export class RoomListEffects extends ErrorEffects {
@@ -50,7 +55,7 @@ export class RoomListEffects extends ErrorEffects {
 	moveHardware$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<MoveHardware>(RoomListActionsTypes.moveHardware),
-			concatMap((action) => this.httpRoomsService.postRoomList(action.payload.roomList)),
+			concatMap((action) => this.httpRoomsService.patchRoomList(action.payload.roomList)),
 			map((roomList) => new MoveHardwareSuccess({ roomList })),
 			catchError(() =>
 				of(new MoveHardwareError({ errorMsg: 'Ошибка: не удалось обновить комнаты' })),
@@ -61,7 +66,7 @@ export class RoomListEffects extends ErrorEffects {
 	updateRoom$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<UpdateRoom>(RoomListActionsTypes.updateRoom),
-			concatMap((action) => this.httpRoomsService.postRoom(action.payload.room)),
+			concatMap((action) => this.httpRoomsService.patchRoom(action.payload.room)),
 			map((room) => new UpdateRoomSuccess({ room })),
 			catchError(() =>
 				of(new UpdateRoomFailure({ errorMsg: 'Ошибка: не удалось обновить комнату' })),
@@ -80,11 +85,29 @@ export class RoomListEffects extends ErrorEffects {
 		),
 	);
 
+	deleteRoom$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType<DeleteRoom>(RoomListActionsTypes.DeleteRoom),
+			withLatestFrom(this.roomListFacade.rooms$),
+			concatMap(([action, rooms]) => {
+				const room = action.payload.room;
+				if (room.hardwares.length === 0 && rooms.length > 1) {
+					return this.httpDeleteRoom$(room);
+				}
+				if (rooms.length <= 1) {
+					return of(new DeleteRoomFailure({ errorMsg: 'Оставьте хотя бы одну комнату' }));
+				}
+				return of(new DeleteRoomFailure({ errorMsg: 'Очистите комнату перед удалением' }));
+			}),
+		),
+	);
+
 	errorHandler = this.createErrorHandler(
 		RoomListActionsTypes.loadRoomListError,
 		RoomListActionsTypes.moveHardwareError,
 		RoomListActionsTypes.updateRoomFailure,
 		RoomListActionsTypes.addRoomFailure,
+		RoomListActionsTypes.DeleteRoomFailure,
 	);
 
 	redirectToActiveRoom = createEffect(
@@ -98,6 +121,32 @@ export class RoomListEffects extends ErrorEffects {
 					if (!!id && this.router.url.endsWith('/rooms')) {
 						this.router.navigate([`/rooms/${id}`]);
 					}
+				}),
+			),
+		{ dispatch: false },
+	);
+
+	httpDeleteRoom$(room: Room): Observable<RoomListActions> {
+		return this.httpRooms.deleteRoom(room).pipe(
+			map((value) => {
+				if (value.response === null) {
+					return new DeleteRoomSuccess({ room: value.room });
+				}
+				return new DeleteRoomFailure({
+					errorMsg: 'Не удалось удалить комнату',
+				});
+			}),
+			catchError(() => of(new DeleteRoomFailure({ errorMsg: 'Не удалось удалить комнату' }))),
+		);
+	}
+
+	redirectFromDeletedRoom$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(RoomListActionsTypes.DeleteRoomSuccess),
+				withLatestFrom(this.roomListFacade.rooms$),
+				map(([_deletedRoom, rooms]) => {
+					this.router.navigate([`/rooms/${rooms[0].id}`]);
 				}),
 			),
 		{ dispatch: false },

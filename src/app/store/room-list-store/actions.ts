@@ -15,6 +15,9 @@ export enum RoomListActionsTypes {
 	addRoom = '[Room list] Add Room',
 	addRoomSuccess = '[Room list] Add Room Success',
 	addRoomFailure = '[Room list] Add Room Failure',
+	DeleteRoom = '[Room list] Delete Room',
+	DeleteRoomSuccess = '[Room list] Delete Room Success',
+	DeleteRoomFailure = '[Room list] Delete Room Failure',
 	upsertRoomWhenLeft = '[Room list] Upsert Room When Left',
 	upsertRoomListWhenLeft = '[Room list] Upsert RoomList When Left',
 	UpsertRoomListCanceled = '[Room List] Upsert Room List Canceled',
@@ -106,6 +109,24 @@ export class AddRoomFailure implements Action {
 	constructor(public payload: { errorMsg: string }) {}
 }
 
+export class DeleteRoom implements Action {
+	readonly type = RoomListActionsTypes.DeleteRoom;
+
+	constructor(public payload: { room: Room }) {}
+}
+
+export class DeleteRoomSuccess implements Action {
+	readonly type = RoomListActionsTypes.DeleteRoomSuccess;
+
+	constructor(public payload: { room: Room }) {}
+}
+
+export class DeleteRoomFailure implements Action {
+	readonly type = RoomListActionsTypes.DeleteRoomFailure;
+
+	constructor(public payload: { errorMsg: string }) {}
+}
+
 export type RoomListActions =
 	| LoadRoomList
 	| LoadRoomListSuccess
@@ -121,4 +142,7 @@ export type RoomListActions =
 	| UpsertRoomListCanceled
 	| AddRoom
 	| AddRoomSuccess
-	| AddRoomFailure;
+	| AddRoomFailure
+	| DeleteRoom
+	| DeleteRoomSuccess
+	| DeleteRoomFailure;
