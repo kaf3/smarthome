@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { RoomFacade } from '@store/room';
 import { Room } from '@models/room';
+import { RoomListFacade } from '@store/room-list';
 
 @Component({
 	selector: 'app-room',
@@ -13,9 +14,16 @@ export class RoomComponent implements OnInit {
 	public room$: Observable<Room>;
 	public openedId: string | null = null;
 
-	constructor(private readonly roomFacade: RoomFacade) {}
+	constructor(
+		private readonly roomFacade: RoomFacade,
+		private readonly roomListFacade: RoomListFacade,
+	) {}
 
 	ngOnInit(): void {
 		this.room$ = this.roomFacade.room$.pipe(filter((room) => !!room?.id));
+	}
+
+	delete(room: Room): void {
+		this.roomListFacade.deleteRoom(room);
 	}
 }

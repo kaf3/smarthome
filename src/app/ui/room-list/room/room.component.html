@@ -6,6 +6,15 @@
 			</mat-expansion-panel-header>
 			<app-room-form></app-room-form>
 		</mat-expansion-panel>
+		<button
+			mat-mini-fab
+			color="warn"
+			[disabled]="!!room.hardwares.length"
+			(click)="delete(room)"
+			matTooltip="Очистите комнату перед удалением"
+		>
+			<mat-icon>delete</mat-icon>
+		</button>
 	</mat-toolbar>
 	<div class="hardware-list">
 		<div *ngFor="let hardware of room?.hardwares" class="hardware">

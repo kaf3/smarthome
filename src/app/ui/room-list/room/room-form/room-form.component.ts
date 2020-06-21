@@ -9,7 +9,7 @@ import { RoomListFacade } from '@store/room-list';
 @Component({
 	selector: 'app-room-form',
 	templateUrl: './room-form.component.html',
-	styleUrls: ['./room-form.component.css'],
+	styleUrls: ['./room-form.component.scss'],
 })
 export class RoomFormComponent implements OnDestroy {
 	public readonly formState$: Observable<RoomFormStoreState.RoomFormState>;
@@ -42,9 +42,5 @@ export class RoomFormComponent implements OnDestroy {
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
-	}
-
-	delete(room: Room): void {
-		this.roomListFacade.deleteRoom(room);
 	}
 }

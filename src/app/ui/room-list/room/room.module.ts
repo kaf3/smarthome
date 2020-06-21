@@ -10,6 +10,9 @@ import { HardwareModule } from './hardware/hardware.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { HardwareFormModule } from './hardware-form/hardware-form.module';
 import { RoomFormModule } from './room-form/room-form.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
 	declarations: [RoomComponent],
@@ -24,6 +27,9 @@ import { RoomFormModule } from './room-form/room-form.module';
 		PipesModule,
 		MatExpansionModule,
 		RouterModule.forChild([]),
+		MatButtonModule,
+		MatIconModule,
+		MatTooltipModule,
 	],
 	exports: [RouterModule],
 })

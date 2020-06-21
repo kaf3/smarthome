@@ -46,21 +46,15 @@ export class AddRoomComponent implements OnInit, OnDestroy {
 
 	submitForm(): void {
 		if (this.addForm.valid && this.addForm.dirty) {
-			this.roomListFacade.rooms$
-				.pipe(take(1), takeUntil(this.destroy$))
-				.subscribe((rooms) => {
-					const length = rooms.length + 1;
-					const idStr = rooms.length < 10 ? '0' + length : '' + length;
-					const id = 'room' + idStr;
-					const room = new Room({
-						id,
-						name: this.nameControl?.value,
-						activeHardware: Hardware.initial,
-						hardwares: [],
-					});
-					this.roomListFacade.addRoom(room);
-					this.checkAndClose(id);
-				});
+			const name = this.nameControl?.value;
+			const room = new Room({
+				id: null,
+				name,
+				activeHardware: Hardware.initial,
+				hardwares: [],
+			});
+			this.roomListFacade.addRoom(room);
+			this.checkAndClose(name);
 		}
 	}
 
@@ -77,7 +71,7 @@ export class AddRoomComponent implements OnInit, OnDestroy {
 		};
 	}
 
-	checkAndClose(id: Room['id']): void {
+	checkAndClose(name: Room['name']): void {
 		this.actions$
 			.pipe(
 				ofType<RoomListStoreActions.AddRoomSuccess>(
@@ -87,7 +81,7 @@ export class AddRoomComponent implements OnInit, OnDestroy {
 				takeUntil(this.destroy$),
 			)
 			.subscribe((action) => {
-				if (action.payload.room.id === id) {
+				if (action.payload.room.name === name) {
 					this.dialogRef.close();
 				}
 			});

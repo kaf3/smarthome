@@ -77,12 +77,7 @@ export class RoomEffects extends ErrorEffects {
 		() =>
 			this.actions$.pipe(
 				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
-				filter((action) => {
-					const _url = action.payload.routerState.url.split('/');
-
-					console.log(this.route.children, _url);
-					return /room\d+$/.test(action.payload.routerState.url);
-				}),
+				filter((action) => /^\/rooms\/[\w-]{20}$/.test(action.payload.routerState.url)),
 				withLatestFrom(this.roomFacade.room$),
 				map(([_action, room]) => {
 					const { id } = room.activeHardware;

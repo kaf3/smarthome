@@ -1,5 +1,5 @@
 <ng-container *ngIf="{ fs: formState$ | async, room: room$ | async } as data">
-	<form [ngrxFormState]="data.fs" (submit)="submitForm()">
+	<form [ngrxFormState]="data.fs" (submit)="submitForm()" class="room-form">
 		<mat-form-field>
 			<mat-label>Имя комнаты</mat-label>
 			<input
@@ -33,16 +33,6 @@
 			type="button"
 		>
 			Отмена
-		</button>
-		<button
-			[disabled]="!!data.room.hardwares.length"
-			mat-button
-			color="warn"
-			type="button"
-			matTooltip="Удалять можно только пустые комнаты"
-			(click)="delete(data.room)"
-		>
-			Удалить
 		</button>
 	</form>
 </ng-container>

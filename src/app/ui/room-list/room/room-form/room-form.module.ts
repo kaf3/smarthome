@@ -5,18 +5,10 @@ import { NgrxMaterialModule } from '@helpers';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NgrxFormsModule } from 'ngrx-forms';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
 	declarations: [RoomFormComponent],
-	imports: [
-		CommonModule,
-		NgrxMaterialModule,
-		MatInputModule,
-		MatButtonModule,
-		NgrxFormsModule,
-		MatTooltipModule,
-	],
+	imports: [CommonModule, NgrxMaterialModule, MatInputModule, MatButtonModule, NgrxFormsModule],
 	exports: [RoomFormComponent],
 })
 export class RoomFormModule {}

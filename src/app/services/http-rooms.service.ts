@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { RoomList, RoomListDTO } from '@models/room-list';
 import { Room, RoomDTO, RoomDTOProps } from '@models/room';
@@ -86,12 +86,7 @@ export class HttpRoomsService {
 				`${FIREBASE_DATABASE_URL}/users/user_id/rooms.json`,
 				Room.createDTO(room),
 			)
-			.pipe(
-				tap((z) => {
-					console.log(z);
-				}),
-				map((response) => new Room({ ...room, id: response.name })),
-			);
+			.pipe(map((response) => new Room({ ...room, id: response.name })));
 	}
 
 	public deleteRoom(room: Room): Observable<{ room: Room; response: null }> {
