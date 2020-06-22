@@ -15,22 +15,6 @@ const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 export class HttpRoomsService {
 	constructor(private readonly http: HttpClient) {}
 
-	public loadRoomsDTO(): Observable<Collection<RoomDTO>> {
-		return this.http.get<Collection<RoomDTO>>(
-			`${FIREBASE_DATABASE_URL}/users/user_id/rooms.json`,
-		);
-	}
-
-	public loadRooms(): Observable<RoomList> {
-		return this.http
-			.get<Collection<RoomDTO>>(`${FIREBASE_DATABASE_URL}/.json`)
-			.pipe(
-				map((roomCollection: Collection<RoomDTO>) =>
-					new RoomListDTO({ roomCollection }).createDomain(),
-				),
-			);
-	}
-
 	public loadRoomList(): Observable<RoomList> {
 		return this.http
 			.get<Collection<RoomDTO>>(`${FIREBASE_DATABASE_URL}/users/user_id/rooms.json`)

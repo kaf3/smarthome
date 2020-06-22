@@ -13,26 +13,28 @@
 			>
 			<mat-error *ngIf="data.fs?.controls.name.errors?.$roomExists">Имя занято</mat-error>
 		</mat-form-field>
-		<button
-			mat-button
-			type="submit"
-			[disabled]="
-				data.fs.isInvalid ||
-				data.fs.isPristine ||
-				data.fs.isSubmitted ||
-				data.fs.isValidationPending
-			"
-		>
-			Сохранить
-		</button>
-		<button
-			(click)="reset(data.room)"
-			[disabled]="data.fs.isPristine || data.fs.isSubmitted"
-			mat-button
-			color="accent"
-			type="button"
-		>
-			Отмена
-		</button>
+		<div>
+			<button
+				mat-button
+				type="submit"
+				[disabled]="
+					data.fs.isInvalid ||
+					data.fs.isPristine ||
+					data.fs.isSubmitted ||
+					data.fs.isValidationPending
+				"
+			>
+				Сохранить
+			</button>
+			<button
+				(click)="reset(data.room)"
+				[disabled]="data.fs.isPristine || data.fs.isSubmitted"
+				mat-button
+				color="accent"
+				type="button"
+			>
+				Отмена
+			</button>
+		</div>
 	</form>
 </ng-container>

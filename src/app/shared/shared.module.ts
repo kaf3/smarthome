@@ -2,6 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
 	EquipmentPartitionService,
+	HttpCommandsService,
 	HttpRoomsService,
 	LoadingService,
 	SerializeService,
@@ -24,6 +25,7 @@ export class SharedModule {
 				SidenavService,
 				LoadingService,
 				RoomListLoadGuard,
+				HttpCommandsService,
 			],
 		};
 	}
