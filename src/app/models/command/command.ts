@@ -1,5 +1,6 @@
 import { BaseDomain, OmitByPropType } from '@models/common';
-import { Dictionary, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, Dictionary, EntityState } from '@ngrx/entity';
+import { Matchers } from '@helpers';
 
 export type CommandDTOProps = OmitByPropType<CommandDTO, Function>;
 export type CommandListDTOProps = OmitByPropType<CommandListDTO, Function>;
@@ -28,7 +29,10 @@ export class Command extends BaseDomain {
 
 	constructor(source: Command) {
 		super(source.id, source.name);
-		this.body = source.body;
+		if (Matchers.commandBodyMatcher(source.body)) {
+			this.body = source.body;
+		}
+		throw new Error(`Command ${source.name} has incorrect body ${source.body}`);
 	}
 
 	public static createDTO(command: Command): CommandDTO {
@@ -37,6 +41,8 @@ export class Command extends BaseDomain {
 			body: command.body,
 		});
 	}
+
+	static initial = new Command({ ...BaseDomain.initial, body: null });
 }
 
 export class CommandListDTO {
@@ -47,28 +53,65 @@ export class CommandListDTO {
 	}
 
 	public createDomain(oldCommandList?: CommandList): CommandList {
-		const ids: CommandList['ids'] = [];
+		const ids: CommandList['commandEntityState']['ids'] = [];
 		const entries = Object.entries(this.commandCollection).map(([id, commandDTO]) => {
-			ids.push(id);
-			return [id, commandDTO?.createDomain(id, oldCommandList?.entities[id])];
+			(ids as string[]).push(id);
+			return [
+				id,
+				commandDTO?.createDomain(id, oldCommandList?.commandEntityState.entities[id]),
+			];
 		});
-		return { ids, entities: Object.fromEntries(entries) };
+		return { commandEntityState: { ids, entities: Object.fromEntries(entries) } };
 	}
 }
 
-export class CommandList implements EntityState<Command> {
-	ids: string[];
-	entities: Dictionary<Command>;
+export class CommandList {
+	commandEntityState: EntityState<Command>;
+
+	static adapter = createEntityAdapter<Command>({
+		sortComparer: false,
+		selectId: (cmd) => cmd.id ?? '',
+	});
 
 	constructor(source: CommandList | CommandListProps) {
-		this.ids = source.ids;
-		this.entities = source.entities;
+		this.commandEntityState = { ...source.commandEntityState };
 	}
 
 	public static createCommandCollection(commandList: CommandList): Dictionary<CommandDTO> {
-		const entriesDTO: [Command['id'], CommandDTO][] = Object.entries(
-			commandList,
-		).map(([id, command]: [Command['id'], Command]) => [id, Command.createDTO(command)]);
-		return Object.fromEntries(entriesDTO);
+		const commandCollection: Dictionary<CommandDTO> = {};
+		Object.entries(commandList.commandEntityState.entities).forEach(
+			([id, command]) =>
+				(commandCollection[id] = Command.createDTO(command ?? Command.initial)),
+		);
+		return commandCollection;
 	}
+
+	public static addCommand(commandList: CommandList, command: Command): CommandList {
+		return new CommandList({
+			...commandList,
+			commandEntityState: CommandList.adapter.addOne(command, commandList.commandEntityState),
+		});
+	}
+
+	public static updateCommand(commandList: CommandList, command: Command): CommandList {
+		return new CommandList({
+			...commandList,
+			commandEntityState: CommandList.adapter.upsertOne(
+				command,
+				commandList.commandEntityState,
+			),
+		});
+	}
+
+	public static deleteCommand(commandList: CommandList, command: Command): CommandList {
+		return new CommandList({
+			...commandList,
+			commandEntityState: CommandList.adapter.removeOne(
+				String(command.id),
+				commandList.commandEntityState,
+			),
+		});
+	}
+
+	static initial = new CommandList({ commandEntityState: CommandList.adapter.getInitialState() });
 }

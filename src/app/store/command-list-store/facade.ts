@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { selectAll, selectCallState, selectCommandList } from './selectors';
 import { Observable } from 'rxjs';
 import { Command, CommandList } from '@models/command';
-import { LoadCommandList } from './actions';
+import { AddCommand, DeleteCommand, LoadCommandList, UpdateCommand } from './actions';
 
 @Injectable()
 export class CommandListFacade extends LoadableFacade<CommandListState> {
@@ -21,5 +21,17 @@ export class CommandListFacade extends LoadableFacade<CommandListState> {
 
 	public loadCommandList(): void {
 		this.store.dispatch(new LoadCommandList());
+	}
+
+	public addCommand(command: Command): void {
+		this.store.dispatch(new AddCommand({ command }));
+	}
+
+	public deleteCommand(command: Command): void {
+		this.store.dispatch(new DeleteCommand({ command }));
+	}
+
+	public updateCommand(command: Command): void {
+		this.store.dispatch(new UpdateCommand({ command }));
 	}
 }
