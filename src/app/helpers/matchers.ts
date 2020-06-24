@@ -10,7 +10,7 @@ export class Matchers {
 		return /^\/rooms$/.test(url);
 	}
 
-	static commandBodyMatcher(body?: string | null): boolean {
+	static commandBodyMatcher(body?: string): boolean {
 		const eqpType = '[\\w-]{4}';
 		const eqpPath = `${Matchers.pushId}\\*${Matchers.pushId}\\*${eqpType}`;
 		return !!body && new RegExp(`^#${eqpPath}\\*[<>=]\\*\\w+\\*${eqpPath}\\*\\d$`).test(body);
