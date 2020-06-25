@@ -1,69 +1,73 @@
-<mat-card>
-	<mat-card-header>
-		<mat-card-title>
+<mat-expansion-panel>
+	<mat-expansion-panel-header>
+		<mat-panel-title>
 			Выключить свет
-		</mat-card-title>
-		<mat-card-subtitle>
+		</mat-panel-title>
+		<mat-panel-description>
 			Сценарий по событию (связанные устройства)
-		</mat-card-subtitle>
-
-	</mat-card-header>
-	<mat-card-content style="display: flex">
-
-	</mat-card-content>
-</mat-card>
-<div style="display: flex">
-	<div>
-		<h2>Когда</h2>
+		</mat-panel-description>
+	</mat-expansion-panel-header>
+	<div class="exp-panel-body">
 		<ng-container *ngTemplateOutlet="source"></ng-container>
-	</div>
-	<div>
-		<h2>Тогда</h2>
+
+		<mat-divider vertical="true"></mat-divider>
+
 		<ng-container *ngTemplateOutlet="result"></ng-container>
+
+
 	</div>
-</div>
+	<mat-action-row>
+
+			<button mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
+			<button mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
 
 
+	</mat-action-row>
+</mat-expansion-panel>
 
 <ng-template #source>
-	<mat-card class="mat-elevation-z0">
-		<mat-card-header>
-			<mat-card-title>
-				Датчик Влажности
-			</mat-card-title>
-			<mat-card-subtitle>
-				Комната: Гостиная
-			</mat-card-subtitle>
-			<mat-card-subtitle>
-				Станция: Метеостанция
-			</mat-card-subtitle>
+	<div>
+		<h2 mat-subheader>Событие</h2>
+		<mat-divider></mat-divider>
+		<mat-card class="mat-elevation-z0">Давление будет больше 747</mat-card>
+		<mat-divider></mat-divider>
 
-		</mat-card-header>
-		<mat-card-content>
-
-		</mat-card-content>
-	</mat-card>
+		<mat-card class="mat-elevation-z0">
+			<mat-card-header>
+				<mat-card-title>
+					<h3>Датчик Влажности</h3>
+				</mat-card-title>
+				<mat-card-subtitle>
+					Комната: Гостиная
+				</mat-card-subtitle>
+				<mat-card-subtitle>
+					Станция: Метеостанция
+				</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content> </mat-card-content>
+		</mat-card>
+	</div>
 </ng-template>
 
 <ng-template #result>
-	<mat-card class="mat-elevation-z0">
-		<mat-card-header>
-			<mat-card-title>
-				Розетка
-			</mat-card-title>
-			<mat-card-subtitle>
-				Комната: Гостиная
-			</mat-card-subtitle>
-			<mat-card-subtitle>
-				Станция: Метеостанция
-			</mat-card-subtitle>
-
-		</mat-card-header>
-		<mat-card-content>
-
-		</mat-card-content>
-	</mat-card>
+	<div>
+		<h2 mat-subheader>Результат</h2>
+		<mat-divider></mat-divider>
+		<mat-card class="mat-elevation-z0">Устройство включить</mat-card>
+		<mat-divider></mat-divider>
+		<mat-card class="mat-elevation-z0">
+			<mat-card-header>
+				<mat-card-title>
+					<h3>Розетка</h3>
+				</mat-card-title>
+				<mat-card-subtitle>
+					Комната: Гостиная
+				</mat-card-subtitle>
+				<mat-card-subtitle>
+					Станция: Метеостанция
+				</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content> </mat-card-content>
+		</mat-card>
+	</div>
 </ng-template>
-
-
-
