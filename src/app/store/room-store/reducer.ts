@@ -42,7 +42,7 @@ export function roomReducer(
 		case RoomActionTypes.getRoomSuccess:
 		case RoomListActionsTypes.updateRoomSuccess: {
 			const { hardwares, activeHardware } = action.payload.room;
-			return roomAdapter.addAll(hardwares, {
+			return roomAdapter.setAll(hardwares, {
 				...state,
 				baseRoom: Room.getBase(action.payload.room),
 				activeHardware,
@@ -55,7 +55,7 @@ export function roomReducer(
 		case RoomListActionsTypes.moveHardwareSuccess: {
 			const room = RoomList.getRoom(state.baseRoom.id, action.payload.roomList);
 			if (!!room) {
-				return roomAdapter.addAll(room.hardwares, {
+				return roomAdapter.setAll(room.hardwares, {
 					...state,
 					activeHardware: room.activeHardware,
 					baseRoom: Room.getBase(room),

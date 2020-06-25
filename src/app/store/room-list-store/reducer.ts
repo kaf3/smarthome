@@ -40,7 +40,7 @@ export function roomsReducer(
 		case RoomListActionsTypes.loadRoomListSuccess:
 		case RoomListActionsTypes.moveHardwareSuccess: {
 			const { rooms, activeRoom } = action.payload.roomList;
-			return roomsAdapter.addAll(rooms, {
+			return roomsAdapter.setAll(rooms, {
 				...state,
 				activeRoom,
 				callState: LoadingState.LOADED,
@@ -72,7 +72,7 @@ export function roomsReducer(
 
 		case RoomListActionsTypes.upsertRoomListWhenLeft: {
 			const { activeRoom, rooms } = action.payload.roomList;
-			return roomsAdapter.addAll(rooms, {
+			return roomsAdapter.setAll(rooms, {
 				...state,
 				activeRoom,
 			});

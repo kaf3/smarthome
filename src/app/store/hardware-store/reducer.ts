@@ -38,7 +38,7 @@ export function reducer(
 		case HardwareActionTypes.LoadHardwareSuccess:
 		case RoomActionTypes.updateOneHardwareSuccess: {
 			const { activeEquipment, equipments } = action.payload.hardware;
-			return hardwareAdapter.addAll(equipments, {
+			return hardwareAdapter.setAll(equipments, {
 				...state,
 				activeEquipment,
 				baseHardware: Hardware.getBase(action.payload.hardware),
