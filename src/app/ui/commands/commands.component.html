@@ -1,1 +1,69 @@
-<p>commands works!</p>
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>
+			Выключить свет
+		</mat-card-title>
+		<mat-card-subtitle>
+			Сценарий по событию (связанные устройства)
+		</mat-card-subtitle>
+
+	</mat-card-header>
+	<mat-card-content style="display: flex">
+
+	</mat-card-content>
+</mat-card>
+<div style="display: flex">
+	<div>
+		<h2>Когда</h2>
+		<ng-container *ngTemplateOutlet="source"></ng-container>
+	</div>
+	<div>
+		<h2>Тогда</h2>
+		<ng-container *ngTemplateOutlet="result"></ng-container>
+	</div>
+</div>
+
+
+
+<ng-template #source>
+	<mat-card class="mat-elevation-z0">
+		<mat-card-header>
+			<mat-card-title>
+				Датчик Влажности
+			</mat-card-title>
+			<mat-card-subtitle>
+				Комната: Гостиная
+			</mat-card-subtitle>
+			<mat-card-subtitle>
+				Станция: Метеостанция
+			</mat-card-subtitle>
+
+		</mat-card-header>
+		<mat-card-content>
+
+		</mat-card-content>
+	</mat-card>
+</ng-template>
+
+<ng-template #result>
+	<mat-card class="mat-elevation-z0">
+		<mat-card-header>
+			<mat-card-title>
+				Розетка
+			</mat-card-title>
+			<mat-card-subtitle>
+				Комната: Гостиная
+			</mat-card-subtitle>
+			<mat-card-subtitle>
+				Станция: Метеостанция
+			</mat-card-subtitle>
+
+		</mat-card-header>
+		<mat-card-content>
+
+		</mat-card-content>
+	</mat-card>
+</ng-template>
+
+
+
