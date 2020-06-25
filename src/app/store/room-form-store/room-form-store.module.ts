@@ -15,7 +15,7 @@ import { RoomFormFacade } from './facade';
 	],
 })
 export class RoomFormStoreModule {
-	static forRoot(): ModuleWithProviders {
+	static forRoot(): ModuleWithProviders<RoomFormStoreModule> {
 		return {
 			ngModule: RoomFormStoreModule,
 			providers: [RoomFormFacade],

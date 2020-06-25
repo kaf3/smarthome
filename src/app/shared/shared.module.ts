@@ -15,7 +15,7 @@ import { RoomListLoadGuard } from '../ui/room-list/room-list.load.guard';
 	imports: [CommonModule],
 })
 export class SharedModule {
-	static forRoot(): ModuleWithProviders {
+	static forRoot(): ModuleWithProviders<SharedModule> {
 		return {
 			ngModule: SharedModule,
 			providers: [

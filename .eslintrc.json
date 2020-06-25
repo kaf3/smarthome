@@ -31,7 +31,7 @@
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         // Движку нужен проект TS для правил с типами
-        "project": "tsconfig.json",
+        "project": "tsconfig.base.json",
         "tsconfigRootDir": "."
     }
 }

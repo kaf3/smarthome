@@ -18,7 +18,7 @@ import { hardwareFeatureKey, initialState, reducer } from './reducer';
 	],
 })
 export class HardwareStoreModule {
-	static forRoot(): ModuleWithProviders {
+	static forRoot(): ModuleWithProviders<HardwareStoreModule> {
 		return {
 			ngModule: HardwareStoreModule,
 			providers: [HardwareFacade],

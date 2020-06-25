@@ -43,7 +43,7 @@ export class UiComponent implements OnDestroy, OnInit {
 		this.sidenavService.setState(false);
 	}
 
-	ngOnInit() {
+	ngOnInit(): void {
 		this.roomListFacade.loadRooms();
 	}
 

@@ -17,7 +17,7 @@ import { EquipmentFacade } from './facade';
 	],
 })
 export class EquipmentStoreModule {
-	static forRoot(): ModuleWithProviders {
+	static forRoot(): ModuleWithProviders<EquipmentStoreModule> {
 		return {
 			ngModule: EquipmentStoreModule,
 			providers: [EquipmentFacade],

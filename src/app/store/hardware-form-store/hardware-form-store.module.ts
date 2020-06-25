@@ -17,7 +17,7 @@ import { HardwareFormFacade } from './facade';
 	],
 })
 export class HardwareFormStoreModule {
-	static forRoot(): ModuleWithProviders {
+	static forRoot(): ModuleWithProviders<HardwareFormStoreModule> {
 		return {
 			ngModule: HardwareFormStoreModule,
 			providers: [HardwareFormFacade],

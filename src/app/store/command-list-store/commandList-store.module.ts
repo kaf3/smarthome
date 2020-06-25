@@ -15,7 +15,7 @@ import { CommandListFacade } from './facade';
 	],
 })
 export class CommandListStoreModule {
-	static forRoot(): ModuleWithProviders {
+	static forRoot(): ModuleWithProviders<CommandListStoreModule> {
 		return {
 			ngModule: CommandListStoreModule,
 			providers: [CommandListFacade],
