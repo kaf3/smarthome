@@ -9,6 +9,9 @@ export class LoadingService {
 	constructor(private readonly overlay: Overlay) {}
 
 	public open(templateRef: TemplateRef<any>, vcr: ViewContainerRef): OverlayRef {
+		if (this.overlayRef?.hasAttached()) {
+			return this.overlayRef;
+		}
 		this.overlayRef = this.overlay.create(this.getOverlayConfig());
 		this.overlayRef.attach(new TemplatePortal(templateRef, vcr));
 

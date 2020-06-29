@@ -11,11 +11,12 @@ export class CommandDTO {
 	constructor(source: CommandDTO | CommandDTOProps) {
 		this.name = source.name;
 		const body = source.body;
-		if (body === null || Matchers.commandBodyMatcher(body)) {
+		/*		if (body === null || Matchers.commandBodyMatcher(body)) {
 			this.body = body;
 		} else {
 			throw new Error(`Command ${source.name} has incorrect body ${source.body}`);
-		}
+		}*/
+		this.body = body;
 	}
 }
 
@@ -30,6 +31,8 @@ export class Command extends BaseDomain {
 		} else {
 			throw new Error(`Command ${source.name} has incorrect body ${source.body}`);
 		}
+		this.body = body;
+		Matchers.bodyParser(body);
 	}
 
 	public static createDTO(command: Command): CommandDTO {

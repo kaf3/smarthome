@@ -1,5 +1,5 @@
-@import "theming";
-@import "layout";
+@import 'theming';
+@import 'layout';
 :host {
 	display: block;
 	padding: 16px;
@@ -10,4 +10,3 @@
 	padding: $layout03;
 	justify-content: space-around;
 }
-

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RoomListModule } from './room-list/room-list.module';
 import { CommandsModule } from './commands/commands.module';
 import { RoomListLoadGuard } from './room-list/room-list.load.guard';
+import { CommandListLoadGuard } from './commands/command-list-load.guard';
 
 const routes: Routes = [
 	{
@@ -16,6 +17,7 @@ const routes: Routes = [
 		path: 'commands',
 		loadChildren: (): Promise<CommandsModule> =>
 			import('./commands/commands.module').then((m) => m.CommandsModule),
+		canLoad: [CommandListLoadGuard],
 	},
 	{
 		path: '',

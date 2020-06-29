@@ -69,9 +69,13 @@ export class CommandListDTO {
 			(ids as string[]).push(id);
 			return [
 				id,
-				commandDTO?.createDomain(id, oldCommandList?.commandEntityState.entities[id]),
+				new CommandDTO({ ...(commandDTO as CommandDTO) }).createDomain(
+					id,
+					oldCommandList?.commandEntityState.entities[id],
+				),
 			];
 		});
+
 		return new CommandList({
 			commandEntityState: { ids, entities: Object.fromEntries(entries) },
 		});

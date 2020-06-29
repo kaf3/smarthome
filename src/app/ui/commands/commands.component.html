@@ -1,7 +1,7 @@
-<mat-expansion-panel>
+<mat-expansion-panel *ngFor="let command of commands$ | async as commands">
 	<mat-expansion-panel-header>
 		<mat-panel-title>
-			Выключить свет
+			{{ command.name }}
 		</mat-panel-title>
 		<mat-panel-description>
 			Сценарий по событию (связанные устройства)
@@ -13,15 +13,10 @@
 		<mat-divider vertical="true"></mat-divider>
 
 		<ng-container *ngTemplateOutlet="result"></ng-container>
-
-
 	</div>
 	<mat-action-row>
-
-			<button mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
-			<button mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
-
-
+		<button mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
+		<button mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
 	</mat-action-row>
 </mat-expansion-panel>
 

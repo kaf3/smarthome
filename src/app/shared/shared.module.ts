@@ -9,6 +9,7 @@ import {
 	SidenavService,
 } from '@services';
 import { RoomListLoadGuard } from '../ui/room-list/room-list.load.guard';
+import { CommandListLoadGuard } from '../ui/commands/command-list-load.guard';
 
 @NgModule({
 	declarations: [],
@@ -26,6 +27,7 @@ export class SharedModule {
 				LoadingService,
 				RoomListLoadGuard,
 				HttpCommandsService,
+				CommandListLoadGuard,
 			],
 		};
 	}
