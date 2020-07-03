@@ -1,0 +1,70 @@
+<mat-expansion-panel>
+	<mat-expansion-panel-header>
+		<mat-panel-title>
+			{{ command.name }}
+		</mat-panel-title>
+		<mat-panel-description>
+			Сценарий по событию (связанные устройства)
+		</mat-panel-description>
+	</mat-expansion-panel-header>
+	<div class="exp-panel-body">
+		<ng-container *ngTemplateOutlet="event"></ng-container>
+
+		<mat-divider vertical="true"></mat-divider>
+
+		<ng-container *ngTemplateOutlet="result"></ng-container>
+	</div>
+	<mat-action-row>
+		<button mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
+		<button mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
+	</mat-action-row>
+</mat-expansion-panel>
+
+<ng-template #event>
+	<div *ngIf="eventSensor?.equipment$ | async as equipment">
+		<h2 mat-subheader>Событие</h2>
+		<mat-divider></mat-divider>
+		<mat-card class="mat-elevation-z0"
+			>{{ equipment.type }} будет {{ eventTrigger?.comparator }}
+			{{ eventTrigger?.value | unit: equipment }}</mat-card
+		>
+		<mat-divider></mat-divider>
+		<app-equipment
+			[size]="'small'"
+			[equipment]="equipment"
+			[hardware]="eventSensor?.hardware$ | async"
+			[room]="eventSensor?.room$ | async"
+		>
+			<a [routerLink]="['/rooms', eventTrigger?.roomId, eventTrigger?.hardwareId]"
+				>Просмотреть станцию</a
+			>
+		</app-equipment>
+	</div>
+</ng-template>
+
+<ng-template #result>
+	<div *ngIf="resultDevice?.equipment$ | async as equipment">
+		<h2 mat-subheader>Результат</h2>
+		<mat-divider></mat-divider>
+		<mat-card class="mat-elevation-z0"
+			>Устройство
+			{{ command.body?.result.value === '0' ? 'выключить' : 'включить' }}</mat-card
+		>
+		<mat-divider></mat-divider>
+		<app-equipment
+			[size]="'small'"
+			[equipment]="equipment"
+			[hardware]="resultDevice.hardware$ | async"
+			[room]="resultDevice.room$ | async"
+		>
+			<a
+				[routerLink]="[
+					'/rooms',
+					command.body?.result.roomId,
+					command.body?.result.hardwareId
+				]"
+				>Просмотреть станцию</a
+			>
+		</app-equipment>
+	</div>
+</ng-template>

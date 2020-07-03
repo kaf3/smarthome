@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import {
 	selectCallState,
+	selectEquipmentById,
+	selectHardwareById,
 	selectRoomById,
 	selectRoomList,
 	selectRoomListEntities,
@@ -21,6 +23,8 @@ import { RoomList } from '@models/room-list';
 import { Room } from '@models/room';
 import { RoomListState } from './reducer';
 import { Dictionary } from '@ngrx/entity';
+import { Hardware } from '@models/hardware';
+import { Equipment } from '@models/equipment';
 
 @Injectable()
 export class RoomListFacade extends LoadableFacade<RoomListState> {
@@ -39,6 +43,18 @@ export class RoomListFacade extends LoadableFacade<RoomListState> {
 
 	public roomById$(id: Room['id']): Observable<Room> {
 		return this.store.pipe(select(selectRoomById, id));
+	}
+
+	public hardwareById$(roomId: Room['id'], hardwareId: Hardware['id']): Observable<Hardware> {
+		return this.store.pipe(select(selectHardwareById, { roomId, hardwareId }));
+	}
+
+	public equipmentById$(
+		roomId: Room['id'],
+		hardwareId: Hardware['id'],
+		equipmentId: Equipment['id'],
+	): Observable<Equipment> {
+		return this.store.pipe(select(selectEquipmentById, { roomId, hardwareId, equipmentId }));
 	}
 
 	public updateRoom(room: Room): void {

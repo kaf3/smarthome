@@ -3,36 +3,14 @@
 		<mat-toolbar>{{ data.hardware.name }}</mat-toolbar>
 		<div class="hardware">
 			<mat-accordion>
-				<mat-expansion-panel
+				<app-equipment
 					*ngFor="let equipment of data.hardware.equipments"
-					(opened)="onOpen(equipment)"
-				>
-					<mat-expansion-panel-header>
-						<mat-panel-title>
-							{{ equipment.name || equipment.id }}
-						</mat-panel-title>
-						<mat-panel-description>
-							{{ equipment.value | unit: equipment }}
-						</mat-panel-description>
-					</mat-expansion-panel-header>
-					<mat-list>
-						<mat-list-item>
-							<div class="equip-detail-item">
-								<span>{{ equipment.type }}</span>
-								<span>{{ equipment.value | unit: equipment }}</span>
-							</div>
-						</mat-list-item>
-						<mat-divider></mat-divider>
-						<mat-list-item>
-							<div class="equip-detail-item">
-								<span>Статус</span>
-								<span>{{ equipment.status ? 'работает' : 'не работает' }}</span>
-							</div>
-						</mat-list-item>
-						<mat-divider></mat-divider>
-					</mat-list>
-					<app-equipment-form [equipment]="equipment"></app-equipment-form>
-				</mat-expansion-panel>
+					[equipment]="equipment"
+					[hardware]="data.hardware"
+					[size]="'expand'"
+					(opened)="onOpen($event)"
+					><app-equipment-form [equipment]="equipment"></app-equipment-form
+				></app-equipment>
 			</mat-accordion>
 		</div>
 	</div>

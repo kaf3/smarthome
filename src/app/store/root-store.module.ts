@@ -4,9 +4,9 @@ import { StoreModule } from '@ngrx/store';
 import { appReducers, initialAppState, ROUTER_FEATURE_KEY } from './reducer';
 import { EffectsModule } from '@ngrx/effects';
 import {
+	DefaultRouterStateSerializer,
 	NavigationActionTiming,
 	StoreRouterConnectingModule,
-	DefaultRouterStateSerializer,
 } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FeatureStoreModule } from './feature-store.module';

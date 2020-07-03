@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { PipesModule } from '@pipes';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { EquipmentFormModule } from './equipment-form/equipment-form.module';
+import { EquipmentModule } from './equipment/equipment.module';
 
 @NgModule({
 	declarations: [HardwareComponent],
@@ -16,6 +17,7 @@ import { EquipmentFormModule } from './equipment-form/equipment-form.module';
 		PipesModule,
 		MatToolbarModule,
 		EquipmentFormModule,
+		EquipmentModule,
 	],
 })
 export class HardwareModule {}

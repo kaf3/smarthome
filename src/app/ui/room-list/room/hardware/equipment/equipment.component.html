@@ -1,0 +1,45 @@
+<ng-container *ngIf="size === 'expand' && equipment">
+	<mat-expansion-panel (opened)="onOpen(equipment)">
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				{{ equipment.name || equipment.id }}
+			</mat-panel-title>
+			<mat-panel-description>
+				{{ equipment.value | unit: equipment }}
+			</mat-panel-description>
+		</mat-expansion-panel-header>
+		<ng-container *ngTemplateOutlet="detailListTmp"></ng-container>
+		<ng-content></ng-content>
+	</mat-expansion-panel>
+</ng-container>
+
+<ng-container *ngIf="size === 'small' && equipment">
+	<mat-card class="mat-elevation-z0">
+		<mat-card-header>
+			<mat-card-title>
+				<h3>{{ equipment.name || equipment.id }}</h3>
+			</mat-card-title>
+			<mat-card-subtitle *ngIf="!!room && !!room.id">
+				Комната: {{ room?.name }}
+			</mat-card-subtitle>
+			<mat-card-subtitle *ngIf="!!hardware && !!hardware.id">
+				Станция: {{ hardware?.name }}
+			</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<ng-content></ng-content>
+		</mat-card-content>
+	</mat-card>
+</ng-container>
+
+<ng-template #detailListTmp>
+	<mat-list>
+		<mat-list-item *ngFor="let detail of detailList">
+			<div class="equip-detail-item">
+				<span>{{ detail.key }}</span>
+				<span>{{ detail.value }}</span>
+			</div>
+			<mat-divider [inset]="true"></mat-divider>
+		</mat-list-item>
+	</mat-list>
+</ng-template>

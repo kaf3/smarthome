@@ -8,9 +8,12 @@ import { MatListModule } from '@angular/material/list';
 import { NgrxMaterialModule } from '@helpers';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CommandComponent } from './command/command.component';
+import { EquipmentModule } from '../room-list/room/hardware/equipment/equipment.module';
+import { PipesModule } from '@pipes';
 
 @NgModule({
-	declarations: [CommandsComponent],
+	declarations: [CommandsComponent, CommandComponent],
 	imports: [
 		CommonModule,
 		CommandsRoutingModule,
@@ -20,6 +23,8 @@ import { MatIconModule } from '@angular/material/icon';
 		NgrxMaterialModule,
 		MatButtonModule,
 		MatIconModule,
+		EquipmentModule,
+		PipesModule,
 	],
 })
 export class CommandsModule {}
