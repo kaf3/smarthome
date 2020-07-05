@@ -12,7 +12,7 @@ import { UnitPipe } from '@pipes';
 export class EquipmentComponent implements OnInit {
 	public unit = new UnitPipe();
 
-	@Input() size: EquipmentComponentSize;
+	@Input() size?: EquipmentComponentSize;
 	@Input() room?: Room;
 	@Input() hardware?: Hardware;
 	@Input() equipment?: Equipment;
@@ -31,21 +31,21 @@ export class EquipmentComponent implements OnInit {
 		this.detailList = [
 			{
 				key: 'значение',
-				value: this.unit.transform(this.equipment.value, this.equipment),
+				value: this.unit.transform(this.equipment?.value, this.equipment),
 			},
 			{
 				key: 'тип устройства',
-				value: this.equipment.type ?? '',
+				value: this.equipment?.type ?? '',
 			},
 			{
 				key: 'статус',
-				value: this.equipment.status ? 'работает' : 'не работает',
+				value: this.equipment?.status ? 'работает' : 'не работает',
 			},
 			{
 				key: 'местонахождение',
 				value: this.room?.name ?? '' + ' / ' + (this.hardware?.name ?? ''),
 			},
-		].filter((det) => !!det.value && det.value !== ' / ');
+		].filter((det) => !!det?.value && det?.value !== ' / ');
 	}
 
 	onOpen(equipment: Equipment): void {
