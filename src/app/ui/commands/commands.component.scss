@@ -2,5 +2,9 @@
 @import 'layout';
 :host {
 	display: block;
-	padding: 16px;
+	padding: $layout05;
+}
+
+.add-button {
+	margin-bottom: $layout03;
 }

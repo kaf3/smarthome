@@ -11,9 +11,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommandComponent } from './command/command.component';
 import { EquipmentModule } from '../room-list/room/hardware/equipment/equipment.module';
 import { PipesModule } from '@pipes';
+import { AddCommandComponent } from './add-command/add-command.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
-	declarations: [CommandsComponent, CommandComponent],
+	declarations: [CommandsComponent, CommandComponent, AddCommandComponent],
 	imports: [
 		CommonModule,
 		CommandsRoutingModule,
@@ -25,6 +29,9 @@ import { PipesModule } from '@pipes';
 		MatIconModule,
 		EquipmentModule,
 		PipesModule,
+		MatStepperModule,
+		MatDialogModule,
+		MatMenuModule,
 	],
 })
 export class CommandsModule {}

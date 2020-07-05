@@ -1,0 +1,76 @@
+<ng-container *ngIf="rooms$ | async as rooms">
+	<mat-horizontal-stepper #stepper>
+		<mat-step>
+			<ng-template matStepLabel>
+				Укажите причину
+			</ng-template>
+
+			<button
+				mat-button
+				[matMenuTriggerFor]="roomsMenu"
+				[matMenuTriggerData]="{ roomArray: rooms }"
+			>
+				Выберите сенсор
+			</button>
+			<ng-container *ngComponentOutlet></ng-container>
+			<app-equipment size="small"></app-equipment>
+
+			<button mat-button matStepperNext>Далее</button>
+		</mat-step>
+		<mat-step>
+			<ng-template matStepLabel>
+				Обработайте результат
+			</ng-template>
+			<button mat-button>Готово!</button>
+		</mat-step>
+	</mat-horizontal-stepper>
+
+	<mat-menu #roomsMenu>
+		<ng-template matMenuContent let-roomArray="roomArray">
+			<ng-container *ngFor="let room of roomArray">
+				<button
+					mat-menu-item
+					*ngIf="!!room?.hardwares?.length"
+					[matMenuTriggerFor]="hardwaresMenu"
+					[matMenuTriggerData]="{ hardwareArray: room?.hardwares, room: room }"
+				>
+					{{ room?.name }}
+				</button>
+			</ng-container>
+		</ng-template>
+	</mat-menu>
+
+	<mat-menu #hardwaresMenu>
+		<ng-template matMenuContent let-hardwareArray="hardwareArray" let-room="room">
+			<button
+				mat-menu-item
+				*ngFor="let hardware of hardwareArray"
+				[matMenuTriggerFor]="equipmentsMenu"
+				[matMenuTriggerData]="{
+					equipmentArray: hardware?.equipments,
+					hardware: hardware,
+					room: room
+				}"
+			>
+				{{ hardware?.name }}
+			</button>
+		</ng-template>
+	</mat-menu>
+
+	<mat-menu #equipmentsMenu>
+		<ng-template
+			matMenuContent
+			let-equipmentArray="equipmentArray"
+			let-room="room"
+			let-hardware="hardware"
+		>
+			<button
+				mat-menu-item
+				*ngFor="let equipment of equipmentArray"
+				(click)="selectEventSensor(room, hardware, equipment)"
+			>
+				{{ equipment?.name || equipment?.id }}
+			</button>
+		</ng-template>
+	</mat-menu>
+</ng-container>

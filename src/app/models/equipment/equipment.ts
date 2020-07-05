@@ -1,5 +1,9 @@
 import { OmitByPropType } from '@models/common';
 import { createDictionary, toDomainDictionary, toDTODictionary } from '@helpers';
+import { Room } from '../room';
+import { Hardware } from '@models/hardware';
+
+export type EquipmentComponentSize = 'small' | 'large' | 'expand';
 
 export enum EquipmentGroup {
 	SENSOR = 'sensor',
@@ -121,3 +125,10 @@ EquipmentDTO.prototype.createDomain = function (
 		id,
 	});
 };
+
+export abstract class EquipmentComponentInputs {
+	room: Room;
+	equipment: Equipment;
+	hardware: Hardware;
+	size: EquipmentComponentSize;
+}

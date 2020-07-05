@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Equipment } from '@models/equipment';
+import { Component, EventEmitter, Input, OnInit, Optional, Output } from '@angular/core';
+import { Equipment, EquipmentComponentInputs, EquipmentComponentSize } from '@models/equipment';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
 import { UnitPipe } from '@pipes';
@@ -12,15 +12,22 @@ import { UnitPipe } from '@pipes';
 export class EquipmentComponent implements OnInit {
 	public unit = new UnitPipe();
 
-	@Input() size: 'expand' | 'small' | 'large';
+	@Input() size: EquipmentComponentSize;
 	@Input() room?: Room;
 	@Input() hardware?: Hardware;
-	@Input() equipment: Equipment;
+	@Input() equipment?: Equipment;
 	@Output() opened = new EventEmitter<Equipment>();
 
 	detailList: { key: string; value: string }[];
 
+	constructor(@Optional() public readonly inputs: EquipmentComponentInputs) {}
+
 	ngOnInit(): void {
+		if (!this.equipment) this.equipment = this.inputs?.equipment;
+		if (!this.hardware) this.hardware = this.inputs?.hardware;
+		if (!this.room) this.room = this.inputs?.room;
+		if (!this.size) this.size = this.inputs?.size;
+
 		this.detailList = [
 			{
 				key: 'значение',
