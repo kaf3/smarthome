@@ -25,19 +25,4 @@ export class CommandsComponent implements OnInit {
 	addCommand(): void {
 		this.matDialog.open(AddCommandComponent);
 	}
-
-	comparisons = [
-		{
-			sign: '>',
-			label: 'больше',
-		},
-		{
-			sign: '<',
-			label: 'меньше',
-		},
-		{
-			sign: '=',
-			label: 'равно',
-		},
-	];
 }

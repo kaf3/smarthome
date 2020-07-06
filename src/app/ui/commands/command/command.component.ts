@@ -6,7 +6,7 @@ import { Room } from '@models/room';
 import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
 
-export interface AboutEquipment {
+export interface FullAboutEquipment$ {
 	room$: Observable<Room>;
 	hardware$: Observable<Hardware>;
 	equipment$: Observable<Equipment>;
@@ -19,8 +19,8 @@ export interface AboutEquipment {
 })
 export class CommandComponent implements OnInit {
 	@Input() command: Command;
-	public eventSensor: AboutEquipment;
-	public resultDevice: AboutEquipment;
+	public eventSensor: FullAboutEquipment$;
+	public resultDevice: FullAboutEquipment$;
 
 	constructor(private readonly roomListFacade: RoomListFacade) {}
 
@@ -35,7 +35,7 @@ export class CommandComponent implements OnInit {
 		return (this.command.body?.trigger as CommandSensor) ?? null;
 	}
 
-	private aboutEquipment(ids: CommandSensor | CommandDevice): AboutEquipment {
+	private aboutEquipment(ids: CommandSensor | CommandDevice): FullAboutEquipment$ {
 		const { roomId, hardwareId, equipmentId } = ids;
 		return {
 			room$: this.roomListFacade.roomById$(roomId),

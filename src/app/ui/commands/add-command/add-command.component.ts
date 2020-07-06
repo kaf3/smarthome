@@ -4,7 +4,14 @@ import { Observable } from 'rxjs';
 import { Room } from '@models/room';
 import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
-import { Command, CommandDevice, CommandSensor } from '@models/command';
+import { Command } from '@models/command';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+export interface FullAboutEquipment {
+	room: Room;
+	equipment: Equipment;
+	hardware: Hardware;
+}
 
 @Component({
 	selector: 'app-add-command',
@@ -14,8 +21,12 @@ import { Command, CommandDevice, CommandSensor } from '@models/command';
 export class AddCommandComponent implements OnInit {
 	public rooms$: Observable<Room[]>;
 	public command: Command;
-	public eventSensor: CommandSensor;
-	public resultDevice: CommandDevice;
+	public aboutEventSensor: FullAboutEquipment;
+	public aboutResultDevice: FullAboutEquipment;
+	public eventForm = new FormGroup({
+		equipValue: new FormControl('', Validators.required.bind(Validators)),
+		comparator: new FormControl('', Validators.required.bind(Validators)),
+	});
 
 	constructor(private readonly roomListFacade: RoomListFacade) {}
 
@@ -23,15 +34,18 @@ export class AddCommandComponent implements OnInit {
 		this.rooms$ = this.roomListFacade.rooms$;
 	}
 
-	selectEventSensor(room: Room, hardware: Hardware, equipment: Equipment): void {
-		this.eventSensor.roomId = room.id;
-		this.eventSensor.hardwareId = hardware.id;
-		this.eventSensor.equipmentId = equipment.id;
-	}
-
-	selectResultDevice(room: Room, hardware: Hardware, equipment: Equipment): void {
-		this.resultDevice.roomId = room.id;
-		this.resultDevice.hardwareId = hardware.id;
-		this.resultDevice.equipmentId = equipment.id;
-	}
+	comparisons = [
+		{
+			sign: '>',
+			label: 'больше',
+		},
+		{
+			sign: '<',
+			label: 'меньше',
+		},
+		{
+			sign: '=',
+			label: 'равно',
+		},
+	];
 }

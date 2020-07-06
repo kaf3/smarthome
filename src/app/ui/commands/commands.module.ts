@@ -15,6 +15,7 @@ import { AddCommandComponent } from './add-command/add-command.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
 	declarations: [CommandsComponent, CommandComponent, AddCommandComponent],
@@ -32,6 +33,7 @@ import { MatMenuModule } from '@angular/material/menu';
 		MatStepperModule,
 		MatDialogModule,
 		MatMenuModule,
+		MatInputModule,
 	],
 })
 export class CommandsModule {}
