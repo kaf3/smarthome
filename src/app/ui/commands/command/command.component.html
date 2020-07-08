@@ -35,7 +35,10 @@
 			[hardware]="eventSensor?.hardware$ | async"
 			[room]="eventSensor?.room$ | async"
 		>
-			<a [routerLink]="['/rooms', eventTrigger?.roomId, eventTrigger?.hardwareId]"
+			<a
+				mat-raised-button
+				color="primary"
+				[routerLink]="['/rooms', eventTrigger?.roomId, eventTrigger?.hardwareId]"
 				>Просмотреть станцию</a
 			>
 		</app-equipment>
@@ -58,6 +61,8 @@
 			[room]="resultDevice.room$ | async"
 		>
 			<a
+				mat-raised-button
+				color="primary"
 				[routerLink]="[
 					'/rooms',
 					command.body?.result.roomId,

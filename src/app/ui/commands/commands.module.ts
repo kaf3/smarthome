@@ -16,6 +16,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
 	declarations: [CommandsComponent, CommandComponent, AddCommandComponent],
@@ -34,6 +35,7 @@ import { MatInputModule } from '@angular/material/input';
 		MatDialogModule,
 		MatMenuModule,
 		MatInputModule,
+		ReactiveFormsModule,
 	],
 })
 export class CommandsModule {}

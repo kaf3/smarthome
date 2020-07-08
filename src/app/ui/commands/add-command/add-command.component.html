@@ -1,69 +1,163 @@
 <ng-container *ngIf="rooms$ | async as rooms">
-	<mat-horizontal-stepper #stepper>
-		<mat-step>
+	<mat-horizontal-stepper #stepper linear>
+		<mat-step [stepControl]="eventForm">
 			<ng-template matStepLabel>
 				Укажите причину
 			</ng-template>
-			<form>
-				<div class="form-column">
-					<button
-						type="button"
-						mat-button
-						[matMenuTriggerFor]="roomsMenu"
-						[matMenuTriggerData]="{ roomArray: rooms }"
-					>
-						Выберите сенсор
-					</button>
-					<app-equipment
-						*ngIf="aboutEventSensor"
-						size="small"
-						[equipment]="aboutEventSensor?.equipment"
-						[hardware]="aboutEventSensor?.hardware"
-						[room]="aboutEventSensor?.room"
-					></app-equipment>
-				</div>
-				<div class="form-column">
-					<div>
-						<mat-form-field class="mat-form-field-flex" appearance="fill">
-							<mat-label>Значение </mat-label>
-							<input type="text" matInput placeholder="Значение" />
-						</mat-form-field>
-						<mat-form-field appearance="fill" class="mat-form-field-flex">
-							<mat-label>
-								Сравнение
-							</mat-label>
-							<mat-select>
-								<mat-option *ngFor="let comp of comparisons" [value]="comp.sign">
-									{{ comp.label }}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
-					</div>
-					<mat-card class="mat-elevation-z0" *ngIf="aboutEventSensor"
-						>{{ aboutEventSensor?.equipment?.type }} будет {{ 'больше' }}
-						{{ 60 | unit: aboutEventSensor?.equipment }}</mat-card
-					>
-				</div>
+
+			<form [formGroup]="eventForm">
+				<table>
+					<tr>
+						<th class="form-column">Заполните форму</th>
+						<th class="form-column">Получите условие</th>
+					</tr>
+					<tr>
+						<td class="form-column">
+							<button
+								type="button"
+								mat-raised-button
+								color="primary"
+								[matMenuTriggerFor]="roomsMenu"
+								[matMenuTriggerData]="{ roomArray: rooms, stage: 'event' }"
+							>
+								Выберите сенсор
+							</button>
+						</td>
+						<td class="form-column">
+							<app-equipment
+								*ngIf="aboutEventSensor"
+								size="small"
+								[equipment]="aboutEventSensor?.equipment"
+								[hardware]="aboutEventSensor?.hardware"
+								[room]="aboutEventSensor?.room"
+								class="mat-elevation-z2"
+							></app-equipment>
+						</td>
+					</tr>
+					<tr>
+						<td class="form-column">
+							<mat-form-field class="mat-form-field-flex" appearance="fill">
+								<mat-label>Значение </mat-label>
+								<input
+									type="number"
+									matInput
+									formControlName="sensorValue"
+									placeholder="Значение"
+								/>
+								<mat-error *ngIf="sensorValueControl?.errors?.required"
+									>Поле не должно быть пустым</mat-error
+								>
+							</mat-form-field>
+							<mat-form-field appearance="fill" class="mat-form-field-flex">
+								<mat-label>
+									Сравнение
+								</mat-label>
+								<mat-select formControlName="comparator">
+									<mat-option
+										*ngFor="let comp of comparisons"
+										[value]="comp.sign"
+									>
+										{{ comp.label }}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="comparatorControl?.errors?.required"
+									>Поле не должно быть пустым</mat-error
+								>
+							</mat-form-field>
+						</td>
+						<td class="form-column">
+							<mat-card
+								*ngIf="
+									aboutEventSensor &&
+									comparatorControl?.value &&
+									sensorValueControl?.value
+								"
+								>{{ aboutEventSensor?.equipment?.type }} будет
+								{{ comparatorControl?.value }}
+								{{
+									sensorValueControl?.value | unit: aboutEventSensor?.equipment
+								}}</mat-card
+							>
+						</td>
+					</tr>
+				</table>
 			</form>
 
 			<button mat-button matStepperNext>Далее</button>
 		</mat-step>
-		<mat-step>
+		<mat-step [stepControl]="resultForm">
 			<ng-template matStepLabel>
 				Обработайте результат
 			</ng-template>
-			<button mat-button>Готово!</button>
+			<form [formGroup]="resultForm">
+				<table>
+					<tr>
+						<th class="form-column">Заполните форму</th>
+						<th class="form-column">Получите результат</th>
+					</tr>
+					<tr>
+						<td class="form-column">
+							<button
+								type="button"
+								mat-raised-button
+								color="primary"
+								[matMenuTriggerFor]="roomsMenu"
+								[matMenuTriggerData]="{ roomArray: rooms, stage: 'result' }"
+							>
+								Выберите устройство
+							</button>
+						</td>
+						<td class="form-column">
+							<app-equipment
+								*ngIf="aboutResultDevice"
+								size="small"
+								[equipment]="aboutResultDevice?.equipment"
+								[hardware]="aboutResultDevice?.hardware"
+								[room]="aboutResultDevice?.room"
+								class="mat-elevation-z2"
+							></app-equipment>
+						</td>
+					</tr>
+					<tr>
+						<td class="form-column">
+							<mat-form-field appearance="fill" class="mat-form-field-flex">
+								<mat-label>
+									Устройство
+								</mat-label>
+								<mat-select formControlName="deviceValue">
+									<mat-option *ngFor="let state of [true, false]" [value]="state">
+										{{ state ? 'Включить' : 'Выключить' }}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="deviceValueControl?.errors?.required"
+									>Поле не должно быть пустым</mat-error
+								>
+							</mat-form-field>
+						</td>
+						<td class="form-column">
+							<mat-card *ngIf="aboutResultDevice && deviceValueControl?.value"
+								>Устройство {{ deviceValueControl ? 'Включить' : 'Выключить' }}
+							</mat-card>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<button mat-button (click)="addCommand()">Создать команду</button>
 		</mat-step>
 	</mat-horizontal-stepper>
 
 	<mat-menu #roomsMenu>
-		<ng-template matMenuContent let-roomArray="roomArray">
+		<ng-template matMenuContent let-roomArray="roomArray" let-stage="stage">
 			<ng-container *ngFor="let room of roomArray">
 				<button
 					mat-menu-item
 					*ngIf="!!room?.hardwares?.length"
 					[matMenuTriggerFor]="hardwaresMenu"
-					[matMenuTriggerData]="{ hardwareArray: room?.hardwares, room: room }"
+					[matMenuTriggerData]="{
+						hardwareArray: room?.hardwares,
+						room: room,
+						stage: stage
+					}"
 				>
 					{{ room?.name }}
 				</button>
@@ -72,7 +166,12 @@
 	</mat-menu>
 
 	<mat-menu #hardwaresMenu>
-		<ng-template matMenuContent let-hardwareArray="hardwareArray" let-room="room">
+		<ng-template
+			matMenuContent
+			let-hardwareArray="hardwareArray"
+			let-room="room"
+			let-stage="stage"
+		>
 			<button
 				mat-menu-item
 				*ngFor="let hardware of hardwareArray"
@@ -80,7 +179,8 @@
 				[matMenuTriggerData]="{
 					equipmentArray: hardware?.equipments,
 					hardware: hardware,
-					room: room
+					room: room,
+					stage: stage
 				}"
 			>
 				{{ hardware?.name }}
@@ -94,13 +194,12 @@
 			let-equipmentArray="equipmentArray"
 			let-room="room"
 			let-hardware="hardware"
+			let-stage="stage"
 		>
 			<button
 				mat-menu-item
 				*ngFor="let equipment of equipmentArray"
-				(click)="
-					aboutEventSensor = { room: room, hardware: hardware, equipment: equipment }
-				"
+				(click)="createAboutEquipment(stage, room, hardware, equipment)"
 			>
 				{{ equipment?.name || equipment?.id }}
 			</button>

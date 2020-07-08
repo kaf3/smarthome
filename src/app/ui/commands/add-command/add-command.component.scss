@@ -5,8 +5,9 @@
 }
 
 .form-column {
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	align-items: center;
+	width: $layout05 * 10;
+	display: inline-flex;
+	flex-direction: column;
+	padding: $layout03;
+	word-break: break-all;
 }
