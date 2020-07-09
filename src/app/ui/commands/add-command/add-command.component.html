@@ -5,25 +5,46 @@
 				Укажите причину
 			</ng-template>
 
-			<form [formGroup]="eventForm">
+			<form [formGroup]="eventForm" class="form">
+				<mat-form-field appearance="fill" color="primary" class="name-form-field">
+					<mat-label>Название команды</mat-label>
+					<input
+						type="text"
+						matInput
+						formControlName="name"
+						placeholder="Придумайте название команды"
+					/>
+					<mat-error *ngIf="nameControl?.errors?.required"
+						>Поле не должно быть пустым</mat-error
+					>
+					<mat-error *ngIf="nameControl?.errors?.notUnique"
+						>Команда с таким именем уже есть</mat-error
+					>
+				</mat-form-field>
 				<table>
 					<tr>
-						<th class="form-column">Заполните форму</th>
-						<th class="form-column">Получите условие</th>
+						<th class="form-column form-column__left">Заполните форму</th>
+						<th class="form-column form-column__right">Получите условие</th>
 					</tr>
 					<tr>
-						<td class="form-column">
+						<td class="form-column form-column__left">
 							<button
 								type="button"
 								mat-raised-button
-								color="primary"
+								[color]="
+									chosenSensorControl?.errors?.required &&
+									chosenSensorControl?.dirty
+										? 'warn'
+										: 'primary'
+								"
 								[matMenuTriggerFor]="roomsMenu"
 								[matMenuTriggerData]="{ roomArray: rooms, stage: 'event' }"
+								(menuClosed)="chosenSensorControl?.markAsDirty()"
 							>
 								Выберите сенсор
 							</button>
 						</td>
-						<td class="form-column">
+						<td class="form-column form-column__right">
 							<app-equipment
 								*ngIf="aboutEventSensor"
 								size="small"
@@ -35,8 +56,8 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="form-column">
-							<mat-form-field class="mat-form-field-flex" appearance="fill">
+						<td class="form-column form-column__left">
+							<mat-form-field class="wide-form-field" appearance="fill">
 								<mat-label>Значение </mat-label>
 								<input
 									type="number"
@@ -47,8 +68,11 @@
 								<mat-error *ngIf="sensorValueControl?.errors?.required"
 									>Поле не должно быть пустым</mat-error
 								>
+								<mat-error *ngIf="sensorValueControl?.errors?.pattern"
+									>Разрешены только цифры</mat-error
+								>
 							</mat-form-field>
-							<mat-form-field appearance="fill" class="mat-form-field-flex">
+							<mat-form-field appearance="fill" class="wide-form-field">
 								<mat-label>
 									Сравнение
 								</mat-label>
@@ -65,7 +89,7 @@
 								>
 							</mat-form-field>
 						</td>
-						<td class="form-column">
+						<td class="form-column form-column__right">
 							<mat-card
 								*ngIf="
 									aboutEventSensor &&
@@ -83,7 +107,9 @@
 				</table>
 			</form>
 
-			<button mat-button matStepperNext>Далее</button>
+			<button mat-button matStepperNext (click)="chosenSensorControl?.markAsDirty()">
+				Далее
+			</button>
 		</mat-step>
 		<mat-step [stepControl]="resultForm">
 			<ng-template matStepLabel>
@@ -92,22 +118,28 @@
 			<form [formGroup]="resultForm">
 				<table>
 					<tr>
-						<th class="form-column">Заполните форму</th>
-						<th class="form-column">Получите результат</th>
+						<th class="form-column form-column__left">Заполните форму</th>
+						<th class="form-column form-column__right">Получите результат</th>
 					</tr>
 					<tr>
-						<td class="form-column">
+						<td class="form-column form-column__left">
 							<button
 								type="button"
 								mat-raised-button
-								color="primary"
+								[color]="
+									chosenDeviceControl?.errors?.required &&
+									chosenDeviceControl?.dirty
+										? 'warn'
+										: 'primary'
+								"
 								[matMenuTriggerFor]="roomsMenu"
 								[matMenuTriggerData]="{ roomArray: rooms, stage: 'result' }"
+								(menuClosed)="chosenDeviceControl?.markAsDirty()"
 							>
 								Выберите устройство
 							</button>
 						</td>
-						<td class="form-column">
+						<td class="form-column form-column__right">
 							<app-equipment
 								*ngIf="aboutResultDevice"
 								size="small"
@@ -119,7 +151,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="form-column">
+						<td class="form-column form-column__left">
 							<mat-form-field appearance="fill" class="mat-form-field-flex">
 								<mat-label>
 									Устройство
@@ -134,9 +166,10 @@
 								>
 							</mat-form-field>
 						</td>
-						<td class="form-column">
-							<mat-card *ngIf="aboutResultDevice && deviceValueControl?.value"
-								>Устройство {{ deviceValueControl ? 'Включить' : 'Выключить' }}
+						<td class="form-column form-column__right">
+							<mat-card *ngIf="aboutResultDevice"
+								>Устройство
+								{{ deviceValueControl?.value ? 'Включить' : 'Выключить' }}
 							</mat-card>
 						</td>
 					</tr>

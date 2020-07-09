@@ -36,6 +36,7 @@
 			[room]="eventSensor?.room$ | async"
 		>
 			<a
+				small
 				mat-raised-button
 				color="primary"
 				[routerLink]="['/rooms', eventTrigger?.roomId, eventTrigger?.hardwareId]"
@@ -61,6 +62,7 @@
 			[room]="resultDevice.room$ | async"
 		>
 			<a
+				small
 				mat-raised-button
 				color="primary"
 				[routerLink]="[

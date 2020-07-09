@@ -9,7 +9,7 @@
 			</mat-panel-description>
 		</mat-expansion-panel-header>
 		<ng-container *ngTemplateOutlet="detailListTmp"></ng-container>
-		<ng-content></ng-content>
+		<ng-content select="[expand]"></ng-content>
 	</mat-expansion-panel>
 </ng-container>
 
@@ -27,7 +27,7 @@
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
-			<ng-content></ng-content>
+			<ng-content select="[small]"></ng-content>
 		</mat-card-content>
 	</mat-card>
 </ng-container>
