@@ -35,6 +35,8 @@ const notUnique: ValidationErrors = { notUnique: true };
 })
 export class AddCommandComponent implements OnInit, OnDestroy {
 	public rooms$: Observable<Room[]>;
+	public roomsOnlyWithSensors$: Observable<Room[]>;
+	public roomsOnlyWithDevices$: Observable<Room[]>;
 	public command: Command;
 	public aboutEventSensor: FullAboutEquipment;
 	public aboutResultDevice: FullAboutEquipment;
@@ -63,11 +65,15 @@ export class AddCommandComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit(): void {
-		this.rooms$ = this.roomListFacade.rooms$;
+		this.roomsOnlyWithSensors$ = this.roomListFacade.rooms$.pipe(
+			map(this.filterByEquipmentGroup('sensor')),
+		);
+		this.roomsOnlyWithDevices$ = this.roomListFacade.rooms$.pipe(
+			map(this.filterByEquipmentGroup('device')),
+		);
 		this.nameControl?.setAsyncValidators(
 			this.notUniqueValidator<Command>(this.commandListFacade.commands$),
 		);
-		this.eventForm.statusChanges.subscribe(console.log);
 	}
 
 	get sensorValueControl(): AbstractControl | null {
@@ -181,6 +187,31 @@ export class AddCommandComponent implements OnInit, OnDestroy {
 					this.dialogRef.close();
 				}
 			});
+	}
+
+	filterByEquipmentGroup(group: Equipment['group']) {
+		return (rooms: Room[]) => {
+			const newRooms: Room[] = [];
+			rooms.forEach((room) => {
+				const newRoom = new Room({ ...room, hardwares: [] });
+				room.hardwares.forEach((hardware) => {
+					const equipmentsFiltered = hardware.equipments
+						.filter((eqp) => eqp.group === group)
+						.map((eqp) => new Equipment({ ...eqp }));
+					if (equipmentsFiltered.length) {
+						const newHardware = new Hardware({
+							...hardware,
+							equipments: equipmentsFiltered,
+						});
+						newRoom.hardwares.push(newHardware);
+					}
+				});
+				if (newRoom.hardwares.length) {
+					newRooms.push(newRoom);
+				}
+			});
+			return newRooms;
+		};
 	}
 
 	ngOnDestroy(): void {

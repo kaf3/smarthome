@@ -1,4 +1,9 @@
-<ng-container *ngIf="rooms$ | async as rooms">
+<ng-container
+	*ngIf="{
+		roomsOnlyWithDevices: roomsOnlyWithDevices$ | async,
+		roomsOnlyWithSensors: roomsOnlyWithSensors$ | async
+	} as data"
+>
 	<mat-horizontal-stepper #stepper linear>
 		<mat-step [stepControl]="eventForm">
 			<ng-template matStepLabel>
@@ -38,7 +43,10 @@
 										: 'primary'
 								"
 								[matMenuTriggerFor]="roomsMenu"
-								[matMenuTriggerData]="{ roomArray: rooms, stage: 'event' }"
+								[matMenuTriggerData]="{
+									roomArray: data.roomsOnlyWithSensors,
+									stage: 'event'
+								}"
 								(menuClosed)="chosenSensorControl?.markAsDirty()"
 							>
 								Выберите сенсор
@@ -133,7 +141,10 @@
 										: 'primary'
 								"
 								[matMenuTriggerFor]="roomsMenu"
-								[matMenuTriggerData]="{ roomArray: rooms, stage: 'result' }"
+								[matMenuTriggerData]="{
+									roomArray: data.roomsOnlyWithDevices,
+									stage: 'result'
+								}"
 								(menuClosed)="chosenDeviceControl?.markAsDirty()"
 							>
 								Выберите устройство
@@ -187,7 +198,6 @@
 					*ngIf="!!room?.hardwares?.length"
 					[matMenuTriggerFor]="hardwaresMenu"
 					[matMenuTriggerData]="{
-						hardwareArray: room?.hardwares,
 						room: room,
 						stage: stage
 					}"
@@ -199,39 +209,28 @@
 	</mat-menu>
 
 	<mat-menu #hardwaresMenu>
-		<ng-template
-			matMenuContent
-			let-hardwareArray="hardwareArray"
-			let-room="room"
-			let-stage="stage"
-		>
-			<button
-				mat-menu-item
-				*ngFor="let hardware of hardwareArray"
-				[matMenuTriggerFor]="equipmentsMenu"
-				[matMenuTriggerData]="{
-					equipmentArray: hardware?.equipments,
-					hardware: hardware,
-					room: room,
-					stage: stage
-				}"
-			>
-				{{ hardware?.name }}
-			</button>
+		<ng-template matMenuContent let-room="room" let-stage="stage">
+			<ng-container *ngFor="let hardware of room?.hardwares">
+				<button
+					mat-menu-item
+					[matMenuTriggerFor]="equipmentsMenu"
+					[matMenuTriggerData]="{
+						hardware: hardware,
+						room: room,
+						stage: stage
+					}"
+				>
+					{{ hardware?.name }}
+				</button>
+			</ng-container>
 		</ng-template>
 	</mat-menu>
 
 	<mat-menu #equipmentsMenu>
-		<ng-template
-			matMenuContent
-			let-equipmentArray="equipmentArray"
-			let-room="room"
-			let-hardware="hardware"
-			let-stage="stage"
-		>
+		<ng-template matMenuContent let-room="room" let-hardware="hardware" let-stage="stage">
 			<button
 				mat-menu-item
-				*ngFor="let equipment of equipmentArray"
+				*ngFor="let equipment of hardware.equipments"
 				(click)="createAboutEquipment(stage, room, hardware, equipment)"
 			>
 				{{ equipment?.name || equipment?.id }}
