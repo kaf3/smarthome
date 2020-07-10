@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
 import { RoomList, RoomListDTO } from '@models/room-list';
 import { Room, RoomDTO, RoomDTOProps } from '@models/room';
 import { Collection } from '@models/common';
 import { Hardware, HardwareDTO, HardwareDTOProps } from '@models/hardware';
 import { Equipment, EquipmentDTO, EquipmentDTOProps } from '@models/equipment';
+import { environment } from '../../environments/environment';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 

@@ -1,6 +1,6 @@
-import { Room } from '../room/room';
 import { RoomDTO } from '@models/room';
 import { Collection, Empty, host, HostConstructor, OmitByPropType } from '@models/common';
+import { Room } from '../room/room';
 
 export type RoomListProps = OmitByPropType<RoomList, Function>;
 
@@ -12,6 +12,7 @@ const RoomListWithChildren: HostConstructor<RoomList, Room, typeof Empty> = host
 
 export class RoomList extends RoomListWithChildren {
 	public readonly rooms: Room[];
+
 	public readonly activeRoom: Room;
 
 	constructor(source: RoomList | RoomListProps) {
@@ -27,6 +28,7 @@ export class RoomList extends RoomListWithChildren {
 		});
 		return Object.fromEntries(roomMap);
 	}
+
 	public static updateManyRooms(roomList: RoomList, rooms: Room[]): RoomList {
 		return super.updateManyChild(roomList, rooms);
 	}
@@ -51,7 +53,7 @@ export class RoomListDTO {
 		);
 
 		return new RoomList({
-			activeRoom: oldRoomList?.activeRoom ?? rooms[0], //when you open roomlist firstly
+			activeRoom: oldRoomList?.activeRoom ?? rooms[0], // when you open roomlist firstly
 			rooms,
 		});
 	}

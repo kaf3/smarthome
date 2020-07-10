@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, concatMapTo, map } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { HttpCommandsService } from '@services';
 import {
 	AddCommand,
 	AddCommandFailure,
@@ -17,7 +18,6 @@ import {
 	UpdateCommandFailure,
 	UpdateCommandSuccess,
 } from './actions';
-import { HttpCommandsService } from '@services';
 
 @Injectable()
 export class CommandsEffects {

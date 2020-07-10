@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
+import { CommandList } from '@models/command';
 import * as fromCommands from './reducer';
 import { CommandListState } from './reducer';
-import { CommandList } from '@models/command';
 
 export const selectCommandListState = createFeatureSelector<fromCommands.CommandListState>(
 	fromCommands.commandListFeatureKey,

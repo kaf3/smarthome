@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HardwareFormState } from './reducer';
 import { select, Store } from '@ngrx/store';
+import { HardwareFormState } from './reducer';
 import { selectHardwareFormState } from './selectors';
 import { LoadHardwareForm, SubmitHardwareForm } from './actions';
 

@@ -10,7 +10,9 @@ import { RoomListFacade } from '@store/room-list';
 })
 export class UiComponent implements OnDestroy, OnInit {
 	@ViewChild('sidenav') sideNav: MatSidenav;
+
 	title = 'Smart Home';
+
 	sidenavLinks: { name: string; path: string }[] = [
 		{
 			name: 'Rooms',

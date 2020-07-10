@@ -1,7 +1,7 @@
 import { OmitByPropType } from '@models/common';
 import { createDictionary, toDomainDictionary, toDTODictionary } from '@helpers';
-import { Room } from '../room';
 import { Hardware } from '@models/hardware';
+import { Room } from '../room';
 
 export type EquipmentComponentSize = 'small' | 'large' | 'expand';
 
@@ -41,16 +41,21 @@ export enum Status {
 
 export const equipmentTypeDictionary = createDictionary(EquipmentDTOType, EquipmentType);
 
-//////make inheritance
+// ////make inheritance
 
 export type EquipmentDTOProps = OmitByPropType<EquipmentDTO, Function>;
 
 export class EquipmentDTO {
 	public readonly name: string;
+
 	public readonly group: string | null;
+
 	public readonly type: string | null;
+
 	public readonly status: boolean;
+
 	public readonly value: boolean | string | number | null;
+
 	public createDomain: (id: Equipment['id'], oldEquipment?: Equipment) => Equipment;
 
 	constructor(source: EquipmentDTO | EquipmentDTOProps) {
@@ -68,10 +73,15 @@ type EquipmentProps = OmitByPropType<Equipment, Function>;
 
 export class Equipment {
 	public name: string;
+
 	public readonly value: string | number | boolean | null;
+
 	public readonly type: string | null;
+
 	public readonly group: string | null;
+
 	public readonly id: string | null;
+
 	public readonly status: boolean;
 
 	constructor(source: Equipment | EquipmentProps) {
@@ -128,7 +138,10 @@ EquipmentDTO.prototype.createDomain = function (
 
 export abstract class EquipmentComponentInputs {
 	room: Room;
+
 	equipment: Equipment;
+
 	hardware: Hardware;
+
 	size: EquipmentComponentSize;
 }

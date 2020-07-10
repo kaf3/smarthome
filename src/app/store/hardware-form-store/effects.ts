@@ -8,10 +8,8 @@ import {
 	switchMap,
 	withLatestFrom,
 } from 'rxjs/operators';
-import { HardwareFormActions, HardwareFormActionTypes, LoadHardwareFormSuccess } from './actions';
 import { RoomFacade, RoomStoreActions } from '@store/room';
 import { HardwareFacade } from '@store/hardware';
-import { HardwareFormFacade } from './facade';
 import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
@@ -20,6 +18,8 @@ import { ClearAsyncErrorAction, SetAsyncErrorAction, StartAsyncValidationAction 
 import { timer } from 'rxjs';
 import { ErrorEffects } from '@models/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HardwareFormFacade } from './facade';
+import { HardwareFormActions, HardwareFormActionTypes, LoadHardwareFormSuccess } from './actions';
 
 @Injectable()
 export class HardwareFormEffects extends ErrorEffects {

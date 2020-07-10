@@ -12,7 +12,9 @@ import { filter, take, takeUntil } from 'rxjs/operators';
 })
 export class HardwareFormComponent implements OnDestroy {
 	public readonly formState$: Observable<HardwareFormStoreState.HardwareFormState>;
+
 	public readonly rooms$: Observable<Room[]>;
+
 	private readonly destroy$ = new Subject();
 
 	constructor(

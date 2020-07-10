@@ -13,7 +13,9 @@ import { RoomListFacade } from '@store/room-list';
 })
 export class RoomFormComponent implements OnDestroy {
 	public readonly formState$: Observable<RoomFormStoreState.RoomFormState>;
+
 	private readonly destroy$ = new Subject();
+
 	public room$: Observable<Room>;
 
 	constructor(

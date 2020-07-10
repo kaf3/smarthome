@@ -1,11 +1,11 @@
-import { RoomListActions, RoomListActionsTypes } from './actions';
 import { CallState, LoadingState } from '@models/error-loading';
 import { RoomStoreActions } from '@store/room';
-import { RoomActionTypes } from '../room-store/actions';
 import { HardwareStoreActions } from '@store/hardware';
-import { HardwareActionTypes } from '../hardware-store/actions';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Room } from '@models/room';
+import { HardwareActionTypes } from '../hardware-store/actions';
+import { RoomActionTypes } from '../room-store/actions';
+import { RoomListActions, RoomListActionsTypes } from './actions';
 
 export const ROOMLIST_FEATURE_KEY = 'roomList';
 

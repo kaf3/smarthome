@@ -1,5 +1,5 @@
-import { OmitByPropType } from '../common';
 import { createEntityAdapter, Dictionary, EntityState } from '@ngrx/entity';
+import { OmitByPropType } from '../common';
 import { Command, CommandDTO } from '../command/command';
 
 export type CommandListDTOProps = OmitByPropType<CommandListDTO, Function>;

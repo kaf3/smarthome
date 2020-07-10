@@ -20,26 +20,31 @@ export class LoadHardware implements Action {
 
 export class LoadHardwareSuccess implements Action {
 	readonly type = HardwareActionTypes.LoadHardwareSuccess;
+
 	constructor(public payload: { hardware: Hardware }) {}
 }
 
 export class LoadHardwareFailure implements Action {
 	readonly type = HardwareActionTypes.LoadHardwareFailure;
+
 	constructor(public payload: { errorMsg: string }) {}
 }
 
 export class UpdateOneEquipment implements Action {
 	readonly type = HardwareActionTypes.UpdateOneEquipment;
+
 	constructor(public payload: { equipment: Equipment; room: Room; hardware: Hardware }) {}
 }
 
 export class UpdateOneEquipmentSuccess implements Action {
 	readonly type = HardwareActionTypes.UpdateOneEquipmentSuccess;
+
 	constructor(public payload: { equipment: Equipment; room: Room; hardware: Hardware }) {}
 }
 
 export class UpdateOneEquipmentFailure implements Action {
 	readonly type = HardwareActionTypes.UpdateOneEquipmentFailure;
+
 	constructor(public payload: { errorMsg: string }) {}
 }
 

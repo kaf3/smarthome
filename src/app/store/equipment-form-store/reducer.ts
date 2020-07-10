@@ -10,9 +10,9 @@ import {
 	updateGroup,
 	validate,
 } from 'ngrx-forms';
-import { EquipmentFormActions, EquipmentFormActionTypes } from './actions';
 import { Equipment, EquipmentGroup } from '@models/equipment';
 import { required } from 'ngrx-forms/validation';
+import { EquipmentFormActions, EquipmentFormActionTypes } from './actions';
 
 export const EQUIPMENT_FORM_FEATURE_KEY = 'equipmentForm';
 

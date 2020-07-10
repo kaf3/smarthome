@@ -25,6 +25,7 @@ const notUnique: ValidationErrors = { notUnique: true };
 })
 export class AddRoomComponent implements OnInit, OnDestroy {
 	public destroy$ = new Subject();
+
 	public addForm = new FormGroup({
 		nameControl: new FormControl('', Validators.required.bind(Validators)),
 	});
@@ -32,6 +33,7 @@ export class AddRoomComponent implements OnInit, OnDestroy {
 	get nameControl(): AbstractControl | null {
 		return this.addForm.get('nameControl');
 	}
+
 	constructor(
 		public readonly roomListFacade: RoomListFacade,
 		public readonly actions$: Actions,

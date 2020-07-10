@@ -29,7 +29,9 @@ export interface CommandBody {
 
 export class CommandProcessor {
 	private static eqpPath = `${Matchers.pushId}\\*${Matchers.pushId}\\*[\\w-]{4}`;
+
 	private static bodyEventSensor = `${CommandProcessor.eqpPath}\\*[<>=]\\*\\w+`;
+
 	private static bodyResult = `${CommandProcessor.eqpPath}\\*\\d`;
 
 	static commandBodyMatcher(body: CommandDTO['body']): boolean {
@@ -59,7 +61,7 @@ export class CommandProcessor {
 				roomId: result[0],
 				hardwareId: result[1],
 				equipmentId: result[2],
-				value: result[3],
+				value: !!Number.parseInt(result[3]),
 			},
 		};
 	}
@@ -74,7 +76,7 @@ export class CommandProcessor {
 			body?.result.equipmentId
 		}*${!!body?.result.value ? '1' : '0'}`;
 
-		return trigger + '*' + result;
+		return `${trigger}*${result}`;
 	}
 }
 
@@ -82,17 +84,19 @@ export type CommandDTOProps = OmitByPropType<CommandDTO, Function>;
 
 export class CommandDTO {
 	public readonly body: string | null;
+
 	public readonly name: string;
+
 	createDomain: (id: Command['id'], _oldCommand?: Command) => Command;
 
 	constructor(source: CommandDTO | CommandDTOProps) {
 		this.name = source.name;
-		const body = source.body;
+		const { body } = source;
 		/*		if (body === null || Matchers.commandBodyMatcher(body)) {
 			this.body = body;
 		} else {
 			throw new Error(`Command ${source.name} has incorrect body ${source.body}`);
-		}*/
+		} */
 		this.body = body;
 	}
 }
@@ -117,7 +121,7 @@ export class Command extends BaseDomain {
 
 Object.defineProperty(CommandDTO.prototype, 'createDomain', {
 	enumerable: false,
-	value: function (id: Command['id'], _oldCommand?: Command): Command {
+	value(id: Command['id'], _oldCommand?: Command): Command {
 		return new Command({
 			id,
 			name: this.name,

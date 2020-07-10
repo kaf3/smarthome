@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { LoadableFacade } from '@models/common';
 import { select, Store } from '@ngrx/store';
-import { selectById, selectCallState, selectHardware } from './selectors';
 import { Observable } from 'rxjs';
 import { Equipment } from '@models/equipment';
 import { Hardware } from '@models/hardware';
+import { selectById, selectCallState, selectHardware } from './selectors';
 import { HardwareState } from './reducer';
 import { LoadHardware } from './actions';
 

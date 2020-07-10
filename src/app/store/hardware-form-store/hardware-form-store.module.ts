@@ -1,8 +1,8 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EffectsModule } from '@ngrx/effects';
-import { HardwareFormEffects } from './effects';
 import { StoreModule } from '@ngrx/store';
+import { HardwareFormEffects } from './effects';
 import { hardwareFormFeatureKey, initialHardwareFormState, reducer } from './reducer';
 import { HardwareFormFacade } from './facade';
 

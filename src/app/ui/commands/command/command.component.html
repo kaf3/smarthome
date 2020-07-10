@@ -15,8 +15,12 @@
 		<ng-container *ngTemplateOutlet="result"></ng-container>
 	</div>
 	<mat-action-row>
-		<button mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
-		<button mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
+		<button (click)="updateCommand()" color="primary" mat-mini-fab>
+			<mat-icon>edit</mat-icon>
+		</button>
+		<button (click)="deleteCommand()" color="warn" mat-mini-fab>
+			<mat-icon>delete</mat-icon>
+		</button>
 	</mat-action-row>
 </mat-expansion-panel>
 
@@ -30,16 +34,16 @@
 		>
 		<mat-divider></mat-divider>
 		<app-equipment
-			[size]="'small'"
 			[equipment]="equipment"
 			[hardware]="eventSensor?.hardware$ | async"
 			[room]="eventSensor?.room$ | async"
+			[size]="'small'"
 		>
 			<a
-				small
-				mat-raised-button
-				color="primary"
 				[routerLink]="['/rooms', eventTrigger?.roomId, eventTrigger?.hardwareId]"
+				color="primary"
+				mat-raised-button
+				small
 				>Просмотреть станцию</a
 			>
 		</app-equipment>
@@ -56,20 +60,20 @@
 		>
 		<mat-divider></mat-divider>
 		<app-equipment
-			[size]="'small'"
 			[equipment]="equipment"
 			[hardware]="resultDevice.hardware$ | async"
 			[room]="resultDevice.room$ | async"
+			[size]="'small'"
 		>
 			<a
-				small
-				mat-raised-button
-				color="primary"
 				[routerLink]="[
 					'/rooms',
 					command.body?.result.roomId,
 					command.body?.result.hardwareId
 				]"
+				color="primary"
+				mat-raised-button
+				small
 				>Просмотреть станцию</a
 			>
 		</app-equipment>

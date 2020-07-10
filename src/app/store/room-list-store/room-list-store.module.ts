@@ -1,10 +1,10 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
-import { initialState, ROOMLIST_FEATURE_KEY, roomsReducer } from './reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { RoomListEffects } from './effects';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { initialState, ROOMLIST_FEATURE_KEY, roomsReducer } from './reducer';
+import { RoomListEffects } from './effects';
 import { RoomListFacade } from './facade';
 
 @NgModule({

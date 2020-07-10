@@ -14,11 +14,13 @@ export class LoadHardwareForm implements Action {
 
 export class LoadHardwareFormSuccess implements Action {
 	readonly type = HardwareFormActionTypes.LoadHardwareFormSuccess;
+
 	constructor(public payload: { value: HardwareFormValue }) {}
 }
 
 export class LoadHardwareFormFailure implements Action {
 	readonly type = HardwareFormActionTypes.LoadHardwareFormFailure;
+
 	constructor(public payload: { error: any }) {}
 }
 

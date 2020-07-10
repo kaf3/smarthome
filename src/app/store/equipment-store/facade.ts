@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectCallState, selectEquipment } from './selectors';
 import { Observable } from 'rxjs';
 import { Equipment } from '@models/equipment';
 import { LoadableFacade } from '@models/common';
+import { selectCallState, selectEquipment } from './selectors';
 import { GetEquipmentSuccess } from './actions';
 import { EquipmentState } from './reducer';
 

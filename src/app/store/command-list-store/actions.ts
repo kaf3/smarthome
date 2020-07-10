@@ -22,56 +22,67 @@ export class LoadCommandList implements Action {
 
 export class LoadCommandListSuccess implements Action {
 	readonly type = CommandListActionTypes.LoadCommandListSuccess;
+
 	constructor(public payload: { commandList: CommandList }) {}
 }
 
 export class LoadCommandListFailure implements Action {
 	readonly type = CommandListActionTypes.LoadCommandListFailure;
+
 	constructor(public payload: { errorMsg: string }) {}
 }
 
 export class AddCommand implements Action {
 	readonly type = CommandListActionTypes.AddCommand;
+
 	constructor(public payload: { command: Command }) {}
 }
 
 export class AddCommandSuccess implements Action {
 	readonly type = CommandListActionTypes.AddCommandSuccess;
+
 	constructor(public payload: { command: Command }) {}
 }
 
 export class AddCommandFailure implements Action {
 	readonly type = CommandListActionTypes.AddCommandFailure;
+
 	constructor(public payload: { errorMsg: string }) {}
 }
 
 export class DeleteCommand implements Action {
 	readonly type = CommandListActionTypes.DeleteCommand;
+
 	constructor(public payload: { command: Command }) {}
 }
 
 export class DeleteCommandSuccess implements Action {
 	readonly type = CommandListActionTypes.DeleteCommandSuccess;
+
 	constructor(public payload: { command: Command }) {}
 }
 
 export class DeleteCommandFailure implements Action {
 	readonly type = CommandListActionTypes.DeleteCommandFailure;
+
 	constructor(public payload: { errorMsg: string }) {}
 }
 
 export class UpdateCommand implements Action {
 	readonly type = CommandListActionTypes.UpdateCommand;
+
 	constructor(public payload: { command: Command }) {}
 }
 
 export class UpdateCommandSuccess implements Action {
 	readonly type = CommandListActionTypes.UpdateCommandSuccess;
+
 	constructor(public payload: { command: Command }) {}
 }
 
 export class UpdateCommandFailure implements Action {
 	readonly type = CommandListActionTypes.UpdateCommandFailure;
+
 	constructor(public payload: { errorMsg: string }) {}
 }
 

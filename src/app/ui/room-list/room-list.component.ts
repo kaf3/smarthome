@@ -18,6 +18,7 @@ export class RoomListComponent implements OnInit, OnDestroy {
 	@ViewChild('matTabNav') matTabNav: MatTabNav;
 
 	public rooms$: Observable<Room[]>;
+
 	public readonly destroy$ = new Subject();
 
 	constructor(

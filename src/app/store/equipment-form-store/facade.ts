@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { Equipment } from '@models/equipment';
 import { selectEquipmentFormState } from './selectors';
 import { LoadEquipmentForm, SubmitEquipmentForm } from './actions';
-import { Equipment } from '@models/equipment';
 import { EquipmentFormState } from './reducer';
 
 @Injectable()

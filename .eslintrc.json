@@ -17,7 +17,9 @@
         "plugin:@typescript-eslint/recommended",
         // Правила TS, требующие инфо о типах
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "prettier"
+		"prettier/@typescript-eslint",
+        "prettier",
+		"plugin:prettier/recommended"
     ],
     "plugins": ["prettier"],
     "rules": {
@@ -32,6 +34,7 @@
     "parserOptions": {
         // Движку нужен проект TS для правил с типами
         "project": "tsconfig.base.json",
-        "tsconfigRootDir": "."
-    }
+        "tsconfigRootDir": ".",
+		"sourceType": "module"
+	}
 }

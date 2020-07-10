@@ -1,5 +1,21 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { LoadableFacade } from '@models/common';
+import { RoomList } from '@models/room-list';
+import { Room } from '@models/room';
+import { Dictionary } from '@ngrx/entity';
+import { Hardware } from '@models/hardware';
+import { Equipment } from '@models/equipment';
+import { RoomListState } from './reducer';
+import {
+	AddRoom,
+	DeleteRoom,
+	LoadRoomList,
+	UpdateRoom,
+	UpsertRoomListWhenLeft,
+	UpsertRoomWhenLeft,
+} from './actions';
 import {
 	selectCallState,
 	selectEquipmentById,
@@ -9,26 +25,11 @@ import {
 	selectRoomListEntities,
 	selectRooms,
 } from './selectors';
-import { Observable } from 'rxjs';
-import {
-	AddRoom,
-	DeleteRoom,
-	LoadRoomList,
-	UpdateRoom,
-	UpsertRoomListWhenLeft,
-	UpsertRoomWhenLeft,
-} from './actions';
-import { LoadableFacade } from '@models/common';
-import { RoomList } from '@models/room-list';
-import { Room } from '@models/room';
-import { RoomListState } from './reducer';
-import { Dictionary } from '@ngrx/entity';
-import { Hardware } from '@models/hardware';
-import { Equipment } from '@models/equipment';
 
 @Injectable()
 export class RoomListFacade extends LoadableFacade<RoomListState> {
 	public readonly rooms$: Observable<Room[]>;
+
 	public readonly roomListEntities$: Observable<Dictionary<Room>>;
 
 	public readonly roomList$: Observable<RoomList>;

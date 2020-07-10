@@ -9,7 +9,7 @@ export class HardwareGuard implements CanActivate {
 	constructor(private readonly hardwareFacade: HardwareFacade) {}
 
 	canActivate(next: ActivatedRouteSnapshot): Observable<boolean> | boolean {
-		this.hardwareFacade.loadHardware(next.params['hardwareId']);
+		this.hardwareFacade.loadHardware(next.params.hardwareId);
 		return this.hardwareFacade.hardware$.pipe(
 			filter((hardware) => !!hardware?.id),
 			take(1),

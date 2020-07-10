@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RoomFormComponent } from './room-form.component';
 import { NgrxMaterialModule } from '@helpers';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NgrxFormsModule } from 'ngrx-forms';
+import { RoomFormComponent } from './room-form.component';
 
 @NgModule({
 	declarations: [RoomFormComponent],

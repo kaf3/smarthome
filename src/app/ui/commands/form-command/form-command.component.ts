@@ -1,9 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { RoomListFacade } from '@store/room-list';
+import { Directive, Inject, ViewChild } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { Room } from '@models/room';
-import { Hardware } from '@models/hardware';
-import { Equipment } from '@models/equipment';
 import { Command, CommandBody } from '@models/command';
 import {
 	AbstractControl,
@@ -13,12 +10,15 @@ import {
 	ValidationErrors,
 	Validators,
 } from '@angular/forms';
-import { CommandListFacade, CommandListStoreActions } from '@store/command-list';
-import { BaseDomain } from '@models/common';
-import { catchError, debounceTime, map, take, takeUntil } from 'rxjs/operators';
 import { MatHorizontalStepper } from '@angular/material/stepper';
-import { MatDialogRef } from '@angular/material/dialog';
+import { RoomListFacade } from '@store/room-list';
+import { CommandListFacade, CommandListStoreActions } from '@store/command-list';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Actions, ofType } from '@ngrx/effects';
+import { catchError, debounceTime, map, take, takeUntil } from 'rxjs/operators';
+import { Hardware } from '@models/hardware';
+import { Equipment } from '@models/equipment';
+import { BaseDomain } from '@models/common';
 
 export interface FullAboutEquipment {
 	room: Room;
@@ -28,12 +28,8 @@ export interface FullAboutEquipment {
 
 const notUnique: ValidationErrors = { notUnique: true };
 
-@Component({
-	selector: 'app-add-command',
-	templateUrl: './add-command.component.html',
-	styleUrls: ['./add-command.component.scss'],
-})
-export class AddCommandComponent implements OnInit, OnDestroy {
+@Directive()
+export class FormCommandComponent {
 	public rooms$: Observable<Room[]>;
 	public roomsOnlyWithSensors$: Observable<Room[]>;
 	public roomsOnlyWithDevices$: Observable<Room[]>;
@@ -49,32 +45,37 @@ export class AddCommandComponent implements OnInit, OnDestroy {
 		name: new FormControl('', Validators.required.bind(Validators)),
 		chosenSensor: new FormControl('', Validators.required.bind(Validators)),
 	});
+
 	public resultForm = new FormGroup({
 		deviceValue: new FormControl(false, Validators.required.bind(Validators)),
 		chosenDevice: new FormControl('', Validators.required.bind(Validators)),
 	});
+
 	@ViewChild('stepper') public readonly stepper: MatHorizontalStepper;
 
 	public destroy$ = new Subject();
+	comparisons = [
+		{
+			sign: '>',
+			label: 'больше',
+		},
+		{
+			sign: '<',
+			label: 'меньше',
+		},
+		{
+			sign: '=',
+			label: 'равно',
+		},
+	];
 
 	constructor(
-		private readonly roomListFacade: RoomListFacade,
-		private readonly commandListFacade: CommandListFacade,
-		private readonly dialogRef: MatDialogRef<AddCommandComponent>,
+		public readonly roomListFacade: RoomListFacade,
+		public readonly commandListFacade: CommandListFacade,
+		public readonly dialogRef: MatDialogRef<FormCommandComponent>,
 		public readonly actions$: Actions,
+		@Inject(MAT_DIALOG_DATA) public readonly data: Command,
 	) {}
-
-	ngOnInit(): void {
-		this.roomsOnlyWithSensors$ = this.roomListFacade.rooms$.pipe(
-			map(this.filterByEquipmentGroup('sensor')),
-		);
-		this.roomsOnlyWithDevices$ = this.roomListFacade.rooms$.pipe(
-			map(this.filterByEquipmentGroup('device')),
-		);
-		this.nameControl?.setAsyncValidators(
-			this.notUniqueValidator<Command>(this.commandListFacade.commands$),
-		);
-	}
 
 	get sensorValueControl(): AbstractControl | null {
 		return this.eventForm.get('sensorValue');
@@ -100,20 +101,11 @@ export class AddCommandComponent implements OnInit, OnDestroy {
 		return this.resultForm.get('chosenDevice');
 	}
 
-	comparisons = [
-		{
-			sign: '>',
-			label: 'больше',
-		},
-		{
-			sign: '<',
-			label: 'меньше',
-		},
-		{
-			sign: '=',
-			label: 'равно',
-		},
-	];
+	superOnInit(): void {
+		this.rooms$ = this.roomListFacade.rooms$;
+		this.roomsOnlyWithSensors$ = this.rooms$.pipe(map(this.filterByEquipmentGroup('sensor')));
+		this.roomsOnlyWithDevices$ = this.rooms$.pipe(map(this.filterByEquipmentGroup('device')));
+	}
 
 	createAboutEquipment(
 		stage: 'event' | 'result',
@@ -144,7 +136,7 @@ export class AddCommandComponent implements OnInit, OnDestroy {
 		};
 	}
 
-	addCommand(): void {
+	submitForm(): Command | null {
 		this.chosenDeviceControl?.markAsDirty();
 		if (
 			this.eventForm.valid &&
@@ -168,12 +160,12 @@ export class AddCommandComponent implements OnInit, OnDestroy {
 				},
 			};
 			const name = this.nameControl?.value;
-			this.commandListFacade.addCommand(new Command({ name, body, id: null }));
-			this.checkAndClose(name);
+			return new Command({ name, body, id: null });
 		}
+		return null;
 	}
 
-	checkAndClose(name: Command['name']): void {
+	public checkAndClose(name: Command['name']): void {
 		this.actions$
 			.pipe(
 				ofType<CommandListStoreActions.AddCommandSuccess>(
@@ -189,7 +181,7 @@ export class AddCommandComponent implements OnInit, OnDestroy {
 			});
 	}
 
-	filterByEquipmentGroup(group: Equipment['group']) {
+	public filterByEquipmentGroup(group: Equipment['group']) {
 		return (rooms: Room[]) => {
 			const newRooms: Room[] = [];
 			rooms.forEach((room) => {
@@ -212,10 +204,5 @@ export class AddCommandComponent implements OnInit, OnDestroy {
 			});
 			return newRooms;
 		};
-	}
-
-	ngOnDestroy(): void {
-		this.destroy$.next();
-		this.destroy$.complete();
 	}
 }

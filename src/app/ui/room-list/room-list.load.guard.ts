@@ -15,7 +15,7 @@ export class RoomListLoadGuard implements CanLoad, CanDeactivate<unknown> {
 	) {}
 
 	canLoad(): Observable<boolean> {
-		//this.roomListFacade.loadRooms();
+		// this.roomListFacade.loadRooms();
 		return race(this.roomListFacade.loaded$, this.roomListFacade.error$).pipe(
 			take(1),
 			switchMap((result: string | CallState) => {

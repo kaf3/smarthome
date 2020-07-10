@@ -1,4 +1,3 @@
-import { HardwareFormActions, HardwareFormActionTypes } from './actions';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
 import {
@@ -11,6 +10,7 @@ import {
 	validate,
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
+import { HardwareFormActions, HardwareFormActionTypes } from './actions';
 
 export const hardwareFormFeatureKey = 'hardwareForm';
 

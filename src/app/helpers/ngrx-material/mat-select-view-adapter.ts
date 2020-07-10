@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 })
 export class NgrxMatSelectViewAdapter implements FormViewAdapter, AfterViewInit, OnDestroy {
 	private value: any;
+
 	private subscriptions: Subscription[] = [];
 
 	constructor(private matSelect: MatSelect) {}

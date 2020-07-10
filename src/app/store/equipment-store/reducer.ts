@@ -1,7 +1,7 @@
-import { EquipmentActions, EquipmentActionsTypes } from './actions';
 import { CallState, LoadingState } from '@models/error-loading';
 import { RoomListStoreActions } from '@store/room-list';
 import { Equipment } from '@models/equipment';
+import { EquipmentActions, EquipmentActionsTypes } from './actions';
 
 export const EQUIPMENT_FEATURE_KEY = 'equipment';
 
@@ -33,9 +33,9 @@ export function equipmentReducer(
 
 			return { ...state, callState: { errorMsg } };
 		}
-		/*case RoomListStoreActions.RoomListActionsTypes.upsertRoomWhenLeft: {
+		/* case RoomListStoreActions.RoomListActionsTypes.upsertRoomWhenLeft: {
 			return initialEquipmentState;
-		}*/
+		} */
 		default:
 			return state;
 	}

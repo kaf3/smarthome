@@ -1,6 +1,6 @@
-import { CommandListActions, CommandListActionTypes } from './actions';
 import { CommandList } from '@models/command';
 import { CallState, LoadingState } from '@models/error-loading';
+import { CommandListActions, CommandListActionTypes } from './actions';
 
 export const commandListFeatureKey = 'commands';
 

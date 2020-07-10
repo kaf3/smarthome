@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
-import { appReducers, initialAppState, ROUTER_FEATURE_KEY } from './reducer';
 import { EffectsModule } from '@ngrx/effects';
 import {
 	DefaultRouterStateSerializer,
@@ -9,6 +8,7 @@ import {
 	StoreRouterConnectingModule,
 } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { appReducers, initialAppState, ROUTER_FEATURE_KEY } from './reducer';
 import { FeatureStoreModule } from './feature-store.module';
 
 @NgModule({

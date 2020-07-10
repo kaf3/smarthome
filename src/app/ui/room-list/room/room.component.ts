@@ -12,6 +12,7 @@ import { RoomListFacade } from '@store/room-list';
 })
 export class RoomComponent implements OnInit {
 	public room$: Observable<Room>;
+
 	public openedId: string | null = null;
 
 	constructor(

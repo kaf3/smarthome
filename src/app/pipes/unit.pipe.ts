@@ -12,18 +12,18 @@ export class UnitPipe implements PipeTransform {
 
 		switch (equipment.type) {
 			case EquipmentType.TEMPERATURE:
-				return value + '\xB0C.';
+				return `${value}\xB0C.`;
 			case EquipmentType.CO2:
 			case EquipmentType.HUMIDITY:
-				return value + '%';
+				return `${value}%`;
 			case EquipmentType.VOLTAGE:
-				return value + 'V';
+				return `${value}V`;
 			case EquipmentType.CURRENT:
-				return value + 'A';
-			case EquipmentType.USERTYPE: //doesnt work
-				return value + '';
+				return `${value}A`;
+			case EquipmentType.USERTYPE: // doesnt work
+				return `${value}`;
 			default:
-				return value + '';
+				return `${value}`;
 		}
 	}
 }

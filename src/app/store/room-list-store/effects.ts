@@ -1,6 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+	catchError,
+	concatMap,
+	filter,
+	map,
+	switchMap,
+	take,
+	withLatestFrom,
+} from 'rxjs/operators';
+
+import { Observable, of } from 'rxjs';
+import { HttpRoomsService, SerializeService } from '@services';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { RoomList } from '@models/room-list';
+import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
+import { ErrorEffects } from '@models/common';
+import { Room } from '@models/room';
+import { RoomListFacade } from './facade';
+import {
 	AddRoom,
 	AddRoomFailure,
 	AddRoomSuccess,
@@ -19,25 +38,6 @@ import {
 	UpdateRoomFailure,
 	UpdateRoomSuccess,
 } from './actions';
-import {
-	catchError,
-	concatMap,
-	filter,
-	map,
-	switchMap,
-	take,
-	withLatestFrom,
-} from 'rxjs/operators';
-
-import { Observable, of } from 'rxjs';
-import { HttpRoomsService, SerializeService } from '@services';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { RoomListFacade } from './facade';
-import { RoomList } from '@models/room-list';
-import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
-import { ErrorEffects } from '@models/common';
-import { Room } from '@models/room';
 
 @Injectable()
 export class RoomListEffects extends ErrorEffects {
@@ -90,7 +90,7 @@ export class RoomListEffects extends ErrorEffects {
 			ofType<DeleteRoom>(RoomListActionsTypes.DeleteRoom),
 			withLatestFrom(this.roomListFacade.rooms$),
 			concatMap(([action, rooms]) => {
-				const room = action.payload.room;
+				const { room } = action.payload;
 				if (room.hardwares.length === 0 && rooms.length > 1) {
 					return this.httpDeleteRoom$(room);
 				}

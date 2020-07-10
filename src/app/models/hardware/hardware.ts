@@ -31,10 +31,15 @@ export type HardwareDTOProps = OmitByPropType<HardwareDTO, Function>;
 
 export class HardwareDTO {
 	public readonly mac: number | string | null;
+
 	public readonly name: string;
+
 	public readonly type: string | null;
+
 	public readonly numberOfEquip: number;
+
 	public readonly equipmentCollection: Collection<EquipmentDTO>;
+
 	public createDomain: (id: Hardware['id'], oldHardware?: Hardware) => Hardware;
 
 	constructor(source: HardwareDTO | HardwareDTOProps) {
@@ -50,12 +55,15 @@ export type HardwareProps = OmitByPropType<Hardware, Function>;
 
 export class Hardware extends HardwareWithChildren {
 	public readonly equipments: Equipment[];
+
 	public activeEquipment: Equipment;
+
 	constructor(source: Hardware) {
 		super(source.id, source.name, source.mac, source.type);
 		this.equipments = [...source.equipments];
 		this.activeEquipment = new Equipment(source.activeEquipment);
 	}
+
 	public static createDTO(hardware: Hardware): HardwareDTO {
 		return new HardwareDTO({
 			mac: hardware.mac,
@@ -86,6 +94,10 @@ export class Hardware extends HardwareWithChildren {
 
 	public static updateEquipment(hardware: Hardware, equipment: Equipment): Hardware {
 		return super.updateChild(hardware, equipment);
+	}
+
+	public static getEquipment(id: Equipment['id'], hardware?: Hardware): Equipment | undefined {
+		return super.getChild(id, hardware);
 	}
 }
 

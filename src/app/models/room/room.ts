@@ -17,7 +17,9 @@ export type RoomDTOProps = OmitByPropType<RoomDTO, Function>;
 
 export class RoomDTO {
 	public readonly name: string;
+
 	public readonly hardwareCollection: Collection<HardwareDTO>;
+
 	createDomain: (id: Room['id'], oldRoom?: Room) => Room;
 
 	constructor(source: RoomDTO | RoomDTOProps) {
@@ -30,13 +32,16 @@ export type RoomProps = OmitByPropType<Room, Function>;
 
 export class Room extends RoomWithChildren {
 	public readonly hardwares: Hardware[];
+
 	public activeHardware: Hardware;
+
 	constructor(source: Room) {
 		super(source.id, source.name);
 
 		this.hardwares = [...source.hardwares];
 		this.activeHardware = new Hardware(source.activeHardware);
 	}
+
 	public static createDTO(room: Room): RoomDTO {
 		return new RoomDTO({
 			name: room.name,

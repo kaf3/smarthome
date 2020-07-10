@@ -1,8 +1,8 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EffectsModule } from '@ngrx/effects';
-import { CommandsEffects } from './effects';
 import { StoreModule } from '@ngrx/store';
+import { CommandsEffects } from './effects';
 import { commandListFeatureKey, initialState, reducer } from './reducer';
 import { CommandListFacade } from './facade';
 

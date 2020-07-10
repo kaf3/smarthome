@@ -1,15 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-	GetRoom,
-	GetRoomError,
-	GetRoomSuccess,
-	RoomActionTypes,
-	UpdateOneHardware,
-	UpdateOneHardwareFailure,
-	UpdateOneHardwareSuccess,
-} from './actions';
-import {
 	catchError,
 	concatMap,
 	filter,
@@ -23,10 +14,19 @@ import { HttpRoomsService } from '@services';
 import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
-import { RoomFacade } from './facade';
-import { RoomListActionsTypes } from '../room-list-store/actions';
 import { ErrorEffects } from '@models/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RoomFacade } from './facade';
+import { RoomListActionsTypes } from '../room-list-store/actions';
+import {
+	GetRoom,
+	GetRoomError,
+	GetRoomSuccess,
+	RoomActionTypes,
+	UpdateOneHardware,
+	UpdateOneHardwareFailure,
+	UpdateOneHardwareSuccess,
+} from './actions';
 
 @Injectable()
 export class RoomEffects extends ErrorEffects {
@@ -39,7 +39,7 @@ export class RoomEffects extends ErrorEffects {
 						if (!room) throw new Error();
 						return room;
 					}),
-					//filter((room) => !!room?.id),
+					// filter((room) => !!room?.id),
 					take(1),
 					map((room) => new GetRoomSuccess({ room })),
 					catchError(() =>
@@ -53,6 +53,7 @@ export class RoomEffects extends ErrorEffects {
 			),
 		),
 	);
+
 	updateHardware$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<UpdateOneHardware>(RoomActionTypes.updateOneHardware),

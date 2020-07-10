@@ -3,7 +3,7 @@ import { CommandListFacade } from '@store/command-list';
 import { Observable } from 'rxjs';
 import { Command } from '@models/command';
 import { MatDialog } from '@angular/material/dialog';
-import { AddCommandComponent } from './add-command/add-command.component';
+import { AddCommandComponent } from './form-command/add/add-command.component';
 
 @Component({
 	selector: 'app-commands',

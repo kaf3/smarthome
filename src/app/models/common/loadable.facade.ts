@@ -1,14 +1,18 @@
 import { MemoizedSelector, select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { CallState } from '../error-loading/error.loading';
 import { filter, map } from 'rxjs/operators';
 import { getError, isInit, isLoaded, isLoading } from '@helpers';
+import { CallState } from '../error-loading/error.loading';
 
 export abstract class LoadableFacade<TFeatureState> {
 	public readonly callState$: Observable<CallState>;
+
 	public readonly init$: Observable<CallState>;
+
 	public readonly loading$: Observable<CallState>;
+
 	public readonly loaded$: Observable<CallState>;
+
 	public readonly error$: Observable<string | null>;
 
 	protected constructor(

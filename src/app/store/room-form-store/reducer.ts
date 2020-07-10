@@ -1,4 +1,3 @@
-import { RoomFormActionTypes, RoomFormStateActions } from './actions';
 import { Room } from '@models/room';
 import {
 	createFormGroupState,
@@ -10,6 +9,7 @@ import {
 	validate,
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
+import { RoomFormActionTypes, RoomFormStateActions } from './actions';
 
 export const roomFormStateFeatureKey = 'roomForm';
 

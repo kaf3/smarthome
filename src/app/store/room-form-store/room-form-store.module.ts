@@ -1,8 +1,8 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EffectsModule } from '@ngrx/effects';
-import { RoomFormStateEffects } from './effects';
 import { StoreModule } from '@ngrx/store';
+import { RoomFormStateEffects } from './effects';
 import { initialState, reducer, roomFormStateFeatureKey } from './reducer';
 import { RoomFormFacade } from './facade';
 

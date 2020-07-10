@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { LoadableFacade } from '@models/common';
-import { CommandListState } from './reducer';
 import { Store } from '@ngrx/store';
-import { selectAll, selectCallState, selectCommandList } from './selectors';
 import { Observable } from 'rxjs';
 import { Command, CommandList } from '@models/command';
+import { selectAll, selectCallState, selectCommandList } from './selectors';
+import { CommandListState } from './reducer';
 import { AddCommand, DeleteCommand, LoadCommandList, UpdateCommand } from './actions';
 
 @Injectable()
 export class CommandListFacade extends LoadableFacade<CommandListState> {
 	public readonly commandList$: Observable<CommandList>;
+
 	public readonly commands$: Observable<Command[]>;
 
 	constructor(store: Store<CommandListState>) {

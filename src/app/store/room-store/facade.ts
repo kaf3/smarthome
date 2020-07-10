@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectById, selectCallState, selectEntities, selectRoom } from './selectors';
-import { GetRoom } from './actions';
 import { LoadableFacade } from '@models/common';
 import { Room } from '@models/room';
 import { Hardware } from '@models/hardware';
 import { Dictionary } from '@ngrx/entity';
+import { GetRoom } from './actions';
+import { selectById, selectCallState, selectEntities, selectRoom } from './selectors';
 import { RoomState } from './reducer';
 
 @Injectable()
 export class RoomFacade extends LoadableFacade<RoomState> {
 	public readonly room$: Observable<Room>;
+
 	public readonly hardwareEntities$: Observable<Dictionary<Hardware>>;
 
 	constructor(store: Store<RoomState>) {

@@ -16,7 +16,7 @@ export class EquipmentEffects {
 			),
 			switchMap((equipment) => of(new GetEquipmentSuccess({ equipment }))),
 		),
-	);*/
+	); */
 
 	constructor(private readonly actions$: Actions, private readonly roomFacade: RoomFacade) {}
 }

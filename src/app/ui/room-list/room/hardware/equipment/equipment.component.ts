@@ -13,9 +13,13 @@ export class EquipmentComponent implements OnInit {
 	public unit = new UnitPipe();
 
 	@Input() size?: EquipmentComponentSize;
+
 	@Input() room?: Room;
+
 	@Input() hardware?: Hardware;
+
 	@Input() equipment?: Equipment;
+
 	@Output() opened = new EventEmitter<Equipment>();
 
 	detailList: { key: string; value: string }[];
@@ -43,7 +47,7 @@ export class EquipmentComponent implements OnInit {
 			},
 			{
 				key: 'местонахождение',
-				value: this.room?.name ?? '' + ' / ' + (this.hardware?.name ?? ''),
+				value: this.room?.name ?? `${'' + ' / '}${this.hardware?.name ?? ''}`,
 			},
 		].filter((det) => !!det?.value && det?.value !== ' / ');
 	}

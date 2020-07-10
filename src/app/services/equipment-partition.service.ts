@@ -87,5 +87,5 @@ export class EquipmentPartitionService {
 		});
 
 		return roomDTOcopy;
-	}*/
+	} */
 }

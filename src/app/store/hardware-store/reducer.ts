@@ -1,10 +1,10 @@
-import { HardwareActions, HardwareActionTypes } from './actions';
 import { BaseHardware, Hardware } from '@models/hardware';
 import { CallState, LoadingState } from '@models/error-loading';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Equipment } from '@models/equipment';
 import { RoomListStoreActions } from '@store/room-list';
 import { RoomStoreActions } from '@store/room';
+import { HardwareActions, HardwareActionTypes } from './actions';
 import { RoomActionTypes } from '../room-store/actions';
 import { RoomListActionsTypes } from '../room-list-store/actions';
 

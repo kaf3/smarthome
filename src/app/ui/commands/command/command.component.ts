@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { Room } from '@models/room';
 import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
+import { CommandListFacade } from '@store/command-list';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateCommandComponent } from '../form-command/update/update-command.component';
 
 export interface FullAboutEquipment$ {
 	room$: Observable<Room>;
@@ -19,16 +22,23 @@ export interface FullAboutEquipment$ {
 })
 export class CommandComponent implements OnInit {
 	@Input() command: Command;
+
 	public eventSensor: FullAboutEquipment$;
+
 	public resultDevice: FullAboutEquipment$;
 
-	constructor(private readonly roomListFacade: RoomListFacade) {}
+	constructor(
+		private readonly roomListFacade: RoomListFacade,
+		private readonly commandListFacade: CommandListFacade,
+		public readonly matDialog: MatDialog,
+	) {}
 
 	ngOnInit(): void {
 		if (!!this.command.body) {
 			this.eventSensor = this.aboutEquipment(this.command.body.trigger as CommandSensor); // if command type === byEvent
 			this.resultDevice = this.aboutEquipment(this.command.body.result);
 		}
+		console.log(this.command);
 	}
 
 	get eventTrigger(): CommandSensor | null {
@@ -42,5 +52,15 @@ export class CommandComponent implements OnInit {
 			hardware$: this.roomListFacade.hardwareById$(roomId, hardwareId),
 			equipment$: this.roomListFacade.equipmentById$(roomId, hardwareId, equipmentId),
 		};
+	}
+
+	deleteCommand(): void {
+		this.commandListFacade.deleteCommand(this.command);
+	}
+
+	updateCommand(): void {
+		this.matDialog.open(UpdateCommandComponent, {
+			data: this.command,
+		});
 	}
 }

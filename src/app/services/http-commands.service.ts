@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Command, CommandDTO, CommandList, CommandListDTO } from '@models/command';
-import { environment } from '../../environments/environment';
 import { Dictionary } from '@ngrx/entity';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 

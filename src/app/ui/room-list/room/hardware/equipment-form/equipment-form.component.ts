@@ -12,6 +12,7 @@ import { EquipmentFormState } from '../../../../../store/equipment-form-store/re
 })
 export class EquipmentFormComponent implements OnDestroy {
 	private eqpSubject = new BehaviorSubject<Equipment | null>(null);
+
 	private readonly destroy$ = new Subject();
 
 	@Input() set equipment(eqp: Equipment) {
@@ -19,6 +20,7 @@ export class EquipmentFormComponent implements OnDestroy {
 			this.eqpSubject.next(eqp);
 		}
 	}
+
 	get equipment$(): Observable<Equipment> {
 		return this.eqpSubject.asObservable().pipe(distinctUntilKeyChanged<Equipment>('id'));
 	}

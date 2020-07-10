@@ -2,7 +2,7 @@
 	*ngIf="{
 		roomsOnlyWithDevices: roomsOnlyWithDevices$ | async,
 		roomsOnlyWithSensors: roomsOnlyWithSensors$ | async
-	} as data"
+	} as rooms"
 >
 	<mat-horizontal-stepper #stepper linear>
 		<mat-step [stepControl]="eventForm">
@@ -11,13 +11,13 @@
 			</ng-template>
 
 			<form [formGroup]="eventForm" class="form">
-				<mat-form-field appearance="fill" color="primary" class="name-form-field">
+				<mat-form-field appearance="fill" class="name-form-field" color="primary">
 					<mat-label>Название команды</mat-label>
 					<input
-						type="text"
-						matInput
 						formControlName="name"
+						matInput
 						placeholder="Придумайте название команды"
+						type="text"
 					/>
 					<mat-error *ngIf="nameControl?.errors?.required"
 						>Поле не должно быть пустым</mat-error
@@ -34,20 +34,20 @@
 					<tr>
 						<td class="form-column form-column__left">
 							<button
-								type="button"
-								mat-raised-button
+								(menuClosed)="chosenSensorControl?.markAsDirty()"
 								[color]="
 									chosenSensorControl?.errors?.required &&
 									chosenSensorControl?.dirty
 										? 'warn'
 										: 'primary'
 								"
-								[matMenuTriggerFor]="roomsMenu"
 								[matMenuTriggerData]="{
-									roomArray: data.roomsOnlyWithSensors,
+									roomArray: rooms.roomsOnlyWithSensors,
 									stage: 'event'
 								}"
-								(menuClosed)="chosenSensorControl?.markAsDirty()"
+								[matMenuTriggerFor]="roomsMenu"
+								mat-raised-button
+								type="button"
 							>
 								Выберите сенсор
 							</button>
@@ -55,23 +55,23 @@
 						<td class="form-column form-column__right">
 							<app-equipment
 								*ngIf="aboutEventSensor"
-								size="small"
 								[equipment]="aboutEventSensor?.equipment"
 								[hardware]="aboutEventSensor?.hardware"
 								[room]="aboutEventSensor?.room"
 								class="mat-elevation-z2"
+								size="small"
 							></app-equipment>
 						</td>
 					</tr>
 					<tr>
 						<td class="form-column form-column__left">
-							<mat-form-field class="wide-form-field" appearance="fill">
+							<mat-form-field appearance="fill" class="wide-form-field">
 								<mat-label>Значение </mat-label>
 								<input
-									type="number"
-									matInput
 									formControlName="sensorValue"
+									matInput
 									placeholder="Значение"
+									type="number"
 								/>
 								<mat-error *ngIf="sensorValueControl?.errors?.required"
 									>Поле не должно быть пустым</mat-error
@@ -115,7 +115,7 @@
 				</table>
 			</form>
 
-			<button mat-button matStepperNext (click)="chosenSensorControl?.markAsDirty()">
+			<button (click)="chosenSensorControl?.markAsDirty()" mat-button matStepperNext>
 				Далее
 			</button>
 		</mat-step>
@@ -132,20 +132,20 @@
 					<tr>
 						<td class="form-column form-column__left">
 							<button
-								type="button"
-								mat-raised-button
+								(menuClosed)="chosenDeviceControl?.markAsDirty()"
 								[color]="
 									chosenDeviceControl?.errors?.required &&
 									chosenDeviceControl?.dirty
 										? 'warn'
 										: 'primary'
 								"
-								[matMenuTriggerFor]="roomsMenu"
 								[matMenuTriggerData]="{
-									roomArray: data.roomsOnlyWithDevices,
+									roomArray: rooms.roomsOnlyWithDevices,
 									stage: 'result'
 								}"
-								(menuClosed)="chosenDeviceControl?.markAsDirty()"
+								[matMenuTriggerFor]="roomsMenu"
+								mat-raised-button
+								type="button"
 							>
 								Выберите устройство
 							</button>
@@ -153,11 +153,11 @@
 						<td class="form-column form-column__right">
 							<app-equipment
 								*ngIf="aboutResultDevice"
-								size="small"
 								[equipment]="aboutResultDevice?.equipment"
 								[hardware]="aboutResultDevice?.hardware"
 								[room]="aboutResultDevice?.room"
 								class="mat-elevation-z2"
+								size="small"
 							></app-equipment>
 						</td>
 					</tr>
@@ -186,21 +186,21 @@
 					</tr>
 				</table>
 			</form>
-			<button mat-button (click)="addCommand()">Создать команду</button>
+			<button (click)="submitForm()" mat-button>Готово</button>
 		</mat-step>
 	</mat-horizontal-stepper>
 
 	<mat-menu #roomsMenu>
-		<ng-template matMenuContent let-roomArray="roomArray" let-stage="stage">
+		<ng-template let-roomArray="roomArray" let-stage="stage" matMenuContent>
 			<ng-container *ngFor="let room of roomArray">
 				<button
-					mat-menu-item
 					*ngIf="!!room?.hardwares?.length"
-					[matMenuTriggerFor]="hardwaresMenu"
 					[matMenuTriggerData]="{
 						room: room,
 						stage: stage
 					}"
+					[matMenuTriggerFor]="hardwaresMenu"
+					mat-menu-item
 				>
 					{{ room?.name }}
 				</button>
@@ -209,16 +209,16 @@
 	</mat-menu>
 
 	<mat-menu #hardwaresMenu>
-		<ng-template matMenuContent let-room="room" let-stage="stage">
+		<ng-template let-room="room" let-stage="stage" matMenuContent>
 			<ng-container *ngFor="let hardware of room?.hardwares">
 				<button
-					mat-menu-item
-					[matMenuTriggerFor]="equipmentsMenu"
 					[matMenuTriggerData]="{
 						hardware: hardware,
 						room: room,
 						stage: stage
 					}"
+					[matMenuTriggerFor]="equipmentsMenu"
+					mat-menu-item
 				>
 					{{ hardware?.name }}
 				</button>
@@ -227,11 +227,11 @@
 	</mat-menu>
 
 	<mat-menu #equipmentsMenu>
-		<ng-template matMenuContent let-room="room" let-hardware="hardware" let-stage="stage">
+		<ng-template let-hardware="hardware" let-room="room" let-stage="stage" matMenuContent>
 			<button
-				mat-menu-item
-				*ngFor="let equipment of hardware.equipments"
 				(click)="createAboutEquipment(stage, room, hardware, equipment)"
+				*ngFor="let equipment of hardware.equipments"
+				mat-menu-item
 			>
 				{{ equipment?.name || equipment?.id }}
 			</button>

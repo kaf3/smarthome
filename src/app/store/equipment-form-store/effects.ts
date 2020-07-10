@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EquipmentFormActionTypes, SubmitEquipmentForm } from './actions';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Equipment } from '@models/equipment';
-import { EquipmentFormFacade } from './facade';
 import { HardwareFacade, HardwareStoreActions } from '@store/hardware';
 import { RoomFacade } from '@store/room';
 import { RoomListFacade } from '@store/room-list';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
+import { EquipmentFormFacade } from './facade';
+import { EquipmentFormActionTypes, SubmitEquipmentForm } from './actions';
 
 @Injectable()
 export class EquipmentFormEffects {
