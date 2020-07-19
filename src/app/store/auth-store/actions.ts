@@ -9,6 +9,7 @@ export enum AuthActionTypes {
 	LogOutSuccess = '[Auth] Log Out Success',
 	LogOutFailure = '[Auth] Log Out Failure',
 	SaveRedirectUrl = '[Auth] Save Redirect Url',
+	InitSession = '[Auth] Init Session',
 }
 
 export class LogIn implements Action {
@@ -45,6 +46,11 @@ export class SaveRedirectUrl implements Action {
 	constructor(public payload: { redirectUrl: string }) {}
 }
 
+export class InitSession implements Action {
+	readonly type = AuthActionTypes.InitSession;
+	constructor(public payload: { userLoggedIn: UserLoggedIn | null }) {}
+}
+
 export type AuthActions =
 	| LogIn
 	| LogInSuccess
@@ -52,4 +58,5 @@ export type AuthActions =
 	| LogOut
 	| LogOutFailure
 	| LogOutSuccess
-	| SaveRedirectUrl;
+	| SaveRedirectUrl
+	| InitSession;

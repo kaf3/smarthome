@@ -5,3 +5,4 @@ export const selectAuthState = createFeatureSelector<fromAuth.AuthState>(fromAut
 export const selectUser = createSelector(selectAuthState, (state) => state.user);
 export const selectCallState = createSelector(selectAuthState, (state) => state.callState);
 export const selectRedirectUrl = createSelector(selectAuthState, (state) => state.redirectUrl);
+export const selectSession = createSelector(selectAuthState, (state) => state.isSession);

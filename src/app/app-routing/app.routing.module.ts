@@ -42,5 +42,6 @@ const routes: Routes = [
 	declarations: [],
 	imports: [CommonModule, RouterModule.forRoot(routes)],
 	exports: [RouterModule],
+	providers: [AuthGuard],
 })
 export class AppRoutingModule {}

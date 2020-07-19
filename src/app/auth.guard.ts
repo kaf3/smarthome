@@ -11,36 +11,27 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthFacade } from '@store/auth';
-import { map, take } from 'rxjs/operators';
+import { AuthService } from '@services';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
-	constructor(private authFacade: AuthFacade, private router: Router) {}
+	constructor(
+		private authFacade: AuthFacade,
+		private router: Router,
+		private authService: AuthService,
+	) {}
 
 	canActivate(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot,
 	): Observable<boolean | UrlTree> {
-		return this.checkUser(state.url);
+		return this.authService.isLoggedIn(state.url);
 	}
 
 	canLoad(
 		route: Route,
 		_segments: UrlSegment[],
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		return this.checkUser(route.path ?? '');
-	}
-
-	public checkUser(redirectUrl: string): Observable<boolean | UrlTree> {
-		return this.authFacade.user$.pipe(
-			take(1),
-			map((user) => {
-				if (user) return true;
-				this.authFacade.saveRedirectUrl(redirectUrl);
-				return this.router.createUrlTree(['/login']);
-			}),
-		);
+		return this.authService.isLoggedIn(route.path ?? '');
 	}
 }
