@@ -1,15 +1,19 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { SidenavService } from '@services';
 import { AuthFacade } from '@store/auth';
+import { Observable } from 'rxjs';
+import { UserLoggedIn } from '@models/user';
+import { filter } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-ui',
 	templateUrl: './mainContainer.component.html',
 	styleUrls: ['./mainContainer.component.scss'],
 })
-export class MainContainerComponent implements OnDestroy {
+export class MainContainerComponent implements OnDestroy, OnInit {
 	@ViewChild('sidenav') sideNav: MatSidenav;
+	user$: Observable<UserLoggedIn | null>;
 
 	title = 'Smart Home';
 
@@ -47,6 +51,10 @@ export class MainContainerComponent implements OnDestroy {
 
 	public logOut(): void {
 		this.authFacade.logOut();
+	}
+
+	ngOnInit() {
+		this.user$ = this.authFacade.user$.pipe(filter((user) => !!user));
 	}
 
 	ngOnDestroy(): void {

@@ -34,16 +34,21 @@ export class HttpRoomsService {
 	}
 
 	public patchHardware(hardware: Hardware, roomId: Room['id']): Observable<Hardware> {
-		return this.http
-			.put<HardwareDTOProps>(
-				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${roomId}/hardwareCollection/${hardware.id}/.json`,
-				Hardware.createDTO(hardware),
-			)
-			.pipe(
-				map((hardwareDTO) =>
-					new HardwareDTO({ ...hardwareDTO }).createDomain(hardware.id, hardware),
-				),
-			);
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.put<HardwareDTOProps>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/rooms/${roomId}/hardwareCollection/${hardware.id}/.json`,
+						Hardware.createDTO(hardware),
+					)
+					.pipe(
+						map((hardwareDTO) =>
+							new HardwareDTO({ ...hardwareDTO }).createDomain(hardware.id, hardware),
+						),
+					),
+			),
+		);
 	}
 
 	public patchEquipment(
@@ -51,52 +56,81 @@ export class HttpRoomsService {
 		hardwareId: Hardware['id'],
 		roomId: Room['id'],
 	): Observable<Equipment> {
-		return this.http
-			.put<EquipmentDTOProps>(
-				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${roomId}/hardwareCollection/${hardwareId}/equipmentCollection/${equipment.id}/.json`,
-				Equipment.createDTO(equipment),
-			)
-			.pipe(
-				map((equipmentDTO) =>
-					new EquipmentDTO({ ...equipmentDTO }).createDomain(equipment.id),
-				),
-			);
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.put<EquipmentDTOProps>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/rooms/${roomId}/hardwareCollection/${hardwareId}/equipmentCollection/${equipment.id}/.json`,
+						Equipment.createDTO(equipment),
+					)
+					.pipe(
+						map((equipmentDTO) =>
+							new EquipmentDTO({ ...equipmentDTO }).createDomain(equipment.id),
+						),
+					),
+			),
+		);
 	}
 
 	public patchRoom(room: Room): Observable<Room> {
-		return this.http
-			.put<RoomDTOProps>(
-				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${room.id}/.json`,
-				Room.createDTO(room),
-			)
-			.pipe(map((roomDTO) => new RoomDTO({ ...roomDTO }).createDomain(room.id, room)));
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.put<RoomDTOProps>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/rooms/${room.id}/.json`,
+						Room.createDTO(room),
+					)
+					.pipe(
+						map((roomDTO) => new RoomDTO({ ...roomDTO }).createDomain(room.id, room)),
+					),
+			),
+		);
 	}
 
 	public postRoom(room: Room): Observable<Room> {
-		return this.http
-			.post<{ name: string }>(
-				`${FIREBASE_DATABASE_URL}/users/user_id/rooms.json`,
-				Room.createDTO(room),
-			)
-			.pipe(map((response) => new Room({ ...room, id: response.name })));
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.post<{ name: string }>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/rooms.json`,
+						Room.createDTO(room),
+					)
+					.pipe(map((response) => new Room({ ...room, id: response.name }))),
+			),
+		);
 	}
 
 	public deleteRoom(room: Room): Observable<{ room: Room; response: null }> {
-		return this.http
-			.delete<null>(`${FIREBASE_DATABASE_URL}/users/user_id/rooms/${room.id}.json`)
-			.pipe(map((response) => ({ room, response })));
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.delete<null>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/rooms/${room.id}.json`,
+					)
+					.pipe(map((response) => ({ room, response }))),
+			),
+		);
 	}
 
 	public patchRoomList(roomList: RoomList): Observable<RoomList> {
-		return this.http
-			.put<Collection<RoomDTO>>(
-				`${FIREBASE_DATABASE_URL}/users/user_id/rooms/.json`,
-				RoomList.createRoomCollection(roomList),
-			)
-			.pipe(
-				map((roomCollection) => {
-					return new RoomListDTO({ roomCollection }).createDomain(roomList);
-				}),
-			);
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.put<Collection<RoomDTO>>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/rooms/.json`,
+						RoomList.createRoomCollection(roomList),
+					)
+					.pipe(
+						map((roomCollection) => {
+							return new RoomListDTO({ roomCollection }).createDomain(roomList);
+						}),
+					),
+			),
+		);
 	}
 }

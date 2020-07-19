@@ -3,50 +3,75 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Command, CommandDTO, CommandList, CommandListDTO } from '@models/command';
 import { Dictionary } from '@ngrx/entity';
-import { map } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { AuthFacade } from '@store/auth';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 
 @Injectable()
 export class HttpCommandsService {
-	constructor(private readonly http: HttpClient) {}
+	constructor(private readonly http: HttpClient, private readonly authFacade: AuthFacade) {}
 
 	loadCommandList(): Observable<CommandList> {
-		return this.http
-			.get<Dictionary<CommandDTO>>(`${FIREBASE_DATABASE_URL}/users/user_id/commands.json`)
-			.pipe(
-				map((commandCollection) =>
-					new CommandListDTO({ commandCollection }).createDomain(),
-				),
-			);
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.get<Dictionary<CommandDTO>>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/commands.json`,
+					)
+					.pipe(
+						map((commandCollection) =>
+							new CommandListDTO({ commandCollection }).createDomain(),
+						),
+					),
+			),
+		);
 	}
 
 	postCommand(command: Command): Observable<Command> {
-		return this.http
-			.post<{ name: string }>(
-				`${FIREBASE_DATABASE_URL}/users/user_id/commands.json`,
-				Command.createDTO(command),
-			)
-			.pipe(map((response) => new Command({ ...command, id: response.name })));
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.post<{ name: string }>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/commands.json`,
+						Command.createDTO(command),
+					)
+					.pipe(map((response) => new Command({ ...command, id: response.name }))),
+			),
+		);
 	}
 
 	patchCommand(command: Command): Observable<Command> {
-		return this.http
-			.put<CommandDTO>(
-				`${FIREBASE_DATABASE_URL}/users/user_id/commands/${command.id}/.json`,
-				Command.createDTO(command),
-			)
-			.pipe(
-				map((commandDTO) =>
-					new CommandDTO({ ...commandDTO }).createDomain(command.id, command),
-				),
-			);
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.put<CommandDTO>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/commands/${command.id}/.json`,
+						Command.createDTO(command),
+					)
+					.pipe(
+						map((commandDTO) =>
+							new CommandDTO({ ...commandDTO }).createDomain(command.id, command),
+						),
+					),
+			),
+		);
 	}
 
 	deleteCommand(command: Command): Observable<{ response: null; command: Command }> {
-		return this.http
-			.delete<null>(`${FIREBASE_DATABASE_URL}/users/user_id/commands/${command.id}.json`)
-			.pipe(map((response) => ({ response, command })));
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.delete<null>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/commands/${command.id}.json`,
+					)
+					.pipe(map((response) => ({ response, command }))),
+			),
+		);
 	}
 }
