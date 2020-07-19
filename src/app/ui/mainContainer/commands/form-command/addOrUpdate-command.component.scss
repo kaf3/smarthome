@@ -1,0 +1,31 @@
+@import 'src/styles/layout';
+
+:host {
+	display: block;
+}
+
+.form-column {
+	width: $layout05 * 10;
+	display: inline-flex;
+	flex-direction: column;
+	word-break: break-all;
+	margin-top: $layout01;
+	margin-bottom: $layout01;
+
+	&__left {
+		margin-right: $layout03;
+	}
+	&__right {
+		margin-left: $layout03;
+	}
+}
+
+.name-form-field {
+	width: 100%;
+	margin-top: $layout03;
+}
+
+.wide-form-field {
+	width: 100%;
+	display: block;
+}

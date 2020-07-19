@@ -1,0 +1,23 @@
+@import 'src/styles/theming';
+@import 'src/styles/layout';
+
+.login-container {
+	background-color: $app-bar;
+	height: calc(100% - 64px);
+	display: flex;
+	align-items: center;
+}
+
+.login-form {
+	display: flex;
+	margin: auto;
+}
+
+.login-form-field {
+	margin-top: $layout03;
+	display: block;
+}
+
+.login-card {
+	padding: $layout05;
+}

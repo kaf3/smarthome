@@ -1,0 +1,10 @@
+@import 'src/styles/theming';
+@import 'src/styles/layout';
+:host {
+	display: block;
+	padding: $layout05;
+}
+
+.add-button {
+	margin-bottom: $layout03;
+}

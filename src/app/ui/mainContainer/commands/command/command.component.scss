@@ -1,0 +1,6 @@
+@import 'src/styles/layout';
+.exp-panel-body {
+	display: flex;
+	padding: $layout03;
+	justify-content: space-around;
+}

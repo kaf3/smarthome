@@ -1,0 +1,50 @@
+@import '../../../../../styles/layout';
+@import '../../../../../styles/theming';
+
+.hardware {
+	width: $layout13 * 4;
+	margin: $layout03;
+}
+
+.hardware-card-active {
+	color: $primary;
+}
+
+.hardware-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	background-color: $app-bar;
+	align-items: center;
+	margin-bottom: $layout11;
+	border-bottom: 1px solid $border-light;
+	padding-bottom: $layout03;
+}
+
+.hardware-list a {
+	text-decoration: none;
+}
+
+.hardware-card-content {
+	margin-bottom: 0;
+	@include space-between();
+}
+
+.hardware-card {
+	padding-left: $layout05;
+	padding-right: $layout05;
+}
+
+.hardware-expansion-header {
+	padding-top: $layout03;
+	padding-bottom: $layout03;
+}
+
+.room-toolbar {
+	min-height: $layout11;
+	height: 100%;
+}
+
+.room-expansion-panel {
+	background-color: $app-bar;
+}

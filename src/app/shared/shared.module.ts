@@ -1,6 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+	AuthService,
 	EquipmentPartitionService,
 	HttpCommandsService,
 	HttpRoomsService,
@@ -8,8 +9,8 @@ import {
 	SerializeService,
 	SidenavService,
 } from '@services';
-import { RoomListLoadGuard } from '../ui/room-list/room-list.load.guard';
-import { CommandListLoadGuard } from '../ui/commands/command-list-load.guard';
+import { RoomListGuard } from '../ui/mainContainer/room-list/room-list-guard';
+import { CommandListGuard } from '../ui/mainContainer/commands/command-list-guard';
 
 @NgModule({
 	declarations: [],
@@ -25,9 +26,10 @@ export class SharedModule {
 				SerializeService,
 				SidenavService,
 				LoadingService,
-				RoomListLoadGuard,
+				RoomListGuard,
 				HttpCommandsService,
-				CommandListLoadGuard,
+				CommandListGuard,
+				AuthService,
 			],
 		};
 	}

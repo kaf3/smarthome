@@ -1,0 +1,60 @@
+<mat-toolbar color="primary">
+	Smart Home
+</mat-toolbar>
+<div class="login-container">
+	<form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
+		<mat-card class="login-card">
+			<mat-card-header>
+				<mat-card-title>Войти</mat-card-title>
+			</mat-card-header>
+			<mat-card-content>
+				<mat-form-field appearance="fill" class="login-form-field">
+					<mat-label>Почта</mat-label>
+					<input formControlName="email" matInput type="text" placeholder="Почта" />
+					<mat-error *ngIf="email?.errors?.required"
+						>Поле обязательно для заполнения</mat-error
+					>
+					<mat-error *ngIf="email?.errors?.email">Неверный формат почты</mat-error>
+				</mat-form-field>
+				<mat-form-field appearance="fill" class="login-form-field">
+					<mat-label>Пароль</mat-label>
+					<input
+						formControlName="password"
+						matInput
+						[type]="hide ? 'password' : 'text'"
+						placeholder="Пароль"
+					/>
+					<button
+						type="button"
+						mat-icon-button
+						matSuffix
+						(mousedown)="hide = false"
+						(mouseup)="hide = true"
+						[attr.aria-label]="'Hide password'"
+						[attr.aria-pressed]="hide"
+					>
+						<mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+					</button>
+					<mat-error *ngIf="password?.errors?.required"
+						>Поле обязательно для заполнения</mat-error
+					>
+					<mat-error *ngIf="password?.errors?.minlength"
+						>Минимальная длина - 6 символов</mat-error
+					>
+				</mat-form-field>
+				<button
+					mat-raised-button
+					[disabled]="form.invalid"
+					class="login-form-field"
+					color="primary"
+					type="submit"
+				>
+					Войти
+				</button>
+				<button mat-raised-button class="login-form-field" color="accent" type="button">
+					Создать аккаунт
+				</button>
+			</mat-card-content>
+		</mat-card>
+	</form>
+</div>

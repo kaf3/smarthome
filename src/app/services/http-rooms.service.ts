@@ -1,28 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { RoomList, RoomListDTO } from '@models/room-list';
 import { Room, RoomDTO, RoomDTOProps } from '@models/room';
 import { Collection } from '@models/common';
 import { Hardware, HardwareDTO, HardwareDTOProps } from '@models/hardware';
 import { Equipment, EquipmentDTO, EquipmentDTOProps } from '@models/equipment';
 import { environment } from '../../environments/environment';
+import { AuthFacade } from '@store/auth';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 
 @Injectable()
 export class HttpRoomsService {
-	constructor(private readonly http: HttpClient) {}
+	constructor(private readonly http: HttpClient, private authFacade: AuthFacade) {}
 
 	public loadRoomList(): Observable<RoomList> {
-		return this.http
-			.get<Collection<RoomDTO>>(`${FIREBASE_DATABASE_URL}/users/user_id/rooms.json`)
-			.pipe(
-				map((roomCollection: Collection<RoomDTO>) => {
-					return new RoomListDTO({ roomCollection }).createDomain();
-				}),
-			);
+		return this.authFacade.user$.pipe(
+			take(1),
+			switchMap((user) =>
+				this.http
+					.get<Collection<RoomDTO>>(
+						`${FIREBASE_DATABASE_URL}/users/${user?.uid}/rooms.json`,
+					)
+					.pipe(
+						map((roomCollection: Collection<RoomDTO>) => {
+							return new RoomListDTO({ roomCollection }).createDomain();
+						}),
+					),
+			),
+		);
 	}
 
 	public patchHardware(hardware: Hardware, roomId: Room['id']): Observable<Hardware> {

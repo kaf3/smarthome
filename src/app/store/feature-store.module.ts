@@ -8,6 +8,7 @@ import { HardwareStoreModule } from '@store/hardware';
 import { HardwareFormStoreModule } from '@store/hardware-form';
 import { RoomFormStoreModule } from '@store/room-form';
 import { CommandListStoreModule } from '@store/command-list';
+import { AuthStoreModule } from '@store/auth';
 
 @NgModule({
 	imports: [
@@ -20,6 +21,7 @@ import { CommandListStoreModule } from '@store/command-list';
 		HardwareFormStoreModule.forRoot(),
 		RoomFormStoreModule.forRoot(),
 		CommandListStoreModule.forRoot(),
+		AuthStoreModule.forRoot(),
 	],
 })
 export class FeatureStoreModule {}
