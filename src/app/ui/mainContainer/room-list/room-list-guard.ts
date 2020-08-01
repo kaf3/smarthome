@@ -26,11 +26,13 @@ export class RoomListGuard implements CanActivate, CanDeactivate<unknown> {
 	}
 
 	canDeactivate(): Observable<boolean> {
-		return this.roomListFacade.rooms$.pipe(
+		return this.roomListFacade.roomList$.pipe(
 			withLatestFrom(this.roomFacade.room$),
-			map(([rooms, activeRoom]) => {
+			map(([roomList, activeRoom]) => {
 				if (!!activeRoom.name) {
-					this.roomListFacade.upsertRoomListWhenLeft(new RoomList({ rooms, activeRoom }));
+					this.roomListFacade.upsertRoomListWhenLeft(
+						new RoomList({ ...roomList, activeRoom }),
+					);
 				}
 				return true;
 			}),

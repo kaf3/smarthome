@@ -1,17 +1,24 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Dictionary } from '@ngrx/entity';
 import { Room } from '@models/room';
-import { RoomList } from '@models/room-list';
 import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
-import { ROOMLIST_FEATURE_KEY, RoomListState, roomsAdapter } from './reducer';
+import { ROOMLIST_FEATURE_KEY, RoomListState } from './reducer';
+import { RoomList } from '@models/room-list';
 
 export const selectRoomListState = createFeatureSelector<RoomListState>(ROOMLIST_FEATURE_KEY);
+
+export const selectRoomList = createSelector(selectRoomListState, (state) => state.roomList);
+
+export const selectRoomEntityState = createSelector(
+	selectRoomList,
+	(roomList) => roomList.roomEntityState,
+);
 
 export const {
 	selectAll: selectRooms,
 	selectEntities: selectRoomListEntities,
-} = roomsAdapter.getSelectors(selectRoomListState);
+} = RoomList.adapter.getSelectors(selectRoomEntityState);
 
 export const selectRoomById = createSelector(
 	selectRoomListEntities,
@@ -20,12 +27,6 @@ export const selectRoomById = createSelector(
 );
 
 export const selectCallState = createSelector(selectRoomListState, (state) => state.callState);
-
-export const selectRoomList = createSelector(
-	selectRoomListState,
-	selectRooms,
-	(state, rooms) => new RoomList({ activeRoom: state.activeRoom, rooms }),
-);
 
 export const selectHardwareById = createSelector(
 	selectRoomListEntities,

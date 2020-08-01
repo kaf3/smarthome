@@ -4,7 +4,7 @@
 	</button>
 	<span class="title">{{ title }}</span>
 	<span class="spacer"></span>
-	<span>{{(user$ | async)?.email}}</span>
+	<span>{{ (user$ | async)?.email }}</span>
 	<button mat-icon-button [matMenuTriggerFor]="profile">
 		<mat-icon>account_circle</mat-icon>
 	</button>

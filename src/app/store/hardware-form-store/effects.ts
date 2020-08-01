@@ -68,7 +68,9 @@ export class HardwareFormEffects extends ErrorEffects {
 				}
 
 				if (isRoomNameChanged) {
-					let newRoom = oldRoomList.rooms.find((r) => r.name === formValue.roomName);
+					let newRoom = Object.values(oldRoomList.roomEntityState.entities).find(
+						(r) => r?.name === formValue.roomName,
+					);
 					if (newRoom) {
 						oldRoom = Room.deleteHardware(oldRoom, oldHardware);
 						oldRoom.activeHardware = Hardware.initial;

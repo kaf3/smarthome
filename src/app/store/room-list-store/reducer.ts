@@ -1,27 +1,22 @@
 import { CallState, LoadingState } from '@models/error-loading';
 import { RoomStoreActions } from '@store/room';
 import { HardwareStoreActions } from '@store/hardware';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Room } from '@models/room';
 import { HardwareActionTypes } from '../hardware-store/actions';
 import { RoomActionTypes } from '../room-store/actions';
 import { RoomListActions, RoomListActionsTypes } from './actions';
+import { RoomList } from '@models/room-list';
 
 export const ROOMLIST_FEATURE_KEY = 'roomList';
 
-export interface RoomListState extends EntityState<Room> {
+export interface RoomListState {
 	callState: CallState;
-	activeRoom: Room;
+	roomList: RoomList;
 }
 
-export const roomsAdapter: EntityAdapter<Room> = createEntityAdapter<Room>({
-	selectId: (room: Room) => room.id ?? '',
-	sortComparer: false,
-});
-export const initialState: RoomListState = roomsAdapter.getInitialState({
+export const initialState: RoomListState = {
+	roomList: RoomList.initial,
 	callState: LoadingState.INIT,
-	activeRoom: Room.initial,
-});
+};
 
 export function roomsReducer(
 	state = initialState,
@@ -38,14 +33,12 @@ export function roomsReducer(
 			return { ...state, callState: LoadingState.LOADING };
 		}
 		case RoomListActionsTypes.loadRoomListSuccess:
-		case RoomListActionsTypes.moveHardwareSuccess: {
-			const { rooms, activeRoom } = action.payload.roomList;
-			return roomsAdapter.setAll(rooms, {
+		case RoomListActionsTypes.moveHardwareSuccess:
+			return {
 				...state,
-				activeRoom,
+				roomList: action.payload.roomList,
 				callState: LoadingState.LOADED,
-			});
-		}
+			};
 
 		case RoomListActionsTypes.loadRoomListError:
 		case RoomListActionsTypes.moveHardwareError:
@@ -57,32 +50,33 @@ export function roomsReducer(
 		case RoomListActionsTypes.updateRoomSuccess:
 		case RoomListActionsTypes.upsertRoomWhenLeft:
 		case HardwareActionTypes.UpdateOneEquipmentSuccess:
-		case RoomActionTypes.updateOneHardwareSuccess: {
-			return roomsAdapter.upsertOne(action.payload.room, {
+		case RoomActionTypes.updateOneHardwareSuccess:
+			return {
 				...state,
+				roomList: RoomList.updateOneRoom(state.roomList, action.payload.room),
 				callState: LoadingState.LOADED,
-			});
-		}
+			};
 
 		case RoomListActionsTypes.addRoomSuccess:
-			return roomsAdapter.addOne(action.payload.room, {
+			return {
 				...state,
+				roomList: RoomList.addRoom(state.roomList, action.payload.room),
 				callState: LoadingState.LOADED,
-			});
+			};
 
 		case RoomListActionsTypes.upsertRoomListWhenLeft: {
-			const { activeRoom, rooms } = action.payload.roomList;
-			return roomsAdapter.setAll(rooms, {
+			return {
 				...state,
-				activeRoom,
-			});
+				roomList: action.payload.roomList,
+			};
 		}
 
 		case RoomListActionsTypes.DeleteRoomSuccess:
-			return roomsAdapter.removeOne(action.payload.room.id ?? '', {
+			return {
 				...state,
+				roomList: RoomList.removeOneRoom(state.roomList, action.payload.room),
 				callState: LoadingState.LOADED,
-			});
+			};
 
 		default:
 			return state;
