@@ -13,7 +13,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { catchError, debounceTime, map, take, takeUntil } from 'rxjs/operators';
 import { Room } from '@models/room';
 import { BaseDomain } from '@models/common';
-import { Hardware } from '@models/hardware';
 import { Actions, ofType } from '@ngrx/effects';
 
 const notUnique: ValidationErrors = { notUnique: true };
@@ -50,10 +49,8 @@ export class AddRoomComponent implements OnInit, OnDestroy {
 		if (this.addForm.valid && this.addForm.dirty) {
 			const name = this.nameControl?.value;
 			const room = new Room({
-				id: null,
+				...Room.initial,
 				name,
-				activeHardware: Hardware.initial,
-				hardwares: [],
 			});
 			this.roomListFacade.addRoom(room);
 			this.checkAndClose(name);

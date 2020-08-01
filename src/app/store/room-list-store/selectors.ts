@@ -31,9 +31,8 @@ export const selectCallState = createSelector(selectRoomListState, (state) => st
 export const selectHardwareById = createSelector(
 	selectRoomListEntities,
 	(roomEntities: Dictionary<Room>, { roomId, hardwareId }) =>
-		selectRoomById
-			.projector(roomEntities, roomId)
-			.hardwares.find((hrd) => hrd.id === hardwareId) ?? Hardware.initial,
+		selectRoomById.projector(roomEntities, roomId).hardwareEntityState[hardwareId] ??
+		Hardware.initial,
 );
 
 export const selectEquipmentById = createSelector(

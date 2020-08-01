@@ -1,9 +1,7 @@
 import { CallState, LoadingState } from '@models/error-loading';
-import { BaseRoom, Room } from '@models/room';
+import { Room } from '@models/room';
 import { HardwareStoreActions } from '@store/hardware';
 import { RoomListStoreActions } from '@store/room-list';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Hardware } from '@models/hardware';
 import { RoomList } from '@models/room-list';
 import { HardwareActionTypes } from '../hardware-store/actions';
 import { RoomListActionsTypes } from '../room-list-store/actions';
@@ -11,21 +9,14 @@ import { RoomActions, RoomActionTypes } from './actions';
 
 export const ROOM_FEATURE_KEY = 'room';
 
-export interface RoomState extends EntityState<Hardware> {
-	baseRoom: BaseRoom;
+export interface RoomState {
 	callState: CallState;
-	activeHardware: Hardware;
+	room: Room;
 }
-
-export const roomAdapter: EntityAdapter<Hardware> = createEntityAdapter<Hardware>({
-	selectId: (hardware: Hardware) => hardware.id ?? '',
-	sortComparer: false,
-});
-export const initialState: RoomState = roomAdapter.getInitialState({
-	baseRoom: BaseRoom.initial,
+export const initialState: RoomState = {
 	callState: LoadingState.INIT,
-	activeHardware: Hardware.initial,
-});
+	room: Room.initial,
+};
 
 export function roomReducer(
 	state = initialState,
@@ -40,29 +31,23 @@ export function roomReducer(
 			return { ...state, callState: LoadingState.LOADING };
 		}
 		case RoomActionTypes.getRoomSuccess:
-		case RoomListActionsTypes.updateRoomSuccess: {
-			const { hardwares, activeHardware } = action.payload.room;
-			return roomAdapter.setAll(hardwares, {
+		case RoomListActionsTypes.updateRoomSuccess:
+			return {
 				...state,
-				baseRoom: Room.getBase(action.payload.room),
-				activeHardware,
 				callState: LoadingState.LOADED,
-			});
-		}
+				room: action.payload.room,
+			};
+
 		case RoomActionTypes.getRoomError: {
 			return { ...state, callState: action.payload };
 		}
 		case RoomListActionsTypes.moveHardwareSuccess: {
-			const room = RoomList.getRoom(state.baseRoom.id, action.payload.roomList);
-			if (!!room) {
-				return roomAdapter.setAll(room.hardwares, {
-					...state,
-					activeHardware: room.activeHardware,
-					baseRoom: Room.getBase(room),
-					callState: LoadingState.LOADED,
-				});
-			}
-			return { ...state, callState: LoadingState.LOADED };
+			const room = RoomList.getRoom(state.room.id, action.payload.roomList);
+			return {
+				...state,
+				callState: LoadingState.LOADED,
+				room: room ?? state.room,
+			};
 		}
 		case RoomListActionsTypes.upsertRoomListWhenLeft: {
 			return initialState;
@@ -70,7 +55,10 @@ export function roomReducer(
 
 		case RoomActionTypes.updateOneHardwareSuccess:
 		case HardwareActionTypes.UpdateOneEquipmentSuccess: {
-			return roomAdapter.upsertOne(action.payload.hardware, state);
+			return {
+				...state,
+				room: Room.updateHardware(state.room, action.payload.hardware),
+			};
 		}
 		default:
 			return state;

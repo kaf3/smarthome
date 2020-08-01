@@ -1,7 +1,7 @@
 <ng-container
 	*ngIf="{
-		roomsOnlyWithDevices: roomsOnlyWithDevices$ | async,
-		roomsOnlyWithSensors: roomsOnlyWithSensors$ | async
+		onlyWithDevices: roomsOnlyWithDevices$ | async,
+		onlyWithSensors: roomsOnlyWithSensors$ | async
 	} as rooms"
 >
 	<mat-horizontal-stepper #stepper linear>
@@ -42,7 +42,7 @@
 										: 'primary'
 								"
 								[matMenuTriggerData]="{
-									roomArray: rooms.roomsOnlyWithSensors,
+									roomArray: rooms.onlyWithSensors,
 									stage: 'event'
 								}"
 								[matMenuTriggerFor]="roomsMenu"
@@ -140,7 +140,7 @@
 										: 'primary'
 								"
 								[matMenuTriggerData]="{
-									roomArray: rooms.roomsOnlyWithDevices,
+									roomArray: rooms.onlyWithDevices,
 									stage: 'result'
 								}"
 								[matMenuTriggerFor]="roomsMenu"
@@ -194,7 +194,7 @@
 		<ng-template let-roomArray="roomArray" let-stage="stage" matMenuContent>
 			<ng-container *ngFor="let room of roomArray">
 				<button
-					*ngIf="!!room?.hardwares?.length"
+					*ngIf="!!room?.hardwareEntityState.ids.length"
 					[matMenuTriggerData]="{
 						room: room,
 						stage: stage
@@ -210,7 +210,7 @@
 
 	<mat-menu #hardwaresMenu>
 		<ng-template let-room="room" let-stage="stage" matMenuContent>
-			<ng-container *ngFor="let hardware of room?.hardwares">
+			<ng-container *ngFor="let hardware of getHardwares(room)">
 				<button
 					[matMenuTriggerData]="{
 						hardware: hardware,

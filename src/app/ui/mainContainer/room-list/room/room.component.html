@@ -9,7 +9,7 @@
 		<button
 			mat-mini-fab
 			color="warn"
-			[disabled]="!!room.hardwares.length"
+			[disabled]="!!room?.hardwareEntityState?.ids?.length"
 			(click)="delete(room)"
 			matTooltip="Очистите комнату перед удалением"
 		>
@@ -17,21 +17,21 @@
 		</button>
 	</mat-toolbar>
 	<div class="hardware-list">
-		<div *ngFor="let hardware of room?.hardwares" class="hardware">
-			<a #rla="routerLinkActive" [routerLink]="[hardware.id]" routerLinkActive>
+		<div *ngFor="let hardware of getHardwares(room)" class="hardware">
+			<a #rla="routerLinkActive" [routerLink]="[hardware?.id]" routerLinkActive>
 				<mat-card matRipple class="hardware-card" *ngIf="!rla?.isActive">
 					<mat-card-header>
 						<mat-card-title>
-							{{ hardware.name }}
+							{{ hardware?.name }}
 						</mat-card-title>
 					</mat-card-header>
 				</mat-card>
 			</a>
 			<mat-expansion-panel
 				*ngIf="rla?.isActive"
-				(opened)="openedId = hardware.id"
+				(opened)="openedId = hardware?.id"
 				(closed)="openedId = null"
-				[expanded]="openedId === hardware.id"
+				[expanded]="openedId === hardware?.id"
 			>
 				<mat-expansion-panel-header
 					collapsedHeight="100%"
@@ -40,7 +40,7 @@
 				>
 					<mat-card-header class="hardware-card-active">
 						<mat-card-title>
-							{{ hardware.name }}
+							{{ hardware?.name }}
 						</mat-card-title>
 					</mat-card-header>
 				</mat-expansion-panel-header>

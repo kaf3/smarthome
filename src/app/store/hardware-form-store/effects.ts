@@ -101,12 +101,12 @@ export class HardwareFormEffects extends ErrorEffects {
 						let isExists: boolean;
 						if (fs.value.roomName !== room.name) {
 							const selectedRoom = rooms.find((rm) => rm.name === fs.value.roomName);
-							isExists = !!selectedRoom?.hardwares.find(
-								(hrd) => hrd.name === fs.value.name,
-							);
+							isExists = !!Object.values(
+								selectedRoom?.hardwareEntityState?.entities ?? {},
+							).find((hrd) => hrd?.name === fs.value.name);
 						} else {
-							isExists = !!room.hardwares.find(
-								(hrd) => hrd.name === fs.value.name && hrd.name !== hardware.name,
+							isExists = !!Object.values(room.hardwareEntityState.entities).find(
+								(hrd) => hrd?.name === fs.value.name && hrd.name !== hardware.name,
 							);
 						}
 

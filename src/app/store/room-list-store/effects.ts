@@ -91,7 +91,7 @@ export class RoomListEffects extends ErrorEffects {
 			withLatestFrom(this.roomListFacade.rooms$),
 			concatMap(([action, rooms]) => {
 				const { room } = action.payload;
-				if (room.hardwares.length === 0 && rooms.length > 1) {
+				if (room.hardwareEntityState.ids.length === 0 && rooms.length > 1) {
 					return this.httpDeleteRoom$(room);
 				}
 				if (rooms.length <= 1) {
