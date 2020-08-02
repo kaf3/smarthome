@@ -2,15 +2,21 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Dictionary } from '@ngrx/entity';
 import { Equipment } from '@models/equipment';
 import { Hardware } from '@models/hardware';
-import { hardwareAdapter } from './reducer';
 import * as fromHardware from './reducer';
 
 export const selectHardwareState = createFeatureSelector<fromHardware.HardwareState>(
 	fromHardware.hardwareFeatureKey,
 );
 
-export const { selectIds, selectEntities, selectAll, selectTotal } = hardwareAdapter.getSelectors(
-	selectHardwareState,
+export const selectHardware = createSelector(selectHardwareState, (state) => state.hardware);
+
+export const selectEquipmentEntityState = createSelector(
+	selectHardware,
+	(hardware) => hardware.equipmentEntityState,
+);
+
+export const { selectIds, selectEntities, selectAll, selectTotal } = Hardware.adapter.getSelectors(
+	selectEquipmentEntityState,
 );
 
 export const selectById = createSelector(
@@ -21,10 +27,3 @@ export const selectById = createSelector(
 );
 
 export const selectCallState = createSelector(selectHardwareState, (state) => state.callState);
-
-export const selectHardware = createSelector(
-	selectHardwareState,
-	selectAll,
-	(state, equipments) =>
-		new Hardware({ ...state.baseHardware, activeEquipment: state.activeEquipment, equipments }),
-);

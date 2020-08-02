@@ -4,7 +4,7 @@
 		<div class="hardware">
 			<mat-accordion>
 				<app-equipment
-					*ngFor="let equipment of data.hardware.equipments"
+					*ngFor="let equipment of getEquipments(data.hardware)"
 					[equipment]="equipment"
 					[hardware]="data.hardware"
 					[size]="'expand'"

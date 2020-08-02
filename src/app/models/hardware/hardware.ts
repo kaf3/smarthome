@@ -1,31 +1,14 @@
-import { Equipment, EquipmentDTO, EquipmentDTOProps } from '@models/equipment';
+import { Equipment, EquipmentDTO } from '@models/equipment';
 import { BaseDomain } from '@models/common/baseDomain';
-import { Collection, HostConstructor, mixinHost, OmitByPropType } from '@models/common';
+import { OmitByPropType } from '@models/common';
+import { createEntityAdapter, Dictionary, EntityState } from '@ngrx/entity';
 
-export class BaseHardware extends BaseDomain {
-	constructor(
-		id: BaseDomain['id'],
-		name: BaseDomain['name'],
-		public readonly mac: number | string | null,
-		public readonly type: string | null,
-	) {
-		super(id, name);
-	}
-
-	static readonly initial = new BaseHardware(
-		BaseDomain.initial.id,
-		BaseDomain.initial.name,
-		null,
-		null,
-	);
-}
-
-const hostHardware = mixinHost<typeof BaseHardware>(BaseHardware);
+/*const hostHardware = mixinHost<typeof BaseHardware>(BaseHardware);
 const HardwareWithChildren: HostConstructor<
 	Hardware,
 	Equipment,
 	typeof BaseHardware
-> = hostHardware<Hardware, Equipment, 'equipments'>('equipments');
+> = hostHardware<Hardware, Equipment, 'equipments'>('equipments');*/
 
 export type HardwareDTOProps = OmitByPropType<HardwareDTO, Function>;
 
@@ -38,7 +21,7 @@ export class HardwareDTO {
 
 	public readonly numberOfEquip: number;
 
-	public readonly equipmentCollection: Collection<EquipmentDTO>;
+	public readonly equipmentCollection: Dictionary<EquipmentDTO>;
 
 	public createDomain: (id: Hardware['id'], oldHardware?: Hardware) => Hardware;
 
@@ -53,51 +36,74 @@ export class HardwareDTO {
 
 export type HardwareProps = OmitByPropType<Hardware, Function>;
 
-export class Hardware extends HardwareWithChildren {
-	public readonly equipments: Equipment[];
-
+export class Hardware extends BaseDomain {
+	public readonly equipmentEntityState: EntityState<Equipment>;
+	public readonly mac: number | string | null;
+	public readonly type: string | null;
 	public activeEquipment: Equipment;
 
 	constructor(source: Hardware) {
-		super(source.id, source.name, source.mac, source.type);
-		this.equipments = [...source.equipments];
+		super(source.id, source.name);
+		this.mac = source.mac;
+		this.type = source.type;
+		this.equipmentEntityState = { ...source.equipmentEntityState };
 		this.activeEquipment = new Equipment(source.activeEquipment);
 	}
+
+	public static adapter = createEntityAdapter<Equipment>({
+		sortComparer: false,
+		selectId: (eqp) => eqp.id ?? '',
+	});
 
 	public static createDTO(hardware: Hardware): HardwareDTO {
 		return new HardwareDTO({
 			mac: hardware.mac,
 			type: hardware.type,
 			name: hardware.name,
-			numberOfEquip: hardware.equipments.length,
+			numberOfEquip: hardware.equipmentEntityState.ids.length,
 			equipmentCollection: this.createEquipmentCollection(hardware),
 		});
 	}
 
-	private static createEquipmentCollection(hardware: Hardware): Collection<EquipmentDTO> {
-		const equipmentMap = new Map<keyof Collection<EquipmentDTO>, EquipmentDTO>();
+	private static createEquipmentCollection(hardware: Hardware): Dictionary<EquipmentDTO> {
+		/*		const equipmentMap = new Map<keyof Collection<EquipmentDTO>, EquipmentDTO>();
 		hardware.equipments.forEach((equipment) => {
 			equipmentMap.set(String(equipment.id), Equipment.createDTO(equipment));
 		});
-		return Object.fromEntries(equipmentMap);
+		return Object.fromEntries(equipmentMap);*/
+		const equipmentCollection: Dictionary<EquipmentDTO> = {};
+		hardware.equipmentEntityState.ids.forEach((id) => {
+			equipmentCollection[id] = Equipment.createDTO(
+				hardware.equipmentEntityState.entities[id] ?? Equipment.initial,
+			);
+		});
+		return equipmentCollection;
 	}
 
-	public static getBase(hardware: Hardware): BaseHardware {
-		return new BaseHardware(hardware.id, hardware.name, hardware.mac, hardware.type);
+	public static getEquipments(hardware: Hardware): (Equipment | undefined)[] {
+		return Object.values(hardware?.equipmentEntityState?.entities);
 	}
 
 	static readonly initial = new Hardware({
-		...BaseHardware.initial,
-		equipments: [],
+		...BaseDomain.initial,
+		mac: null,
+		type: null,
 		activeEquipment: Equipment.initial,
+		equipmentEntityState: Hardware.adapter.getInitialState(),
 	});
 
 	public static updateEquipment(hardware: Hardware, equipment: Equipment): Hardware {
-		return super.updateChild(hardware, equipment);
+		return new Hardware({
+			...hardware,
+			equipmentEntityState: Hardware.adapter.upsertOne(
+				equipment,
+				hardware.equipmentEntityState,
+			),
+		});
 	}
 
 	public static getEquipment(id: Equipment['id'], hardware?: Hardware): Equipment | undefined {
-		return super.getChild(id, hardware);
+		return hardware?.equipmentEntityState.entities[id ?? ''];
 	}
 }
 
@@ -105,17 +111,24 @@ HardwareDTO.prototype.createDomain = function (
 	id: Hardware['id'],
 	oldHardware?: Hardware,
 ): Hardware {
-	const equipments = Object.entries<EquipmentDTO>(
-		this.equipmentCollection,
-	).map(([equipmentId, equipmentDTO]: [Equipment['id'], EquipmentDTOProps]) =>
-		new EquipmentDTO({ ...equipmentDTO }).createDomain(equipmentId),
-	);
+	const ids: Hardware['equipmentEntityState']['ids'] = [];
+	const entries = Object.entries(this.equipmentCollection).map(([equipmentId, equipmentDTO]) => {
+		(ids as string[]).push(equipmentId);
+		return [
+			equipmentId,
+			new EquipmentDTO(equipmentDTO as EquipmentDTO).createDomain(
+				equipmentId,
+				oldHardware?.equipmentEntityState.entities[equipmentId],
+			),
+		];
+	});
+
 	return new Hardware({
 		mac: this.mac,
 		type: this.type,
 		name: this.name,
 		id,
-		equipments,
 		activeEquipment: oldHardware?.activeEquipment ?? Equipment.initial,
+		equipmentEntityState: { ids, entities: Object.fromEntries(entries) },
 	});
 };

@@ -230,7 +230,7 @@
 		<ng-template let-hardware="hardware" let-room="room" let-stage="stage" matMenuContent>
 			<button
 				(click)="createAboutEquipment(stage, room, hardware, equipment)"
-				*ngFor="let equipment of hardware.equipments"
+				*ngFor="let equipment of getEquipments(hardware)"
 				mat-menu-item
 			>
 				{{ equipment?.name || equipment?.id }}

@@ -31,14 +31,13 @@ export const selectCallState = createSelector(selectRoomListState, (state) => st
 export const selectHardwareById = createSelector(
 	selectRoomListEntities,
 	(roomEntities: Dictionary<Room>, { roomId, hardwareId }) =>
-		selectRoomById.projector(roomEntities, roomId).hardwareEntityState[hardwareId] ??
+		selectRoomById.projector(roomEntities, roomId).hardwareEntityState.entities[hardwareId] ??
 		Hardware.initial,
 );
 
 export const selectEquipmentById = createSelector(
 	selectRoomListEntities,
 	(roomEntities, { roomId, hardwareId, equipmentId }) =>
-		selectHardwareById
-			.projector(roomEntities, { roomId, hardwareId })
-			.equipments.find((eqp) => eqp.id === equipmentId) ?? Equipment.initial,
+		selectHardwareById.projector(roomEntities, { roomId, hardwareId }).equipmentEntityState
+			.entities[equipmentId] ?? Equipment.initial,
 );

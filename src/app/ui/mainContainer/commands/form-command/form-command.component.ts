@@ -190,13 +190,20 @@ export class FormCommandComponent {
 					hardwareEntityState: Room.adapter.getInitialState(),
 				});
 				Room.getHardwares(room).forEach((hardware) => {
-					const equipmentsFiltered = hardware?.equipments
+					const ids: Hardware['equipmentEntityState']['ids'] = [];
+					const equipmentsFiltered = Hardware.getEquipments(hardware ?? Hardware.initial)
 						.filter((eqp) => eqp?.group === group)
-						.map((eqp) => new Equipment({ ...eqp }));
+						.map((eqp) => {
+							(ids as string[]).push(eqp?.id ?? '');
+							return [eqp?.id, new Equipment({ ...(eqp ?? Equipment.initial) })];
+						});
 					if (equipmentsFiltered?.length) {
 						const newHardware = new Hardware({
 							...(hardware ?? Hardware.initial),
-							equipments: equipmentsFiltered,
+							equipmentEntityState: {
+								ids,
+								entities: Object.fromEntries(equipmentsFiltered),
+							},
 						});
 						clearRoom = Room.addHardware(clearRoom, newHardware);
 					}
@@ -211,5 +218,9 @@ export class FormCommandComponent {
 
 	getHardwares(room: Room): (Hardware | undefined)[] {
 		return Room.getHardwares(room);
+	}
+
+	getEquipments(hardware: Hardware): (Equipment | undefined)[] {
+		return Hardware.getEquipments(hardware);
 	}
 }

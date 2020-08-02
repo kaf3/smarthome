@@ -25,4 +25,8 @@ export class HardwareComponent implements OnInit {
 	onOpen(equipment: Equipment): void {
 		this.equipmentFormFacade.loadEquipmentForm(equipment);
 	}
+
+	getEquipments(hardware: Hardware): (Equipment | undefined)[] {
+		return Hardware.getEquipments(hardware);
+	}
 }

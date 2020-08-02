@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 				[Validators.required.bind(Validators), Validators.email.bind(Validators)],
 			],
 			password: [
-				'test123',
+				'',
 				[Validators.required.bind(Validators), Validators.minLength(6).bind(Validators)],
 			],
 		});
