@@ -35,6 +35,7 @@ const routes: Routes = [
 		path: 'login',
 		loadChildren: (): Promise<LoginModule> =>
 			import('../ui/login/login.module').then((m) => m.LoginModule),
+		//canLoad: [AuthGuard],
 	},
 ];
 

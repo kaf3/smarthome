@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { SidenavService } from '@services';
-import { AuthFacade } from '@store/auth';
+import { AuthService, SidenavService } from '@services';
 import { Observable } from 'rxjs';
 import { UserLoggedIn } from '@models/user';
 import { filter } from 'rxjs/operators';
@@ -38,7 +37,7 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 
 	constructor(
 		private readonly sidenavService: SidenavService,
-		private readonly authFacade: AuthFacade,
+		private readonly authService: AuthService,
 	) {}
 
 	public onOpen(): void {
@@ -50,11 +49,11 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 	}
 
 	public logOut(): void {
-		this.authFacade.logOut();
+		this.authService.logout();
 	}
 
-	ngOnInit() {
-		this.user$ = this.authFacade.user$.pipe(filter((user) => !!user));
+	ngOnInit(): void {
+		this.user$ = this.authService.user$.pipe(filter((user) => !!user));
 	}
 
 	ngOnDestroy(): void {

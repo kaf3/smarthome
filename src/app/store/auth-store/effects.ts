@@ -1,25 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-	AuthActions,
-	AuthActionTypes,
-	LogIn,
-	LogInFailure,
-	LogInSuccess,
-	LogOut,
-	LogOutFailure,
-	LogOutSuccess,
-} from './actions';
-import { catchError, map, switchMap, switchMapTo } from 'rxjs/operators';
+import { Actions } from '@ngrx/effects';
+import { AuthActions, AuthActionTypes } from './actions';
 import { AuthService } from '@services';
-import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ErrorEffects } from '@models/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthEffects extends ErrorEffects {
-	logIn$ = createEffect(() =>
+	/*	logIn$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType<LogIn>(AuthActionTypes.LogIn),
 			switchMap((action) => {
@@ -60,7 +49,7 @@ export class AuthEffects extends ErrorEffects {
 				}),
 			),
 		{ dispatch: false },
-	);
+	);*/
 
 	errorHandler = this.createErrorHandler(AuthActionTypes.LogInFailure);
 

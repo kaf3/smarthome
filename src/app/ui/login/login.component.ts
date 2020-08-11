@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthFacade } from '@store/auth';
-import { Observable, Subject } from 'rxjs';
-import { UserLoggedIn } from '@models/user';
-import { take, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '@services';
 
 @Component({
 	selector: 'app-login',
@@ -13,9 +11,8 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 export class LoginComponent implements OnInit, OnDestroy {
 	form: FormGroup;
 	hide = true;
-	public user$: Observable<UserLoggedIn | null>;
 	private destroy$ = new Subject();
-	constructor(private readonly authFacade: AuthFacade, private formBuilder: FormBuilder) {}
+	constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
 
 	get email(): AbstractControl | null {
 		return this.form?.get('email');
@@ -26,14 +23,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.user$ = this.authFacade.user$;
 		this.form = this.formBuilder.group({
 			email: [
-				'test@test.test',
+				'nekit.97@bk.ru',
 				[Validators.required.bind(Validators), Validators.email.bind(Validators)],
 			],
 			password: [
-				'',
+				'123456',
 				[Validators.required.bind(Validators), Validators.minLength(6).bind(Validators)],
 			],
 		});
@@ -41,14 +37,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 	submit(): void {
 		if (this.form.valid) {
-			this.authFacade.redirectUrl$
+			this.authService.login(this.email?.value, this.password?.value);
+			/*			this.authFacade.redirectUrl$
 				.pipe(take(1), takeUntil(this.destroy$))
 				.subscribe((redirectUrl) =>
 					this.authFacade.logIn(
 						{ email: this.email?.value, password: this.password?.value },
 						redirectUrl,
 					),
-				);
+				);*/
 		}
 	}
 

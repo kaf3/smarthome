@@ -5,16 +5,16 @@ import { Command, CommandDTO, CommandList, CommandListDTO } from '@models/comman
 import { Dictionary } from '@ngrx/entity';
 import { map, switchMap, take } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { AuthFacade } from '@store/auth';
+import { AuthService } from './auth.service';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 
 @Injectable()
 export class HttpCommandsService {
-	constructor(private readonly http: HttpClient, private readonly authFacade: AuthFacade) {}
+	constructor(private readonly http: HttpClient, private readonly authService: AuthService) {}
 
 	loadCommandList(): Observable<CommandList> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
@@ -31,7 +31,7 @@ export class HttpCommandsService {
 	}
 
 	postCommand(command: Command): Observable<Command> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
@@ -45,7 +45,7 @@ export class HttpCommandsService {
 	}
 
 	patchCommand(command: Command): Observable<Command> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
@@ -63,7 +63,7 @@ export class HttpCommandsService {
 	}
 
 	deleteCommand(command: Command): Observable<{ response: null; command: Command }> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http

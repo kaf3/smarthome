@@ -9,29 +9,25 @@ import {
 	UrlSegment,
 	UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthFacade } from '@store/auth';
+import { Observable, of } from 'rxjs';
 import { AuthService } from '@services';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
-	constructor(
-		private authFacade: AuthFacade,
-		private router: Router,
-		private authService: AuthService,
-	) {}
+	constructor(private router: Router, private authService: AuthService) {}
 
 	canActivate(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot,
 	): Observable<boolean | UrlTree> {
-		return this.authService.isLoggedIn(state.url);
+		console.log(this.router.routerState);
+		return this.authService.manageRoute(this.router.routerState.snapshot.url, state.url);
+		//return this.authService.isLoggedIn(state.url);
 	}
 
-	canLoad(
-		route: Route,
-		_segments: UrlSegment[],
-	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		return this.authService.isLoggedIn(route.path ?? '');
+	canLoad(route: Route, _segments: UrlSegment[]): Observable<boolean | UrlTree> {
+		return of(true);
+		return this.authService.manageRoute(this.router.routerState.snapshot.url, route.path ?? '');
+		//return this.authService.isLoggedIn(route.path ?? '');
 	}
 }

@@ -8,16 +8,16 @@ import { Collection } from '@models/common';
 import { Hardware, HardwareDTO, HardwareDTOProps } from '@models/hardware';
 import { Equipment, EquipmentDTO, EquipmentDTOProps } from '@models/equipment';
 import { environment } from '../../environments/environment';
-import { AuthFacade } from '@store/auth';
+import { AuthService } from './auth.service';
 
 const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 
 @Injectable()
 export class HttpRoomsService {
-	constructor(private readonly http: HttpClient, private authFacade: AuthFacade) {}
+	constructor(private readonly http: HttpClient, private authService: AuthService) {}
 
 	public loadRoomList(): Observable<RoomList> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
@@ -34,7 +34,7 @@ export class HttpRoomsService {
 	}
 
 	public patchHardware(hardware: Hardware, roomId: Room['id']): Observable<Hardware> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
@@ -56,7 +56,7 @@ export class HttpRoomsService {
 		hardwareId: Hardware['id'],
 		roomId: Room['id'],
 	): Observable<Equipment> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
@@ -74,7 +74,7 @@ export class HttpRoomsService {
 	}
 
 	public patchRoom(room: Room): Observable<Room> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
@@ -90,7 +90,7 @@ export class HttpRoomsService {
 	}
 
 	public postRoom(room: Room): Observable<Room> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
@@ -104,7 +104,7 @@ export class HttpRoomsService {
 	}
 
 	public deleteRoom(room: Room): Observable<{ room: Room; response: null }> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
@@ -117,7 +117,7 @@ export class HttpRoomsService {
 	}
 
 	public patchRoomList(roomList: RoomList): Observable<RoomList> {
-		return this.authFacade.user$.pipe(
+		return this.authService.user$.pipe(
 			take(1),
 			switchMap((user) =>
 				this.http
