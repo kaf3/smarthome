@@ -34,7 +34,6 @@ export class LoginGuard implements CanActivate {
 		_route: ActivatedRouteSnapshot,
 		_state: RouterStateSnapshot,
 	): Observable<boolean | UrlTree> {
-		console.log(this.router.routerState);
 		return this.authService.loginNavigate(this.router.routerState.snapshot.url);
 		//return this.authService.isLoggedIn(state.url);
 	}
@@ -44,7 +43,7 @@ const routes: Routes = [
 	{
 		path: '',
 		component: LoginComponent,
-		//canActivate: [LoginGuard],
+		canActivate: [LoginGuard],
 	},
 ];
 

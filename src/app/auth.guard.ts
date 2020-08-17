@@ -20,9 +20,7 @@ export class AuthGuard implements CanActivate, CanLoad {
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot,
 	): Observable<boolean | UrlTree> {
-		console.log(this.router.routerState);
 		return this.authService.manageRoute(this.router.routerState.snapshot.url, state.url);
-		//return this.authService.isLoggedIn(state.url);
 	}
 
 	canLoad(route: Route, _segments: UrlSegment[]): Observable<boolean | UrlTree> {

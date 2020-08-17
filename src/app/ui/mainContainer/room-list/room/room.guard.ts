@@ -39,9 +39,7 @@ export class RoomGuard implements CanDeactivate<unknown>, CanActivate {
 	}
 
 	canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-		console.log('room guard');
 		this.roomFacade.getRoom(route.params.id);
-
 		return this.roomFacade.room$.pipe(
 			filter((room) => !!room?.id),
 			take(1),

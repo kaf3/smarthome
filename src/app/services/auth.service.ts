@@ -5,12 +5,17 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { filter, map, take } from 'rxjs/operators';
 import { Router, UrlTree } from '@angular/router';
 import { LoadingState } from '@models/error-loading';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthService {
-	constructor(private fireAuth: AngularFireAuth, private router: Router) {
+	constructor(
+		private fireAuth: AngularFireAuth,
+		private router: Router,
+		private readonly snackBar: MatSnackBar,
+	) {
 		this.startSession();
-		this._authState.subscribe(console.log);
+		this.isAuthorized$.subscribe(console.log);
 	}
 
 	private _authState = new BehaviorSubject<AuthState>({
@@ -19,101 +24,86 @@ export class AuthService {
 		callState: LoadingState.INIT,
 	});
 	public user$ = this._authState.pipe(map((state) => state.user));
-	public isLoggedIn$ = this._authState.pipe(
+	public isAuthorized$ = this._authState.pipe(
 		filter((state) => state.callState === LoadingState.LOADED),
 		map((state) => !!state.user),
 	);
-
-	get redirectUrl(): AuthState['redirectUrl'] {
-		return this._authState.getValue().redirectUrl;
-	}
-
-	get user(): AuthState['user'] {
-		return this._authState.getValue().user;
-	}
 
 	get authState(): AuthState {
 		return this._authState.getValue();
 	}
 
 	login(email: UserLogIn['email'], password: UserLogIn['password']): void {
-		this.setState({ ...this.authState, callState: LoadingState.INIT });
-		this.fireAuth.signInWithEmailAndPassword(email, password).then((user) => {
-			user && this.router.navigate([this.authState.redirectUrl || '/rooms']);
-		});
-		/*		return from(this.fireAuth.signInWithEmailAndPassword(email, password)).pipe(
-			map((userCredentials) => ({
-				uid: userCredentials?.user?.uid ?? '',
-				email: userCredentials?.user?.email ?? '',
-			})),
-		);*/
+		this.setState({ callState: LoadingState.LOADING });
+		this.fireAuth
+			.signInWithEmailAndPassword(email, password)
+			.then((user) => {
+				const url = this.authState.redirectUrl;
+				user && this.router.navigate([url && url !== '/' ? url : '/rooms']);
+			})
+			.catch(({ code }) => {
+				this.openSnackBar(AuthService.ErrorMessage[code] ?? 'Неизвестная ошибка', 'Error');
+			});
 	}
 
-	setState(authState: AuthState): void {
-		this._authState.next({ ...authState });
+	setState(authState: Partial<AuthState>): void {
+		this._authState.next({ ...this.authState, ...authState });
 	}
 
 	logout(): void {
-		this.fireAuth.signOut().then(() => {
-			this.router.navigate(['/login']);
-		});
-		//return from(this.fireAuth.signOut()).pipe(map(() => null));
+		this.setState({ callState: LoadingState.LOADING });
+
+		this.fireAuth
+			.signOut()
+			.then(() => {
+				//this.router.navigate(['/login']);
+			})
+			.catch(({ code }) => {
+				this.openSnackBar(AuthService.ErrorMessage[code] ?? 'Неизвестная ошибка', 'Error');
+			});
+
+		this.isAuthorized$
+			.pipe(
+				filter((authorized) => !authorized),
+				take(1),
+			)
+			.subscribe(() => {
+				this.router.navigate(['/login']);
+			});
 	}
-	//не нужен стор, нужно просто брать с файрбейза стейт авторизации
+
 	startSession(): void {
 		this.fireAuth.authState.subscribe((user) => {
 			this.setState({
-				...this.authState,
 				user: user && { uid: user.uid, email: user.email ?? '' },
 				callState: LoadingState.LOADED,
 			});
-			//this.authFacade.initSession(user ? { uid: user.uid, email: user.email ?? '' } : null);
 		});
 	}
 
-	/*	public isLoggedIn(redirectUrl: string): Observable<boolean | UrlTree> {
-		return this.authFacade.authState$.pipe(
-			filter((state) => state.isSession),
-			take(1),
-			map((state) => {
-				if (state.user) return true;
-				this.authFacade.saveRedirectUrl(redirectUrl);
-				return this.router.createUrlTree(['/login']);
-			}),
-		);
-	}*/
-
-	/*	public isLoggedIn(): Observable<boolean> {
-		return this.authFacade.authState$.pipe(
-			filter((state) => state.isSession),
-			take(1),
-			map((state) => !!state.user),
-		);
-	}*/
-
 	public manageRoute(prevUrl: string, nextUrl: string): Observable<boolean | UrlTree> {
-		return this.isLoggedIn$.pipe(
+		return this.isAuthorized$.pipe(
 			take(1),
 			map((authorized) => {
-				console.log(prevUrl, nextUrl, authorized);
-				/*if (!authorized) {
-					nextUrl === '/login' || this.authFacade.saveRedirectUrl(nextUrl);
-					return nextUrl === '/login' || this.router.createUrlTree(['/login']);
-				}
-				return nextUrl !== '/login' || this.router.createUrlTree([prevUrl]);*/
-				authorized || this.setState({ ...this.authState, redirectUrl: nextUrl });
+				authorized || this.setState({ redirectUrl: nextUrl });
 				return authorized || this.router.createUrlTree(['/login']);
 			}),
 		);
 	}
 
 	public loginNavigate(prevUrl: string): Observable<boolean | UrlTree> {
-		return this.isLoggedIn$.pipe(
+		return this.isAuthorized$.pipe(
 			take(1),
 			map((authorized) => {
 				return !authorized || this.router.createUrlTree([prevUrl]);
 			}),
 		);
+	}
+
+	private openSnackBar(message: string, action: string): void {
+		this.snackBar.open(message, action, {
+			duration: 2000,
+		});
 	}
 
 	static ErrorMessage = {
