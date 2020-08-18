@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
 import { EquipmentFormFacade } from '@store/equipment-form';
+import { RoomListFacade } from '@store/room-list';
 
 @Component({
 	selector: 'app-hardware',
@@ -11,15 +12,16 @@ import { EquipmentFormFacade } from '@store/equipment-form';
 	styleUrls: ['./hardware.component.scss'],
 })
 export class HardwareComponent implements OnInit {
-	public hardware$: Observable<Hardware>;
+	public hardware$: Observable<Hardware | undefined>;
 
 	constructor(
 		public readonly hardwareFacade: HardwareFacade,
 		public readonly equipmentFormFacade: EquipmentFormFacade,
+		public readonly roomListFacade: RoomListFacade,
 	) {}
 
 	ngOnInit(): void {
-		this.hardware$ = this.hardwareFacade.hardware$;
+		this.hardware$ = this.roomListFacade.hardware$;
 	}
 
 	onOpen(equipment: Equipment): void {

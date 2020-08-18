@@ -34,10 +34,15 @@ import {
 	MoveHardwareSuccess,
 	RoomListActions,
 	RoomListActionsTypes,
+	UpdateOneHardware,
+	UpdateOneHardwareFailure,
+	UpdateOneHardwareSuccess,
 	UpdateRoom,
 	UpdateRoomFailure,
 	UpdateRoomSuccess,
 } from './actions';
+import { Hardware } from '@models/hardware';
+import { RoomListStoreActions } from './index';
 
 @Injectable()
 export class RoomListEffects extends ErrorEffects {
@@ -102,12 +107,33 @@ export class RoomListEffects extends ErrorEffects {
 		),
 	);
 
+	updateHardware$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType<UpdateOneHardware>(RoomListActionsTypes.updateOneHardware),
+			concatMap(({ payload }) =>
+				this.httpRoomsService.patchHardware(payload.hardware, payload.room.id).pipe(
+					map(
+						(hardware) =>
+							new UpdateOneHardwareSuccess({
+								hardware,
+								room: payload.room,
+							}),
+					),
+					catchError(() =>
+						of(new UpdateOneHardwareFailure({ errorMsg: 'could not update hardware' })),
+					),
+				),
+			),
+		),
+	);
+
 	errorHandler = this.createErrorHandler(
 		RoomListActionsTypes.loadRoomListError,
 		RoomListActionsTypes.moveHardwareError,
 		RoomListActionsTypes.updateRoomFailure,
 		RoomListActionsTypes.addRoomFailure,
 		RoomListActionsTypes.DeleteRoomFailure,
+		RoomListActionsTypes.updateOneHardwareFailure,
 	);
 
 	redirectToActiveRoom = createEffect(
@@ -121,6 +147,37 @@ export class RoomListEffects extends ErrorEffects {
 					if (!!id && this.router.url.endsWith('/rooms')) {
 						this.router.navigate([`/rooms/${id}`]);
 					}
+				}),
+			),
+		{ dispatch: false },
+	);
+
+	redirectToActiveHardware$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
+				filter((action) => /^\/rooms\/[\w-]{20}$/.test(action.payload.routerState.url)),
+				withLatestFrom(this.roomListFacade.room$),
+				map(([_action, room]) => {
+					const { id } = room?.activeHardware ?? Hardware.initial;
+					if (!!id) {
+						this.router.navigate([`${this.router.url}/${id}`]);
+					}
+				}),
+			),
+		{ dispatch: false },
+	);
+
+	redirectBack = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType<RoomListStoreActions.MoveHardwareSuccess>(
+					RoomListActionsTypes.moveHardwareSuccess,
+				),
+				map(() => {
+					const url = this.router.url.split('/');
+					url.pop();
+					this.router.navigate([url.join('/')]);
 				}),
 			),
 		{ dispatch: false },

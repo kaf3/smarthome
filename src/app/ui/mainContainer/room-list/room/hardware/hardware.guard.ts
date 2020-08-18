@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { Observable } from 'rxjs';
-import { HardwareFacade } from '@store/hardware';
-import { filter, mapTo, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
+import { RoomListFacade } from '@store/room-list';
 
 @Injectable()
 export class HardwareGuard implements CanActivate {
-	constructor(private readonly hardwareFacade: HardwareFacade) {}
+	constructor(private readonly roomListFacade: RoomListFacade) {}
 
-	canActivate(next: ActivatedRouteSnapshot): Observable<boolean> | boolean {
-		this.hardwareFacade.loadHardware(next.params.hardwareId);
-		return this.hardwareFacade.hardware$.pipe(
-			filter((hardware) => !!hardware?.id),
+	canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
+		return this.roomListFacade.roomList$.pipe(
+			map((roomList) => {
+				return !!(roomList?.roomEntityState?.entities?.[route.params['id']]
+					?.hardwareEntityState.ids as string[]).find(
+					(id) => route.params['hardwareId'] === id,
+				);
+			}),
 			take(1),
-			mapTo(true),
 		);
 	}
 }

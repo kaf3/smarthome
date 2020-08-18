@@ -3,10 +3,7 @@ import { CallState, LoadingState } from '@models/error-loading';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Equipment } from '@models/equipment';
 import { RoomListStoreActions } from '@store/room-list';
-import { RoomStoreActions } from '@store/room';
 import { HardwareActions, HardwareActionTypes } from './actions';
-import { RoomActionTypes } from '../room-store/actions';
-import { RoomListActionsTypes } from '../room-list-store/actions';
 
 export const hardwareFeatureKey = 'hardware';
 
@@ -27,14 +24,14 @@ export const initialState: HardwareState = {
 
 export function reducer(
 	state = initialState,
-	action: HardwareActions | RoomListStoreActions.RoomListActions | RoomStoreActions.RoomActions,
+	action: HardwareActions | RoomListStoreActions.RoomListActions,
 ): HardwareState {
 	switch (action.type) {
 		case HardwareActionTypes.LoadHardware:
 			return { ...state, callState: LoadingState.LOADING };
 
 		case HardwareActionTypes.LoadHardwareSuccess:
-		case RoomActionTypes.updateOneHardwareSuccess:
+		case RoomListStoreActions.RoomListActionsTypes.updateOneHardwareSuccess:
 			return {
 				...state,
 				hardware: action.payload.hardware,
@@ -42,13 +39,13 @@ export function reducer(
 			};
 
 		case HardwareActionTypes.LoadHardwareFailure:
-		case RoomActionTypes.updateOneHardwareFailure:
+		case RoomListStoreActions.RoomListActionsTypes.updateOneHardwareFailure:
 			return { ...state, callState: action.payload };
 
 		case RoomListStoreActions.RoomListActionsTypes.upsertRoomWhenLeft: {
 			return initialState;
 		}
-		case RoomListActionsTypes.moveHardwareSuccess:
+		case RoomListStoreActions.RoomListActionsTypes.moveHardwareSuccess:
 			return initialState;
 
 		case HardwareActionTypes.UpdateOneEquipmentSuccess: {

@@ -38,14 +38,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 	submit(): void {
 		if (this.form.valid) {
 			this.authService.login(this.email?.value, this.password?.value);
-			/*			this.authFacade.redirectUrl$
-				.pipe(take(1), takeUntil(this.destroy$))
-				.subscribe((redirectUrl) =>
-					this.authFacade.logIn(
-						{ email: this.email?.value, password: this.password?.value },
-						redirectUrl,
-					),
-				);*/
 		}
 	}
 

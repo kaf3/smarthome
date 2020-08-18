@@ -8,7 +8,6 @@ import {
 	switchMap,
 	withLatestFrom,
 } from 'rxjs/operators';
-import { RoomFacade, RoomStoreActions } from '@store/room';
 import { HardwareFacade } from '@store/hardware';
 import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
 import { Hardware } from '@models/hardware';
@@ -26,14 +25,14 @@ export class HardwareFormEffects extends ErrorEffects {
 	loadHarwdareForm$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(HardwareFormActionTypes.LoadHardwareForm),
-			withLatestFrom(this.roomFacade.room$.pipe(filter((room) => !!room?.id))),
-			map(([_a, room]) => room.name),
+			withLatestFrom(this.roomListFacade.room$.pipe(filter((room) => !!room?.id))),
+			map(([_a, room]) => room?.name),
 			withLatestFrom(
 				this.hardwareFacade.hardware$.pipe(filter((hardware) => !!hardware?.id)),
 			),
 			map(
 				([roomName, { name }]) =>
-					new LoadHardwareFormSuccess({ value: { roomName, name } }),
+					new LoadHardwareFormSuccess({ value: { roomName: roomName ?? null, name } }),
 			),
 		),
 	);
@@ -45,14 +44,14 @@ export class HardwareFormEffects extends ErrorEffects {
 			map(([_a, formState]) => formState),
 			withLatestFrom(
 				this.roomListFacade.roomList$,
-				this.roomFacade.room$,
+				this.roomListFacade.room$,
 				this.hardwareFacade.hardware$,
 			),
 			map(([formState, roomList, room, hardware]) => {
 				const formValue = formState.value;
 				const oldHardware = new Hardware({ ...hardware });
 				let oldRoomList = new RoomList({ ...roomList });
-				let oldRoom = new Room({ ...room });
+				let oldRoom = new Room(room ?? Room.initial);
 				const isNameChanged = formValue.name !== oldHardware.name;
 				const isRoomNameChanged = formValue.roomName !== oldRoom.name;
 				if (isNameChanged) {
@@ -61,7 +60,7 @@ export class HardwareFormEffects extends ErrorEffects {
 
 				if (isNameChanged && !isRoomNameChanged) {
 					oldRoom = Room.updateHardware(oldRoom, oldHardware);
-					return new RoomStoreActions.UpdateOneHardware({
+					return new RoomListStoreActions.UpdateOneHardware({
 						hardware: oldHardware,
 						room: oldRoom,
 					});
@@ -94,12 +93,12 @@ export class HardwareFormEffects extends ErrorEffects {
 					mapTo(new StartAsyncValidationAction(fs.controls.name.id, 'exists')),
 					withLatestFrom(
 						this.roomListFacade.rooms$,
-						this.roomFacade.room$,
+						this.roomListFacade.room$,
 						this.hardwareFacade.hardware$,
 					),
 					map(([_, rooms, room, hardware]) => {
 						let isExists: boolean;
-						if (fs.value.roomName !== room.name) {
+						if (fs.value.roomName !== room?.name) {
 							const selectedRoom = rooms.find((rm) => rm.name === fs.value.roomName);
 							isExists = !!Object.values(
 								selectedRoom?.hardwareEntityState?.entities ?? {},
@@ -123,7 +122,6 @@ export class HardwareFormEffects extends ErrorEffects {
 
 	constructor(
 		readonly actions$: Actions<HardwareFormActions>,
-		private readonly roomFacade: RoomFacade,
 		private readonly hardwareFacade: HardwareFacade,
 		private readonly hardwareFormFacade: HardwareFormFacade,
 		private readonly roomListFacade: RoomListFacade,

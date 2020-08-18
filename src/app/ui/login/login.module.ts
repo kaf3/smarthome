@@ -16,7 +16,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AuthFacade } from '@store/auth';
 import { AuthService } from '@services';
 import { Observable } from 'rxjs';
 
@@ -24,11 +23,7 @@ import { Observable } from 'rxjs';
 	providedIn: 'root',
 })
 export class LoginGuard implements CanActivate {
-	constructor(
-		private authFacade: AuthFacade,
-		private router: Router,
-		private authService: AuthService,
-	) {}
+	constructor(private router: Router, private authService: AuthService) {}
 
 	canActivate(
 		_route: ActivatedRouteSnapshot,

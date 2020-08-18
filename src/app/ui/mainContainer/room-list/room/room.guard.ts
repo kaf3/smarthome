@@ -6,19 +6,13 @@ import {
 	RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { RoomFacade } from '@store/room';
 import { RoomListFacade } from '@store/room-list';
-import { filter, map, mapTo, take, withLatestFrom } from 'rxjs/operators';
+import { map, take, withLatestFrom } from 'rxjs/operators';
 import { Room } from '@models/room';
-import { HardwareFacade } from '@store/hardware';
 
 @Injectable()
 export class RoomGuard implements CanDeactivate<unknown>, CanActivate {
-	constructor(
-		private readonly roomFacade: RoomFacade,
-		private readonly roomListFacade: RoomListFacade,
-		private readonly hardwareFacade: HardwareFacade,
-	) {}
+	constructor(private readonly roomListFacade: RoomListFacade) {}
 
 	canDeactivate(
 		_component?: unknown,
@@ -26,11 +20,13 @@ export class RoomGuard implements CanDeactivate<unknown>, CanActivate {
 		_currentState?: RouterStateSnapshot,
 		_nextState?: RouterStateSnapshot,
 	): Observable<boolean> | boolean {
-		return this.roomFacade.room$.pipe(
-			withLatestFrom(this.hardwareFacade.hardware$),
+		return this.roomListFacade.room$.pipe(
+			withLatestFrom(this.roomListFacade.hardware$),
 			map(([room, activeHardware]) => {
-				if (!!activeHardware.id) {
-					this.roomListFacade.upsertRoomWhenLeft(new Room({ ...room, activeHardware }));
+				if (!!activeHardware?.id) {
+					this.roomListFacade.upsertRoomWhenLeft(
+						new Room({ ...room, activeHardware } as Room),
+					);
 				}
 				return true;
 			}),
@@ -39,11 +35,14 @@ export class RoomGuard implements CanDeactivate<unknown>, CanActivate {
 	}
 
 	canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-		this.roomFacade.getRoom(route.params.id);
-		return this.roomFacade.room$.pipe(
-			filter((room) => !!room?.id),
+		return this.roomListFacade.roomList$.pipe(
+			map(
+				(roomList) =>
+					!!(roomList.roomEntityState.ids as string[]).find(
+						(id) => route.params['id'] === id,
+					),
+			),
 			take(1),
-			mapTo(true),
 		);
 	}
 }

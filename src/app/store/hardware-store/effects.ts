@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap, take } from 'rxjs/operators';
-import { RoomFacade } from '@store/room';
 import { HttpRoomsService } from '@services';
 import { of } from 'rxjs';
 import { ErrorEffects } from '@models/common';
@@ -14,6 +13,7 @@ import {
 	UpdateOneEquipmentFailure,
 	UpdateOneEquipmentSuccess,
 } from './actions';
+import { RoomListFacade } from '@store/room-list';
 
 @Injectable()
 export class HardwareEffects extends ErrorEffects {
@@ -21,8 +21,10 @@ export class HardwareEffects extends ErrorEffects {
 		this.actions$.pipe(
 			ofType(HardwareActionTypes.LoadHardware),
 			switchMap((action) =>
-				this.roomFacade.hardwareById$(action.payload.id).pipe(
-					map((hardware) => {
+				this.roomListFacade.room$.pipe(
+					map((room) => {
+						const hardware =
+							room?.hardwareEntityState.entities[action.payload.id ?? ''];
 						if (!hardware) throw new Error();
 						return hardware;
 					}),
@@ -74,7 +76,7 @@ export class HardwareEffects extends ErrorEffects {
 
 	constructor(
 		readonly actions$: Actions<HardwareActions>,
-		private readonly roomFacade: RoomFacade,
+		private readonly roomListFacade: RoomListFacade,
 		private readonly httpRoomsService: HttpRoomsService,
 		readonly snackBar: MatSnackBar,
 	) {

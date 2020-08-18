@@ -5,6 +5,7 @@ import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
 import { ROOMLIST_FEATURE_KEY, RoomListState } from './reducer';
 import { RoomList } from '@models/room-list';
+import { selectRouteParam } from '../selectors';
 
 export const selectRoomListState = createFeatureSelector<RoomListState>(ROOMLIST_FEATURE_KEY);
 
@@ -18,6 +19,7 @@ export const selectRoomEntityState = createSelector(
 export const {
 	selectAll: selectRooms,
 	selectEntities: selectRoomListEntities,
+	selectIds,
 } = RoomList.adapter.getSelectors(selectRoomEntityState);
 
 export const selectRoomById = createSelector(
@@ -40,4 +42,21 @@ export const selectEquipmentById = createSelector(
 	(roomEntities, { roomId, hardwareId, equipmentId }) =>
 		selectHardwareById.projector(roomEntities, { roomId, hardwareId }).equipmentEntityState
 			.entities[equipmentId] ?? Equipment.initial,
+);
+
+export const selectRoom = createSelector(
+	selectRoomListEntities,
+	selectRouteParam('id'),
+	(roomEntities: Dictionary<Room>, id: Room['id']) => {
+		return id === undefined ? Room.initial : roomEntities?.[id ?? ''];
+	},
+);
+
+export const selectHardware = createSelector(
+	selectRoom,
+	selectRouteParam('hardwareId'),
+	(room: Room, hardwareId: Hardware['id']) =>
+		hardwareId === undefined
+			? Hardware.initial
+			: room?.hardwareEntityState?.entities?.[hardwareId ?? ''],
 );

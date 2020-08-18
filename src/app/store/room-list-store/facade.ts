@@ -19,7 +19,9 @@ import {
 import {
 	selectCallState,
 	selectEquipmentById,
+	selectHardware,
 	selectHardwareById,
+	selectRoom,
 	selectRoomById,
 	selectRoomList,
 	selectRoomListEntities,
@@ -34,12 +36,18 @@ export class RoomListFacade extends LoadableFacade<RoomListState> {
 
 	public readonly roomList$: Observable<RoomList>;
 
+	public readonly room$: Observable<Room | undefined>;
+
+	public readonly hardware$: Observable<Hardware | undefined>;
+
 	constructor(store: Store<RoomListState>) {
 		super(store, selectCallState);
 
 		this.rooms$ = this.store.pipe(select(selectRooms));
 		this.roomList$ = this.store.pipe(select(selectRoomList));
 		this.roomListEntities$ = this.store.pipe(select(selectRoomListEntities));
+		this.room$ = this.store.pipe(select(selectRoom));
+		this.hardware$ = this.store.pipe(select(selectHardware));
 	}
 
 	public roomById$(id: Room['id']): Observable<Room> {
