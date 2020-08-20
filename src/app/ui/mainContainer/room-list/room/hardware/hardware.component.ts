@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HardwareFacade } from '@store/hardware';
 import { Observable } from 'rxjs';
 import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
@@ -15,7 +14,6 @@ export class HardwareComponent implements OnInit {
 	public hardware$: Observable<Hardware | undefined>;
 
 	constructor(
-		public readonly hardwareFacade: HardwareFacade,
 		public readonly equipmentFormFacade: EquipmentFormFacade,
 		public readonly roomListFacade: RoomListFacade,
 	) {}

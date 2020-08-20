@@ -1,6 +1,4 @@
 import { CallState, LoadingState } from '@models/error-loading';
-import { HardwareStoreActions } from '@store/hardware';
-import { HardwareActionTypes } from '../hardware-store/actions';
 import { RoomListActions, RoomListActionsTypes } from './actions';
 import { RoomList } from '@models/room-list';
 
@@ -16,17 +14,14 @@ export const initialState: RoomListState = {
 	callState: LoadingState.INIT,
 };
 
-export function roomsReducer(
-	state = initialState,
-	action: RoomListActions | HardwareStoreActions.HardwareActions,
-): RoomListState {
+export function roomsReducer(state = initialState, action: RoomListActions): RoomListState {
 	switch (action.type) {
 		case RoomListActionsTypes.loadRoomList:
 		case RoomListActionsTypes.moveHardware:
 		case RoomListActionsTypes.updateOneHardware:
 		case RoomListActionsTypes.updateRoom:
 		case RoomListActionsTypes.addRoom:
-		case HardwareActionTypes.UpdateOneEquipment:
+		case RoomListActionsTypes.UpdateOneEquipment:
 		case RoomListActionsTypes.DeleteRoom: {
 			return { ...state, callState: LoadingState.LOADING };
 		}
@@ -47,7 +42,7 @@ export function roomsReducer(
 
 		case RoomListActionsTypes.updateRoomSuccess:
 		case RoomListActionsTypes.upsertRoomWhenLeft:
-		case HardwareActionTypes.UpdateOneEquipmentSuccess:
+		case RoomListActionsTypes.UpdateOneEquipmentSuccess:
 		case RoomListActionsTypes.updateOneHardwareSuccess:
 			return {
 				...state,

@@ -40,9 +40,11 @@ import {
 	UpdateRoom,
 	UpdateRoomFailure,
 	UpdateRoomSuccess,
+	UpdateOneEquipment,
 } from './actions';
 import { Hardware } from '@models/hardware';
 import { RoomListStoreActions } from './index';
+import { UpdateOneEquipmentFailure, UpdateOneEquipmentSuccess } from './actions';
 
 @Injectable()
 export class RoomListEffects extends ErrorEffects {
@@ -127,6 +129,33 @@ export class RoomListEffects extends ErrorEffects {
 		),
 	);
 
+	updateEquipment$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType<UpdateOneEquipment>(RoomListActionsTypes.UpdateOneEquipment),
+			concatMap(({ payload }) =>
+				this.httpRoomsService
+					.patchEquipment(payload.equipment, payload.hardware.id, payload.room.id)
+					.pipe(
+						map(
+							(equipment) =>
+								new UpdateOneEquipmentSuccess({
+									equipment,
+									room: payload.room,
+									hardware: payload.hardware,
+								}),
+						),
+						catchError(() =>
+							of(
+								new UpdateOneEquipmentFailure({
+									errorMsg: 'could not update equipment',
+								}),
+							),
+						),
+					),
+			),
+		),
+	);
+
 	errorHandler = this.createErrorHandler(
 		RoomListActionsTypes.loadRoomListError,
 		RoomListActionsTypes.moveHardwareError,
@@ -134,6 +163,7 @@ export class RoomListEffects extends ErrorEffects {
 		RoomListActionsTypes.addRoomFailure,
 		RoomListActionsTypes.DeleteRoomFailure,
 		RoomListActionsTypes.updateOneHardwareFailure,
+		RoomListActionsTypes.UpdateOneEquipmentFailure,
 	);
 
 	redirectToActiveRoom = createEffect(

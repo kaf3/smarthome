@@ -8,7 +8,6 @@ import {
 	switchMap,
 	withLatestFrom,
 } from 'rxjs/operators';
-import { HardwareFacade } from '@store/hardware';
 import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
@@ -28,11 +27,13 @@ export class HardwareFormEffects extends ErrorEffects {
 			withLatestFrom(this.roomListFacade.room$.pipe(filter((room) => !!room?.id))),
 			map(([_a, room]) => room?.name),
 			withLatestFrom(
-				this.hardwareFacade.hardware$.pipe(filter((hardware) => !!hardware?.id)),
+				this.roomListFacade.hardware$.pipe(filter((hardware) => !!hardware?.id)),
 			),
 			map(
-				([roomName, { name }]) =>
-					new LoadHardwareFormSuccess({ value: { roomName: roomName ?? null, name } }),
+				([roomName, hardware]) =>
+					new LoadHardwareFormSuccess({
+						value: { roomName: roomName ?? null, name: hardware?.name ?? null },
+					}),
 			),
 		),
 	);
@@ -45,11 +46,11 @@ export class HardwareFormEffects extends ErrorEffects {
 			withLatestFrom(
 				this.roomListFacade.roomList$,
 				this.roomListFacade.room$,
-				this.hardwareFacade.hardware$,
+				this.roomListFacade.hardware$,
 			),
 			map(([formState, roomList, room, hardware]) => {
 				const formValue = formState.value;
-				const oldHardware = new Hardware({ ...hardware });
+				const oldHardware = new Hardware(hardware ?? Hardware.initial);
 				let oldRoomList = new RoomList({ ...roomList });
 				let oldRoom = new Room(room ?? Room.initial);
 				const isNameChanged = formValue.name !== oldHardware.name;
@@ -94,7 +95,7 @@ export class HardwareFormEffects extends ErrorEffects {
 					withLatestFrom(
 						this.roomListFacade.rooms$,
 						this.roomListFacade.room$,
-						this.hardwareFacade.hardware$,
+						this.roomListFacade.hardware$,
 					),
 					map(([_, rooms, room, hardware]) => {
 						let isExists: boolean;
@@ -105,7 +106,7 @@ export class HardwareFormEffects extends ErrorEffects {
 							).find((hrd) => hrd?.name === fs.value.name);
 						} else {
 							isExists = !!Object.values(room.hardwareEntityState.entities).find(
-								(hrd) => hrd?.name === fs.value.name && hrd.name !== hardware.name,
+								(hrd) => hrd?.name === fs.value.name && hrd.name !== hardware?.name,
 							);
 						}
 
@@ -122,7 +123,6 @@ export class HardwareFormEffects extends ErrorEffects {
 
 	constructor(
 		readonly actions$: Actions<HardwareFormActions>,
-		private readonly hardwareFacade: HardwareFacade,
 		private readonly hardwareFormFacade: HardwareFormFacade,
 		private readonly roomListFacade: RoomListFacade,
 		readonly snackBar: MatSnackBar,

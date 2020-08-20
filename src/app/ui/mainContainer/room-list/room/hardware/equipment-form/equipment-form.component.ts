@@ -3,7 +3,7 @@ import { EquipmentFormFacade } from '@store/equipment-form';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Equipment } from '@models/equipment';
 import { distinctUntilKeyChanged, filter, take, takeUntil } from 'rxjs/operators';
-import { EquipmentFormState } from '../../../../../../store/equipment-form-store/reducer';
+import { EquipmentFormState } from '../../../../../../store/equipment-form/reducer';
 
 @Component({
 	selector: 'app-equipment-form',

@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { Room } from '@models/room/room';
 import { RoomList } from '@models/room-list';
 import { Hardware } from '@models/hardware';
+import { Equipment } from '@models/equipment';
 
 export enum RoomListActionsTypes {
 	loadRoomList = '[Room list] Load Room List',
@@ -25,6 +26,9 @@ export enum RoomListActionsTypes {
 	updateOneHardware = '[Room list] Update One Hardware',
 	updateOneHardwareSuccess = '[Room list] Update One Hardware Success',
 	updateOneHardwareFailure = '[Room list] Update One Hardware Failure',
+	UpdateOneEquipment = '[Room list] Update One Equipment',
+	UpdateOneEquipmentSuccess = '[Room list] Update One Equipment Success',
+	UpdateOneEquipmentFailure = '[Room list] Update One Equipment Failure',
 }
 
 export class LoadRoomList implements Action {
@@ -149,6 +153,24 @@ export class UpdateOneHardwareFailure implements Action {
 	constructor(public payload: { errorMsg: string }) {}
 }
 
+export class UpdateOneEquipment implements Action {
+	readonly type = RoomListActionsTypes.UpdateOneEquipment;
+
+	constructor(public payload: { equipment: Equipment; room: Room; hardware: Hardware }) {}
+}
+
+export class UpdateOneEquipmentSuccess implements Action {
+	readonly type = RoomListActionsTypes.UpdateOneEquipmentSuccess;
+
+	constructor(public payload: { equipment: Equipment; room: Room; hardware: Hardware }) {}
+}
+
+export class UpdateOneEquipmentFailure implements Action {
+	readonly type = RoomListActionsTypes.UpdateOneEquipmentFailure;
+
+	constructor(public payload: { errorMsg: string }) {}
+}
+
 export type RoomListActions =
 	| LoadRoomList
 	| LoadRoomListSuccess
@@ -170,4 +192,7 @@ export type RoomListActions =
 	| DeleteRoomFailure
 	| UpdateOneHardware
 	| UpdateOneHardwareSuccess
-	| UpdateOneHardwareFailure;
+	| UpdateOneHardwareFailure
+	| UpdateOneEquipment
+	| UpdateOneEquipmentSuccess
+	| UpdateOneEquipmentFailure;

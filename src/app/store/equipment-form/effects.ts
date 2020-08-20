@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Equipment } from '@models/equipment';
-import { HardwareStoreActions } from '@store/hardware';
-import { RoomListFacade } from '@store/room-list';
+import { RoomListFacade, RoomListStoreActions } from '@store/room-list';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
 import { EquipmentFormFacade } from './facade';
@@ -21,7 +20,7 @@ export class EquipmentFormEffects {
 			),
 			map(([action, fs, room, hardware]) => {
 				if (!room || !hardware) {
-					return new HardwareStoreActions.UpdateOneEquipmentFailure({
+					return new RoomListStoreActions.UpdateOneEquipmentFailure({
 						errorMsg: 'Не удалось обновить устройство',
 					});
 				}
@@ -33,7 +32,7 @@ export class EquipmentFormEffects {
 				equipment = Equipment.setValue(equipment, fs.value?.value);
 				const updatedHardware = Hardware.updateEquipment(hardware, equipment);
 				const updatedRoom = Room.updateHardware(room, updatedHardware);
-				return new HardwareStoreActions.UpdateOneEquipment({
+				return new RoomListStoreActions.UpdateOneEquipment({
 					equipment,
 					hardware: updatedHardware,
 					room: updatedRoom,

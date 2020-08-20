@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RoomListStoreModule } from '@store/room-list';
-import { EquipmentStoreModule } from '@store/equipment';
 import { EquipmentFormStoreModule } from '@store/equipment-form';
-import { HardwareStoreModule } from '@store/hardware';
 import { HardwareFormStoreModule } from '@store/hardware-form';
 import { RoomFormStoreModule } from '@store/room-form';
 import { CommandListStoreModule } from '@store/command-list';
@@ -12,9 +10,7 @@ import { CommandListStoreModule } from '@store/command-list';
 	imports: [
 		CommonModule,
 		RoomListStoreModule.forRoot(),
-		EquipmentStoreModule.forRoot(),
 		EquipmentFormStoreModule.forRoot(),
-		HardwareStoreModule.forRoot(),
 		HardwareFormStoreModule.forRoot(),
 		RoomFormStoreModule.forRoot(),
 		CommandListStoreModule.forRoot(),
