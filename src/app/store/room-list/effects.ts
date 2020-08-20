@@ -34,17 +34,18 @@ import {
 	MoveHardwareSuccess,
 	RoomListActions,
 	RoomListActionsTypes,
+	UpdateOneEquipment,
+	UpdateOneEquipmentFailure,
+	UpdateOneEquipmentSuccess,
 	UpdateOneHardware,
 	UpdateOneHardwareFailure,
 	UpdateOneHardwareSuccess,
 	UpdateRoom,
 	UpdateRoomFailure,
 	UpdateRoomSuccess,
-	UpdateOneEquipment,
 } from './actions';
 import { Hardware } from '@models/hardware';
 import { RoomListStoreActions } from './index';
-import { UpdateOneEquipmentFailure, UpdateOneEquipmentSuccess } from './actions';
 
 @Injectable()
 export class RoomListEffects extends ErrorEffects {
