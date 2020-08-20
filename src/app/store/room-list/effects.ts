@@ -173,8 +173,8 @@ export class RoomListEffects extends ErrorEffects {
 				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
 				filter((action) => action.payload.routerState.url.endsWith('/rooms')),
 				withLatestFrom(this.roomListFacade.roomList$),
-				map(([_a, roomList]) => {
-					const { id } = roomList.activeRoom;
+				map(([_a, _roomList]) => {
+					const { id } = { id: null }; /*roomList.activeRoom*/
 					if (!!id && this.router.url.endsWith('/rooms')) {
 						this.router.navigate([`/rooms/${id}`]);
 					}
@@ -189,8 +189,8 @@ export class RoomListEffects extends ErrorEffects {
 				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
 				filter((action) => /^\/rooms\/[\w-]{20}$/.test(action.payload.routerState.url)),
 				withLatestFrom(this.roomListFacade.room$),
-				map(([_action, room]) => {
-					const { id } = room?.activeHardware ?? Hardware.initial;
+				map(([_action, _room]) => {
+					const { id } = /*room?.activeHardware ??*/ Hardware.initial;
 					if (!!id) {
 						this.router.navigate([`${this.router.url}/${id}`]);
 					}

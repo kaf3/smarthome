@@ -13,10 +13,8 @@ export type RoomListProps = OmitByPropType<RoomList, Function>;
 
 export class RoomList {
 	public readonly roomEntityState: EntityState<Room>;
-	public readonly activeRoom: Room;
 
 	constructor(source: RoomList | RoomListProps) {
-		this.activeRoom = source.activeRoom;
 		this.roomEntityState = { ...source.roomEntityState };
 	}
 
@@ -26,16 +24,10 @@ export class RoomList {
 	});
 
 	static initial: RoomList = {
-		activeRoom: Room.initial,
 		roomEntityState: RoomList.adapter.getInitialState(),
 	};
 
 	public static createRoomCollection(roomList: RoomList): Dictionary<RoomDTO> {
-		/*		const roomMap = new Map<keyof Collection<RoomDTO>, RoomDTO>();
-		roomList.rooms.forEach((room) => {
-			roomMap.set(room.id ?? '', Room.createDTO(room));
-		});
-		return Object.fromEntries(roomMap);*/
 		const roomCollection: Dictionary<RoomDTO> = {};
 		Object.entries(roomList.roomEntityState.entities).forEach(
 			([id, room]) => (roomCollection[id] = Room.createDTO(room ?? Room.initial)),
@@ -48,7 +40,6 @@ export class RoomList {
 			...roomList,
 			roomEntityState: RoomList.adapter.upsertMany(rooms, roomList.roomEntityState),
 		});
-		//return super.updateManyChild(roomList, rooms);
 	}
 
 	public static updateOneRoom(roomList: RoomList, room: Room): RoomList {
@@ -87,14 +78,6 @@ export class RoomListDTO {
 	}
 
 	public createDomain(oldRoomList?: RoomList): RoomList {
-		/*		const rooms = Object.entries(this.roomCollection).map(([id, roomDTO]) =>
-			new RoomDTO({ ...roomDTO }).createDomain(id, RoomList.getRoom(id, oldRoomList)),
-		);
-
-		return new RoomList({
-			activeRoom: oldRoomList?.activeRoom ?? rooms[0], // when you open roomList firstly
-			rooms,
-		});*/
 		const ids: RoomList['roomEntityState']['ids'] = [];
 		const entries = Object.entries(this.roomCollection).map(([id, roomDTO]) => {
 			(ids as string[]).push(id);
@@ -109,7 +92,6 @@ export class RoomListDTO {
 
 		return new RoomList({
 			roomEntityState: { ids, entities: Object.fromEntries(entries) },
-			activeRoom: oldRoomList?.activeRoom ?? (entries[0][1] as Room),
 		});
 	}
 }

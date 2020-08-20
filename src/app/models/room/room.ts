@@ -30,8 +30,6 @@ export type RoomProps = OmitByPropType<Room, Function>;
 export class Room extends BaseDomain {
 	public readonly hardwareEntityState: EntityState<Hardware>;
 
-	public activeHardware: Hardware;
-
 	static adapter = createEntityAdapter<Hardware>({
 		sortComparer: false,
 		selectId: (h) => h.id ?? '',
@@ -40,7 +38,6 @@ export class Room extends BaseDomain {
 	constructor(source: Room) {
 		super(source.id, source.name);
 		this.hardwareEntityState = { ...source.hardwareEntityState };
-		this.activeHardware = new Hardware(source.activeHardware);
 	}
 
 	public static createDTO(room: Room): RoomDTO {
@@ -55,12 +52,6 @@ export class Room extends BaseDomain {
 	}
 
 	private static createHardwareCollection(room: Room): Dictionary<HardwareDTO> {
-		/*		const hardwareMap = new Map<keyof Collection<HardwareDTO>, HardwareDTO>();
-		room.hardwares.forEach((hardware) => {
-			hardwareMap.set(hardware.id ?? '', Hardware.createDTO(hardware));
-		});
-		return Object.fromEntries(hardwareMap);*/
-
 		const hardwareCollection: Dictionary<HardwareDTO> = {};
 		Object.entries(room.hardwareEntityState.entities).forEach(
 			([id, hardware]) =>
@@ -71,7 +62,6 @@ export class Room extends BaseDomain {
 
 	static readonly initial = new Room({
 		...BaseDomain.initial,
-		activeHardware: Hardware.initial,
 		hardwareEntityState: Room.adapter.getInitialState(),
 	});
 
@@ -105,17 +95,6 @@ export class Room extends BaseDomain {
 }
 
 RoomDTO.prototype.createDomain = function (id: Room['id'], oldRoom?: Room): Room {
-	/*	const hardwares = Object.entries<HardwareDTOProps>(
-		this.hardwareCollection,
-	).map(([hardwareId, hardwareDTO]: [Hardware['id'], HardwareDTOProps]) =>
-		new HardwareDTO({ ...hardwareDTO }).createDomain(hardwareId, Room.getHardware(id, oldRoom)),
-	);
-	return new Room({
-		name: this.name,
-		activeHardware: oldRoom?.activeHardware ?? Hardware.initial,
-		id,
-		hardwares,
-	});*/
 	const ids: Room['hardwareEntityState']['ids'] = [];
 	const entries = Object.entries(this.hardwareCollection).map(([hardwareId, hardwareDTO]) => {
 		(ids as string[]).push(hardwareId);
@@ -129,7 +108,6 @@ RoomDTO.prototype.createDomain = function (id: Room['id'], oldRoom?: Room): Room
 	});
 	return new Room({
 		name: this.name,
-		activeHardware: oldRoom?.activeHardware ?? Hardware.initial,
 		id,
 		hardwareEntityState: { ids, entities: Object.fromEntries(entries) },
 	});

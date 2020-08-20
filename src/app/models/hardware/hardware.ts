@@ -40,14 +40,12 @@ export class Hardware extends BaseDomain {
 	public readonly equipmentEntityState: EntityState<Equipment>;
 	public readonly mac: number | string | null;
 	public readonly type: string | null;
-	public activeEquipment: Equipment;
 
 	constructor(source: Hardware) {
 		super(source.id, source.name);
 		this.mac = source.mac;
 		this.type = source.type;
 		this.equipmentEntityState = { ...source.equipmentEntityState };
-		this.activeEquipment = new Equipment(source.activeEquipment);
 	}
 
 	public static adapter = createEntityAdapter<Equipment>({
@@ -88,7 +86,6 @@ export class Hardware extends BaseDomain {
 		...BaseDomain.initial,
 		mac: null,
 		type: null,
-		activeEquipment: Equipment.initial,
 		equipmentEntityState: Hardware.adapter.getInitialState(),
 	});
 
@@ -128,7 +125,6 @@ HardwareDTO.prototype.createDomain = function (
 		type: this.type,
 		name: this.name,
 		id,
-		activeEquipment: oldHardware?.activeEquipment ?? Equipment.initial,
 		equipmentEntityState: { ids, entities: Object.fromEntries(entries) },
 	});
 };

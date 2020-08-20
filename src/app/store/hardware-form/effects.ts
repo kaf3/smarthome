@@ -73,7 +73,7 @@ export class HardwareFormEffects extends ErrorEffects {
 					);
 					if (newRoom) {
 						oldRoom = Room.deleteHardware(oldRoom, oldHardware);
-						oldRoom.activeHardware = Hardware.initial;
+						//oldRoom.activeHardware = Hardware.initial;
 						newRoom = Room.addHardware(newRoom, oldHardware);
 						oldRoomList = RoomList.updateManyRooms(oldRoomList, [oldRoom, newRoom]);
 					}
