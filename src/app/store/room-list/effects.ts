@@ -11,7 +11,7 @@ import {
 } from 'rxjs/operators';
 
 import { Observable, of } from 'rxjs';
-import { HttpRoomsService, SerializeService } from '@services';
+import { HttpRoomsService, LastVisitedService, SerializeService } from '@services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { RoomList } from '@models/room-list';
@@ -44,7 +44,6 @@ import {
 	UpdateRoomFailure,
 	UpdateRoomSuccess,
 } from './actions';
-import { Hardware } from '@models/hardware';
 import { RoomListStoreActions } from './index';
 
 @Injectable()
@@ -172,9 +171,8 @@ export class RoomListEffects extends ErrorEffects {
 			this.actions$.pipe(
 				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
 				filter((action) => action.payload.routerState.url.endsWith('/rooms')),
-				withLatestFrom(this.roomListFacade.roomList$),
-				map(([_a, _roomList]) => {
-					const { id } = { id: null }; /*roomList.activeRoom*/
+				map(() => {
+					const id = this.lastVisitedService.getUrl('rooms');
 					if (!!id && this.router.url.endsWith('/rooms')) {
 						this.router.navigate([`/rooms/${id}`]);
 					}
@@ -189,8 +187,8 @@ export class RoomListEffects extends ErrorEffects {
 				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
 				filter((action) => /^\/rooms\/[\w-]{20}$/.test(action.payload.routerState.url)),
 				withLatestFrom(this.roomListFacade.room$),
-				map(([_action, _room]) => {
-					const { id } = /*room?.activeHardware ??*/ Hardware.initial;
+				map(([_action, room]) => {
+					const id = this.lastVisitedService.getUrl(room?.id ?? '');
 					if (!!id) {
 						this.router.navigate([`${this.router.url}/${id}`]);
 					}
@@ -248,6 +246,7 @@ export class RoomListEffects extends ErrorEffects {
 		readonly snackBar: MatSnackBar,
 		private readonly router: Router,
 		private readonly roomListFacade: RoomListFacade,
+		private readonly lastVisitedService: LastVisitedService,
 	) {
 		super(snackBar, actions$);
 	}

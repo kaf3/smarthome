@@ -12,10 +12,10 @@ export class AppComponent implements OnInit {
 	constructor(private visitedService: LastVisitedService) {}
 
 	ngOnInit(): void {
-		this.visitedService.add({ room: 'hard' });
-		this.visitedService.add({ hard: 'eqp' });
-		this.visitedService.add({ eqp: 'foo' });
-		this.visitedService.add({ foo: 'hard' });
+		this.visitedService.addVisit({ room: 'hard' });
+		this.visitedService.addVisit({ hard: 'eqp' });
+		this.visitedService.addVisit({ eqp: 'foo' });
+		this.visitedService.addVisit({ foo: 'hard' });
 		console.log(this.visitedService.visitSnap);
 		console.log(this.visitedService.getChain('foo'));
 	}

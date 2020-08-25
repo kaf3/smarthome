@@ -8,11 +8,14 @@ import {
 import { Observable } from 'rxjs';
 import { RoomListFacade } from '@store/room-list';
 import { map, take, withLatestFrom } from 'rxjs/operators';
-import { Room } from '@models/room';
+import { LastVisitedService } from '@services';
 
 @Injectable()
 export class RoomGuard implements CanDeactivate<unknown>, CanActivate {
-	constructor(private readonly roomListFacade: RoomListFacade) {}
+	constructor(
+		private readonly roomListFacade: RoomListFacade,
+		private readonly lastVisitedService: LastVisitedService,
+	) {}
 
 	canDeactivate(
 		_component?: unknown,
@@ -23,10 +26,8 @@ export class RoomGuard implements CanDeactivate<unknown>, CanActivate {
 		return this.roomListFacade.room$.pipe(
 			withLatestFrom(this.roomListFacade.hardware$),
 			map(([room, activeHardware]) => {
-				if (!!activeHardware?.id) {
-					this.roomListFacade.upsertRoomWhenLeft(
-						new Room({ ...room, activeHardware } as Room),
-					);
+				if (!!activeHardware?.id && room && room.id) {
+					this.lastVisitedService.addOne(room.id, activeHardware.id);
 				}
 				return true;
 			}),

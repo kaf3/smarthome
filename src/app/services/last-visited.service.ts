@@ -20,8 +20,12 @@ export class LastVisitedService {
 		return this._visitState.getValue();
 	}
 
-	add(visit: Visit): void {
+	addVisit(visit: Visit): void {
 		this._visitState.next({ ...this.visitSnap, ...visit });
+	}
+
+	addOne(key: keyof Visit, val: valueof<Visit>): void {
+		this._visitState.next({ ...this.visitSnap, [key]: val });
 	}
 
 	remove(visitKey: keyof Visit): void {

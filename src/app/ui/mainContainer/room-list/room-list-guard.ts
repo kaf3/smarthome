@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { CanActivate, CanDeactivate } from '@angular/router';
 import { Observable, race } from 'rxjs';
 import { RoomListFacade } from '@store/room-list';
-import { map, take, withLatestFrom } from 'rxjs/operators';
-import { RoomList } from '@models/room-list';
+import { map, take } from 'rxjs/operators';
 import { ErrorState, LoadingState } from '@models/error-loading';
+import { LastVisitedService } from '@services';
 
 @Injectable()
 export class RoomListGuard implements CanActivate, CanDeactivate<unknown> {
-	constructor(private readonly roomListFacade: RoomListFacade) {}
+	constructor(
+		private readonly roomListFacade: RoomListFacade,
+		private readonly lastVisitedService: LastVisitedService,
+	) {}
 
 	canActivate(): Observable<boolean> {
 		this.roomListFacade.loadRooms();
@@ -22,13 +25,10 @@ export class RoomListGuard implements CanActivate, CanDeactivate<unknown> {
 	}
 
 	canDeactivate(): Observable<boolean> {
-		return this.roomListFacade.roomList$.pipe(
-			withLatestFrom(this.roomListFacade.room$),
-			map(([roomList, activeRoom]) => {
-				if (!!activeRoom?.name) {
-					this.roomListFacade.upsertRoomListWhenLeft(
-						new RoomList({ ...roomList, activeRoom }),
-					);
+		return this.roomListFacade.room$.pipe(
+			map((activeRoom) => {
+				if (activeRoom?.id) {
+					this.lastVisitedService.addOne('rooms', activeRoom.id);
 				}
 				return true;
 			}),
