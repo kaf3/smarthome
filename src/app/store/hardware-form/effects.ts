@@ -18,6 +18,7 @@ import { ErrorEffects } from '@models/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HardwareFormFacade } from './facade';
 import { HardwareFormActions, HardwareFormActionTypes, LoadHardwareFormSuccess } from './actions';
+import { LastVisitedService } from '@services';
 
 @Injectable()
 export class HardwareFormEffects extends ErrorEffects {
@@ -74,6 +75,9 @@ export class HardwareFormEffects extends ErrorEffects {
 					if (newRoom) {
 						oldRoom = Room.deleteHardware(oldRoom, oldHardware);
 						//oldRoom.activeHardware = Hardware.initial;
+						if (oldRoom?.id) {
+							this.lastVisitedService.remove(oldRoom.id);
+						}
 						newRoom = Room.addHardware(newRoom, oldHardware);
 						oldRoomList = RoomList.updateManyRooms(oldRoomList, [oldRoom, newRoom]);
 					}
@@ -126,6 +130,7 @@ export class HardwareFormEffects extends ErrorEffects {
 		private readonly hardwareFormFacade: HardwareFormFacade,
 		private readonly roomListFacade: RoomListFacade,
 		readonly snackBar: MatSnackBar,
+		private readonly lastVisitedService: LastVisitedService,
 	) {
 		super(snackBar, actions$);
 	}
