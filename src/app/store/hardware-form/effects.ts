@@ -74,7 +74,6 @@ export class HardwareFormEffects extends ErrorEffects {
 					);
 					if (newRoom) {
 						oldRoom = Room.deleteHardware(oldRoom, oldHardware);
-						//oldRoom.activeHardware = Hardware.initial;
 						if (oldRoom?.id) {
 							this.lastVisitedService.remove(oldRoom.id);
 						}

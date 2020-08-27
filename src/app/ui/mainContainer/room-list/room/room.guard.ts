@@ -3,7 +3,9 @@ import {
 	ActivatedRouteSnapshot,
 	CanActivate,
 	CanDeactivate,
+	Router,
 	RouterStateSnapshot,
+	UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { RoomListFacade } from '@store/room-list';
@@ -15,6 +17,7 @@ export class RoomGuard implements CanDeactivate<unknown>, CanActivate {
 	constructor(
 		private readonly roomListFacade: RoomListFacade,
 		private readonly lastVisitedService: LastVisitedService,
+		private readonly router: Router,
 	) {}
 
 	canDeactivate(
@@ -35,14 +38,21 @@ export class RoomGuard implements CanDeactivate<unknown>, CanActivate {
 		);
 	}
 
-	canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+	canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
 		return this.roomListFacade.roomList$.pipe(
-			map(
-				(roomList) =>
-					!!(roomList.roomEntityState.ids as string[]).find(
-						(id) => route.params['id'] === id,
-					),
-			),
+			map((roomList) => {
+				const founded = !!(roomList.roomEntityState.ids as string[]).find(
+					(id) => route.params['id'] === id,
+				);
+				return (
+					founded ||
+					this.router.createUrlTree(['/nf'], {
+						queryParams: {
+							target: 'Не удалось найти такую комнату, вернитесь и попробуйте еще',
+						},
+					})
+				);
+			}),
 			take(1),
 		);
 	}

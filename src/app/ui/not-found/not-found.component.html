@@ -1,0 +1,20 @@
+<mat-card class="container">
+	<mat-card-title class="mat-h1">
+		<span>404</span>
+	</mat-card-title>
+	<mat-card-content>
+		<span class="mat-h3">
+			<ng-container *ngIf="!(target | async)">
+				Страница, которую вы ищете, не существует
+			</ng-container>
+			<ng-container *ngIf="target | async as text">
+				{{ text }}
+			</ng-container>
+		</span>
+	</mat-card-content>
+	<mat-card-footer>
+		<mat-card-actions>
+			<button [routerLink]="''" mat-stroked-button color="primary">На главную</button>
+		</mat-card-actions>
+	</mat-card-footer>
+</mat-card>

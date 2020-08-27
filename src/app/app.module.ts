@@ -12,9 +12,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { NotFoundComponent } from './ui/not-found/not-found.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
-	declarations: [AppComponent, LoadingComponent],
+	declarations: [AppComponent, LoadingComponent, NotFoundComponent],
 	imports: [
 		BrowserModule,
 		HttpClientModule,
@@ -26,6 +29,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 		MatProgressBarModule,
 		AngularFireModule.initializeApp(environment.firebaseConfig),
 		AngularFireAuthModule,
+		MatButtonModule,
+		MatCardModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

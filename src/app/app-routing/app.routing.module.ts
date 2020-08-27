@@ -6,6 +6,7 @@ import { MainContainerComponent } from '../ui/mainContainer/mainContainer.compon
 import { RoomListModule } from '../ui/mainContainer/room-list/room-list.module';
 import { CommandsModule } from '../ui/mainContainer/commands/commands.module';
 import { AuthGuard } from '../auth.guard';
+import { NotFoundComponent } from '../ui/not-found/not-found.component';
 
 const routes: Routes = [
 	{
@@ -13,6 +14,11 @@ const routes: Routes = [
 		component: MainContainerComponent,
 		canActivate: [AuthGuard],
 		children: [
+			{
+				path: '',
+				redirectTo: '/rooms',
+				pathMatch: 'full',
+			},
 			{
 				path: 'rooms',
 				loadChildren: (): Promise<RoomListModule> =>
@@ -36,6 +42,15 @@ const routes: Routes = [
 		loadChildren: (): Promise<LoginModule> =>
 			import('../ui/login/login.module').then((m) => m.LoginModule),
 		//canLoad: [AuthGuard],
+	},
+	{
+		path: 'nf',
+		component: NotFoundComponent,
+	},
+	{
+		path: '**',
+		redirectTo: '/nf',
+		pathMatch: 'full',
 	},
 ];
 

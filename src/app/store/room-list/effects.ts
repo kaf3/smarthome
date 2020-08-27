@@ -171,8 +171,9 @@ export class RoomListEffects extends ErrorEffects {
 			this.actions$.pipe(
 				ofType<RouterNavigatedAction>(ROUTER_NAVIGATED),
 				filter((action) => action.payload.routerState.url.endsWith('/rooms')),
-				map(() => {
-					const id = this.lastVisitedService.getUrl('rooms');
+				withLatestFrom(this.roomListFacade.rooms$),
+				map(([_a, rooms]) => {
+					const id = this.lastVisitedService.getUrl('rooms') ?? rooms[0].id;
 					if (!!id && this.router.url.endsWith('/rooms')) {
 						this.router.navigate([`/rooms/${id}`]);
 					}
