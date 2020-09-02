@@ -7,16 +7,17 @@ import { RoomListModule } from '../ui/mainContainer/room-list/room-list.module';
 import { CommandsModule } from '../ui/mainContainer/commands/commands.module';
 import { AuthGuard } from '../auth.guard';
 import { NotFoundComponent } from '../ui/not-found/not-found.component';
+import { EditComponent } from '../ui/edit/edit.component';
 
 const routes: Routes = [
 	{
-		path: '',
+		path: 'home',
 		component: MainContainerComponent,
 		canActivate: [AuthGuard],
 		children: [
 			{
 				path: '',
-				redirectTo: '/rooms',
+				redirectTo: 'rooms',
 				pathMatch: 'full',
 			},
 			{
@@ -35,6 +36,11 @@ const routes: Routes = [
 					),
 				canLoad: [AuthGuard],
 			},
+			{
+				path: 'edit',
+				component: EditComponent,
+				outlet: 'edit',
+			},
 		],
 	},
 	{
@@ -47,6 +53,7 @@ const routes: Routes = [
 		path: 'nf',
 		component: NotFoundComponent,
 	},
+
 	{
 		path: '**',
 		redirectTo: '/nf',

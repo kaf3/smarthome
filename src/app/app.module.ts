@@ -15,9 +15,10 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { NotFoundComponent } from './ui/not-found/not-found.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { EditComponent } from './ui/edit/edit.component';
 
 @NgModule({
-	declarations: [AppComponent, LoadingComponent, NotFoundComponent],
+	declarations: [AppComponent, LoadingComponent, NotFoundComponent, EditComponent],
 	imports: [
 		BrowserModule,
 		HttpClientModule,

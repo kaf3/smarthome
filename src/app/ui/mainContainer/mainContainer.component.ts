@@ -4,6 +4,7 @@ import { AuthService, SidenavService } from '@services';
 import { Observable } from 'rxjs';
 import { UserLoggedIn } from '@models/user';
 import { filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-ui',
@@ -12,6 +13,7 @@ import { filter } from 'rxjs/operators';
 })
 export class MainContainerComponent implements OnDestroy, OnInit {
 	@ViewChild('sidenav') sideNav: MatSidenav;
+	@ViewChild('curtain') curtain: MatSidenav;
 	user$: Observable<UserLoggedIn | null>;
 
 	title = 'Smart Home';
@@ -38,18 +40,31 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 	constructor(
 		private readonly sidenavService: SidenavService,
 		private readonly authService: AuthService,
+		private readonly router: Router,
 	) {}
 
-	public onOpen(): void {
-		this.sidenavService.setState(true);
-	}
-
-	public onClose(): void {
-		this.sidenavService.setState(false);
+	public onToggle(value: boolean): void {
+		this.sidenavService.setState(value);
 	}
 
 	public logOut(): void {
 		this.authService.logout();
+	}
+
+	onCurtainOpen(): void {
+		this.router
+			.navigate(['/home', { outlets: { edit: 'edit' } }], {})
+			.then(() => this.curtain.open());
+	}
+
+	onCurtainClose(): void {
+		this.curtain
+			.close()
+			.then(() => this.router.navigate(['/home', { outlets: { edit: null } }]));
+	}
+
+	onCurtainClosed(): void {
+		this.router.navigate(['/home', { outlets: { edit: null } }]);
 	}
 
 	ngOnInit(): void {

@@ -39,7 +39,7 @@ export class AuthService {
 			.signInWithEmailAndPassword(email, password)
 			.then((user) => {
 				const url = this.authState.redirectUrl;
-				user && this.router.navigate([url && url !== '/' ? url : '/rooms']);
+				user && this.router.navigate([url || '/']);
 			})
 			.catch(({ code }) => {
 				this.openSnackBar(AuthService.ErrorMessage[code] ?? 'Неизвестная ошибка', 'Error');

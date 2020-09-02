@@ -27,3 +27,9 @@
 .spacer {
 	flex: 1 1 auto;
 }
+
+.app-curtain {
+	width: $layout01 * 30;
+	height: 100%;
+	background-color: $background-color;
+}

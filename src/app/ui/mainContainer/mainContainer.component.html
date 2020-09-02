@@ -2,6 +2,12 @@
 	<button mat-icon-button (click)="sidenav.toggle()">
 		<mat-icon>menu</mat-icon>
 	</button>
+	<button mat-icon-button (click)="onCurtainOpen()">
+		<mat-icon>done</mat-icon>
+	</button>
+	<button mat-icon-button (click)="onCurtainClose()">
+		<mat-icon>close</mat-icon>
+	</button>
 	<span class="title">{{ title }}</span>
 	<span class="spacer"></span>
 	<span>{{ (user$ | async)?.email }}</span>
@@ -15,8 +21,8 @@
 			#sidenav
 			mode="side"
 			class="app-sidenav"
-			(closed)="onClose()"
-			(opened)="onOpen()"
+			(closed)="onToggle(false)"
+			(opened)="onToggle(true)"
 		>
 			<mat-nav-list>
 				<a
@@ -29,6 +35,15 @@
 					>{{ link.name }}</a
 				>
 			</mat-nav-list>
+		</mat-sidenav>
+		<mat-sidenav
+			#curtain
+			position="end"
+			mode="over"
+			class="app-curtain"
+			(closed)="onCurtainClosed()"
+		>
+			<router-outlet name="edit"></router-outlet>
 		</mat-sidenav>
 		<mat-sidenav-content>
 			<router-outlet></router-outlet>
