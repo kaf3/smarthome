@@ -16,9 +16,17 @@ import { NotFoundComponent } from './ui/not-found/not-found.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { EditComponent } from './ui/edit/edit.component';
+import { CurtainComponent } from './ui/curtain/curtain.component';
+import { PortalModule } from '@angular/cdk/portal';
 
 @NgModule({
-	declarations: [AppComponent, LoadingComponent, NotFoundComponent, EditComponent],
+	declarations: [
+		AppComponent,
+		LoadingComponent,
+		NotFoundComponent,
+		EditComponent,
+		CurtainComponent,
+	],
 	imports: [
 		BrowserModule,
 		HttpClientModule,
@@ -32,6 +40,7 @@ import { EditComponent } from './ui/edit/edit.component';
 		AngularFireAuthModule,
 		MatButtonModule,
 		MatCardModule,
+		PortalModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

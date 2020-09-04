@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { UserLoggedIn } from '@models/user';
 import { filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { CurtainService } from '../../services/curtain.service';
+import { EditComponent } from '../edit/edit.component';
 
 @Component({
 	selector: 'app-ui',
@@ -41,6 +43,7 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 		private readonly sidenavService: SidenavService,
 		private readonly authService: AuthService,
 		private readonly router: Router,
+		public readonly curtainService: CurtainService<EditComponent>,
 	) {}
 
 	public onToggle(value: boolean): void {
@@ -52,9 +55,10 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 	}
 
 	onCurtainOpen(): void {
-		this.router
+		/*this.router
 			.navigate(['/home', { outlets: { edit: 'edit' } }], {})
-			.then(() => this.curtain.open());
+			.then(() => this.curtain.open());*/
+		this.curtainService.open(EditComponent);
 	}
 
 	onCurtainClose(): void {
