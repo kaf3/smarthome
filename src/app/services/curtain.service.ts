@@ -2,6 +2,10 @@ import { Injectable, InjectionToken, Injector } from '@angular/core';
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { CurtainComponent } from '../ui/curtain/curtain.component';
+import { Subject } from 'rxjs/internal/Subject';
+import { Observable } from 'rxjs/internal/Observable';
+import { filter, take } from 'rxjs/operators';
+import { AnimationEvent } from '@angular/animations';
 
 export interface CurtainConfig<CurtainData = any> {
 	panelClass?: string;
@@ -17,7 +21,7 @@ interface CurtainContainer<Component, CurtainData = any> {
 }
 
 // Keycode for ESCAPE
-const ESCAPE = 27;
+const ESCAPE = 'Escape';
 
 export const CURTAIN_DATA = new InjectionToken<any>('curtain_data');
 
@@ -29,9 +33,79 @@ export class CurtainRef<Cmp = any> {
 	) {}
 
 	close(): void {
-		if (this.overlayRef) {
-			this.overlayRef.detach();
-		}
+		this.setBeforeClosed();
+
+		this.animationStarted
+			.pipe(
+				filter((event) => event.toState === 'leave'),
+				take(1),
+			)
+			.subscribe(() => {
+				this.overlayRef.detachBackdrop();
+			});
+		this.animationDone
+			.pipe(
+				filter((event) => event.toState === 'leave'),
+				take(1),
+			)
+			.subscribe(() => {
+				this.overlayRef.dispose();
+			});
+
+		this.overlayRef
+			.detachments()
+			.pipe(take(1))
+			.subscribe(() => {
+				this.setAfterClosed();
+				this.animationComplete();
+			});
+	}
+
+	private _beforeClose = new Subject<void>();
+	private _afterClosed = new Subject<void>();
+	private _animationStarted = new Subject<AnimationEvent>();
+	private _animationDone = new Subject<AnimationEvent>();
+
+	public backdropClickEvent(): Observable<MouseEvent> {
+		return this.overlayRef.backdropClick();
+	}
+
+	get afterClosed(): Observable<void> {
+		return this._afterClosed.pipe();
+	}
+
+	get beforeClose(): Observable<void> {
+		return this._beforeClose.pipe();
+	}
+
+	get animationStarted(): Observable<AnimationEvent> {
+		return this._animationStarted.pipe();
+	}
+
+	get animationDone(): Observable<AnimationEvent> {
+		return this._animationDone.pipe();
+	}
+
+	setAfterClosed(): void {
+		this._afterClosed.next();
+		this._afterClosed.complete();
+	}
+
+	setBeforeClosed(): void {
+		this._beforeClose.next();
+		this._beforeClose.complete();
+	}
+
+	setAnimationStarted(event: AnimationEvent): void {
+		this._animationStarted.next(event);
+	}
+
+	setAnimationDone(event: AnimationEvent): void {
+		this._animationDone.next(event);
+	}
+	animationComplete() {
+		this._animationStarted.complete();
+		this._animationDone.complete();
 	}
 }
 
@@ -57,10 +131,9 @@ export class CurtainService<Component> {
 
 	private closeStrategy(overlayRef?: OverlayRef): void {
 		if (overlayRef?.hasAttached()) {
-			overlayRef?.backdropClick().subscribe((_) => this.close());
 			overlayRef?.keydownEvents().subscribe((event: KeyboardEvent) => {
 				console.log(event);
-				if (event.keyCode === ESCAPE) {
+				if (event.key === ESCAPE) {
 					this.close();
 				}
 			});
@@ -69,26 +142,24 @@ export class CurtainService<Component> {
 
 	private attachCurtainContainer<Cmp, CurtainData = any>(
 		container: CurtainContainer<Cmp, CurtainData>,
-	): CurtainComponent {
+	): { curtainRef: CurtainRef; curtainComponent: CurtainComponent } {
 		const { componentRef, config, overlayRef } = container;
-		const injector = this.createInjector<CurtainData>(
-			config,
-			new CurtainRef<Cmp>(overlayRef, componentRef, config.data),
-		);
+		const curtainRef = new CurtainRef<Cmp>(overlayRef, componentRef, config.data);
+		const injector = this.createInjector<CurtainData>(config, curtainRef);
 
-		const containerRef = overlayRef.attach(
+		const curtainComponent = overlayRef.attach(
 			new ComponentPortal(CurtainComponent, null, injector),
-		);
+		).instance;
 
-		return containerRef.instance;
+		return { curtainRef, curtainComponent };
 	}
 
 	public open<CurtainData = any>(
 		componentRef: ComponentType<Component>,
 		config: CurtainConfig<CurtainData> = {},
-	): CurtainComponent {
+	): CurtainRef {
 		this.overlayRef = this.createOverlay({ ...CurtainService.DEFAULT_CONFIG, ...config });
-		const cmp = this.attachCurtainContainer<Component, CurtainData>({
+		const { curtainRef } = this.attachCurtainContainer<Component, CurtainData>({
 			config,
 			componentRef,
 			overlayRef: this.overlayRef,
@@ -96,7 +167,7 @@ export class CurtainService<Component> {
 
 		this.closeStrategy(this.overlayRef);
 
-		return cmp;
+		return curtainRef;
 	}
 
 	public close(): void {

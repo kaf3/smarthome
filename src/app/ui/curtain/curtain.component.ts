@@ -1,7 +1,8 @@
 import { AfterContentInit, Component, Injector } from '@angular/core';
 import { CURTAIN_DATA, CurtainRef } from '../../services/curtain.service';
 import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
+import { take } from 'rxjs/operators';
 
 // Reusable animation timings
 const ANIMATION_TIMINGS = '400ms cubic-bezier(0.25, 0.8, 0.25, 1)';
@@ -19,7 +20,7 @@ const ANIMATION_TIMINGS = '400ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 		trigger('slideCurtain', [
 			state('void', style({ transform: 'translateX(100%)', opacity: 0 })),
 			state('enter', style({ transform: 'translateX(0)', opacity: 1 })),
-			state('leave', style({ transform: '-100%', opacity: 0 })),
+			state('leave', style({ transform: 'translateX(100%)', opacity: 0 })),
 			transition('* => *', animate(ANIMATION_TIMINGS)),
 		]),
 	],
@@ -34,6 +35,10 @@ export class CurtainComponent implements AfterContentInit {
 	ngAfterContentInit(): void {
 		const injector = this.createInjector();
 		this.portal = new ComponentPortal(this.curtainRef.component, null, injector);
+
+		this.curtainRef.beforeClose.pipe(take(1)).subscribe(() => {
+			this.startExitAnimation();
+		});
 	}
 
 	createInjector(): PortalInjector {
@@ -45,5 +50,17 @@ export class CurtainComponent implements AfterContentInit {
 
 		// Instantiate new PortalInjector
 		return new PortalInjector(this.injector, injectionTokens);
+	}
+
+	startExitAnimation(): void {
+		this.animationState = 'leave';
+	}
+
+	onAnimationStart(event: AnimationEvent) {
+		this.curtainRef.setAnimationStarted(event);
+	}
+
+	onAnimationDone(event: AnimationEvent) {
+		this.curtainRef.setAnimationDone(event);
 	}
 }

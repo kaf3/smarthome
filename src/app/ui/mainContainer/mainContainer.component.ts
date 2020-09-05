@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { UserLoggedIn } from '@models/user';
 import { filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { CurtainService } from '../../services/curtain.service';
+import { CurtainRef, CurtainService } from '../../services/curtain.service';
 import { EditComponent } from '../edit/edit.component';
 
 @Component({
@@ -17,6 +17,8 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 	@ViewChild('sidenav') sideNav: MatSidenav;
 	@ViewChild('curtain') curtain: MatSidenav;
 	user$: Observable<UserLoggedIn | null>;
+
+	curtainRef: CurtainRef | undefined;
 
 	title = 'Smart Home';
 
@@ -58,13 +60,18 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 		/*this.router
 			.navigate(['/home', { outlets: { edit: 'edit' } }], {})
 			.then(() => this.curtain.open());*/
-		this.curtainService.open(EditComponent);
+		this.curtainRef = this.curtainService.open(EditComponent);
+
+		this.curtainRef.backdropClickEvent().subscribe((_) => this.curtainRef?.close());
 	}
 
 	onCurtainClose(): void {
-		this.curtain
+		if (this.curtainRef) {
+			this.curtainRef.close();
+		}
+		/*this.curtain
 			.close()
-			.then(() => this.router.navigate(['/home', { outlets: { edit: null } }]));
+			.then(() => this.router.navigate(['/home', { outlets: { edit: null } }]));*/
 	}
 
 	onCurtainClosed(): void {
