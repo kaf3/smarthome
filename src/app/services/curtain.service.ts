@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, Injector } from '@angular/core';
+import { Inject, Injectable, InjectionToken, Injector, Optional } from '@angular/core';
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { CurtainComponent } from '../ui/curtain/curtain.component';
@@ -12,18 +12,20 @@ export interface CurtainConfig<CurtainData = any> {
 	hasBackdrop?: boolean;
 	backdropClass?: string;
 	data?: CurtainData;
+	keycodesForClose?: string[];
 }
 
 interface CurtainContainer<Component, CurtainData = any> {
 	componentRef: ComponentType<Component>;
 	overlayRef: OverlayRef;
-	config: CurtainConfig<CurtainData>;
+	curtainConfig: CurtainConfig<CurtainData>;
 }
 
 // Keycode for ESCAPE
 const ESCAPE = 'Escape';
 
 export const CURTAIN_DATA = new InjectionToken<any>('curtain_data');
+export const CURTAIN_DEFAULT_CONFIG = new InjectionToken<CurtainConfig>('curtain_config');
 
 export class CurtainRef<Cmp = any> {
 	constructor(
@@ -119,9 +121,20 @@ export class CurtainService<Component> {
 		hasBackdrop: true,
 		//backdropClass: 'dark-backdrop',
 		//panelClass: 'cdk-overlay-custom-panel',
+		keycodesForClose: [ESCAPE],
 	};
 
-	constructor(private readonly overlay: Overlay, private readonly injector: Injector) {}
+	constructor(
+		private readonly overlay: Overlay,
+		private readonly injector: Injector,
+		@Optional()
+		@Inject(CURTAIN_DEFAULT_CONFIG)
+		public curtainDefaultConfig: CurtainConfig,
+	) {
+		if (curtainDefaultConfig === null) {
+			this.curtainDefaultConfig = CurtainService.DEFAULT_CONFIG;
+		}
+	}
 
 	private createOverlay<CurtainData = any>(config: CurtainConfig<CurtainData>): OverlayRef {
 		const overlayConfig = this.getOverlayConfig<CurtainData>(config);
@@ -129,11 +142,11 @@ export class CurtainService<Component> {
 		return this.overlay.create(overlayConfig);
 	}
 
-	private closeStrategy(overlayRef?: OverlayRef): void {
+	private closeStrategy(overlayRef: OverlayRef, config: CurtainConfig): void {
+		console.log(config.keycodesForClose);
 		if (overlayRef?.hasAttached()) {
 			overlayRef?.keydownEvents().subscribe((event: KeyboardEvent) => {
-				console.log(event);
-				if (event.key === ESCAPE) {
+				if (config.keycodesForClose?.find((keycode) => event.key === keycode)) {
 					this.close();
 				}
 			});
@@ -143,9 +156,9 @@ export class CurtainService<Component> {
 	private attachCurtainContainer<Cmp, CurtainData = any>(
 		container: CurtainContainer<Cmp, CurtainData>,
 	): { curtainRef: CurtainRef; curtainComponent: CurtainComponent } {
-		const { componentRef, config, overlayRef } = container;
-		const curtainRef = new CurtainRef<Cmp>(overlayRef, componentRef, config.data);
-		const injector = this.createInjector<CurtainData>(config, curtainRef);
+		const { componentRef, curtainConfig, overlayRef } = container;
+		const curtainRef = new CurtainRef<Cmp>(overlayRef, componentRef, curtainConfig.data);
+		const injector = this.createInjector<CurtainData>(curtainConfig, curtainRef);
 
 		const curtainComponent = overlayRef.attach(
 			new ComponentPortal(CurtainComponent, null, injector),
@@ -158,14 +171,15 @@ export class CurtainService<Component> {
 		componentRef: ComponentType<Component>,
 		config: CurtainConfig<CurtainData> = {},
 	): CurtainRef {
-		this.overlayRef = this.createOverlay({ ...CurtainService.DEFAULT_CONFIG, ...config });
+		const curtainConfig: CurtainConfig = { ...this.curtainDefaultConfig, ...config };
+		this.overlayRef = this.createOverlay(curtainConfig);
 		const { curtainRef } = this.attachCurtainContainer<Component, CurtainData>({
-			config,
+			curtainConfig,
 			componentRef,
 			overlayRef: this.overlayRef,
 		});
 
-		this.closeStrategy(this.overlayRef);
+		this.closeStrategy(this.overlayRef, curtainConfig);
 
 		return curtainRef;
 	}
