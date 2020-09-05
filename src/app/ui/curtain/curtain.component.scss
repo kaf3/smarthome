@@ -1,3 +1,11 @@
+@import "theming";
+@import "layout";
+
 :host {
+	height: 100%;
+}
+
+.curtain-container {
+	background-color: $background-color;
 	height: 100%;
 }

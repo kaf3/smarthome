@@ -1,5 +1,5 @@
-import { AfterContentInit, Component, Injector } from '@angular/core';
-import { CURTAIN_DATA, CurtainRef } from '../../services/curtain.service';
+import { AfterContentInit, Component, Inject, Injector } from '@angular/core';
+import { _INTERNAL_CURTAIN_DATA, CURTAIN_DATA, CurtainRef } from '../../services/curtain.service';
 import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 import { take } from 'rxjs/operators';
@@ -30,7 +30,11 @@ export class CurtainComponent implements AfterContentInit {
 
 	animationState: 'void' | 'enter' | 'leave' = 'enter';
 
-	constructor(private curtainRef: CurtainRef, private injector: Injector) {}
+	constructor(
+		@Inject(_INTERNAL_CURTAIN_DATA) public data: any,
+		private curtainRef: CurtainRef,
+		private injector: Injector,
+	) {}
 
 	ngAfterContentInit(): void {
 		const injector = this.createInjector();
@@ -46,7 +50,8 @@ export class CurtainComponent implements AfterContentInit {
 		const injectionTokens = new WeakMap();
 
 		// Set custom injection tokens
-		injectionTokens.set(CURTAIN_DATA, this.curtainRef.data);
+		injectionTokens.set(CURTAIN_DATA, this.data);
+		injectionTokens.set(CurtainRef, this.curtainRef);
 
 		// Instantiate new PortalInjector
 		return new PortalInjector(this.injector, injectionTokens);

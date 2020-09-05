@@ -15,7 +15,6 @@ export class AuthService {
 		private readonly snackBar: MatSnackBar,
 	) {
 		this.startSession();
-		this.isAuthorized$.subscribe(console.log);
 	}
 
 	private _authState = new BehaviorSubject<AuthState>({

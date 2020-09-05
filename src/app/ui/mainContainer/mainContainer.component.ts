@@ -57,10 +57,7 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 	}
 
 	onCurtainOpen(): void {
-		/*this.router
-			.navigate(['/home', { outlets: { edit: 'edit' } }], {})
-			.then(() => this.curtain.open());*/
-		this.curtainRef = this.curtainService.open(EditComponent);
+		this.curtainRef = this.curtainService.open(EditComponent, { data: 'hello' });
 
 		this.curtainRef.backdropClickEvent().subscribe((_) => this.curtainRef?.close());
 	}
@@ -69,9 +66,6 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 		if (this.curtainRef) {
 			this.curtainRef.close();
 		}
-		/*this.curtain
-			.close()
-			.then(() => this.router.navigate(['/home', { outlets: { edit: null } }]));*/
 	}
 
 	onCurtainClosed(): void {

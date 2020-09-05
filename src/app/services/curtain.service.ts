@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { Observable } from 'rxjs/internal/Observable';
 import { filter, take } from 'rxjs/operators';
 import { AnimationEvent } from '@angular/animations';
+import { BehaviorSubject } from 'rxjs';
 
 export interface CurtainConfig<CurtainData = any> {
 	panelClass?: string;
@@ -14,6 +15,8 @@ export interface CurtainConfig<CurtainData = any> {
 	data?: CurtainData;
 	keycodesForClose?: string[];
 }
+
+export type CurtainState = 'opened' | 'closed';
 
 interface CurtainContainer<Component, CurtainData = any> {
 	componentRef: ComponentType<Component>;
@@ -25,14 +28,12 @@ interface CurtainContainer<Component, CurtainData = any> {
 const ESCAPE = 'Escape';
 
 export const CURTAIN_DATA = new InjectionToken<any>('curtain_data');
+export const _INTERNAL_CURTAIN_DATA = new InjectionToken<any>('internal_curtain_data');
+
 export const CURTAIN_DEFAULT_CONFIG = new InjectionToken<CurtainConfig>('curtain_config');
 
 export class CurtainRef<Cmp = any> {
-	constructor(
-		private overlayRef: OverlayRef,
-		public component: ComponentType<Cmp>,
-		public data: any,
-	) {}
+	constructor(private overlayRef: OverlayRef, public component: ComponentType<Cmp>) {}
 
 	close(): void {
 		this.setBeforeClosed();
@@ -120,9 +121,23 @@ export class CurtainService<Component> {
 	static DEFAULT_CONFIG: CurtainConfig = {
 		hasBackdrop: true,
 		//backdropClass: 'dark-backdrop',
-		//panelClass: 'cdk-overlay-custom-panel',
+		panelClass: 'cdk-overlay-curtain-panel',
 		keycodesForClose: [ESCAPE],
 	};
+
+	private readonly _curtainState = new BehaviorSubject<CurtainState>('closed');
+
+	get curtainState(): Observable<CurtainState> {
+		return this._curtainState.pipe();
+	}
+
+	get curtainStateSnap(): CurtainState {
+		return this._curtainState.getValue();
+	}
+
+	setCurtainState(state: CurtainState): void {
+		this._curtainState.next(state);
+	}
 
 	constructor(
 		private readonly overlay: Overlay,
@@ -143,11 +158,10 @@ export class CurtainService<Component> {
 	}
 
 	private closeStrategy(overlayRef: OverlayRef, config: CurtainConfig): void {
-		console.log(config.keycodesForClose);
 		if (overlayRef?.hasAttached()) {
 			overlayRef?.keydownEvents().subscribe((event: KeyboardEvent) => {
 				if (config.keycodesForClose?.find((keycode) => event.key === keycode)) {
-					this.close();
+					this.overlayRef?.detach();
 				}
 			});
 		}
@@ -157,7 +171,7 @@ export class CurtainService<Component> {
 		container: CurtainContainer<Cmp, CurtainData>,
 	): { curtainRef: CurtainRef; curtainComponent: CurtainComponent } {
 		const { componentRef, curtainConfig, overlayRef } = container;
-		const curtainRef = new CurtainRef<Cmp>(overlayRef, componentRef, curtainConfig.data);
+		const curtainRef = new CurtainRef<Cmp>(overlayRef, componentRef);
 		const injector = this.createInjector<CurtainData>(curtainConfig, curtainRef);
 
 		const curtainComponent = overlayRef.attach(
@@ -181,13 +195,13 @@ export class CurtainService<Component> {
 
 		this.closeStrategy(this.overlayRef, curtainConfig);
 
-		return curtainRef;
-	}
-
-	public close(): void {
-		if (this.overlayRef) {
-			this.overlayRef.detach();
+		if (this.overlayRef.hasAttached()) {
+			this.setCurtainState('opened');
 		}
+
+		this.overlayRef.detachments().subscribe((_) => this.setCurtainState('closed'));
+
+		return curtainRef;
 	}
 
 	private getOverlayConfig<CurtainData = any>(config: CurtainConfig<CurtainData>): OverlayConfig {
@@ -211,7 +225,7 @@ export class CurtainService<Component> {
 
 		// Set custom injection tokens
 		injectionTokens.set(CurtainRef, curtainRef);
-		injectionTokens.set(CURTAIN_DATA, config.data);
+		injectionTokens.set(_INTERNAL_CURTAIN_DATA, config.data);
 
 		// Instantiate new PortalInjector
 		return new PortalInjector(this.injector, injectionTokens);

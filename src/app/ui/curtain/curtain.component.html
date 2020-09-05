@@ -1,10 +1,9 @@
-<div
-	style="background-color: white; height: 100%"
+<div class="curtain-container"
 	[@slideCurtain]="animationState"
 	(@slideCurtain.start)="onAnimationStart($event)"
-	(@slideCurtain.done)="onAnimationDone($event)">
+	(@slideCurtain.done)="onAnimationDone($event)"
 >
-	<p>curtain works!</p>
+
 	<ng-container [cdkPortalOutlet]="portal"></ng-container>
 </div>
 
