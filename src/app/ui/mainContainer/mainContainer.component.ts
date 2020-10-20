@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 import { UserLoggedIn } from '@models/user';
 import { filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { CurtainRef, CurtainService } from '../../services/curtain.service';
 import { EditComponent } from '../edit/edit.component';
+import { CurtainRef, CurtainService } from '../curtain/curtain.component';
 
 @Component({
 	selector: 'app-ui',

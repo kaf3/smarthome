@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { CURTAIN_DATA } from '../../services/curtain.service';
+import { CURTAIN_DATA, CurtainRef } from '../curtain/curtain.component';
 
 @Component({
 	selector: 'app-edit',
@@ -7,5 +7,5 @@ import { CURTAIN_DATA } from '../../services/curtain.service';
 	styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent {
-	constructor(@Inject(CURTAIN_DATA) public data: any) {}
+	constructor(@Inject(CURTAIN_DATA) public data: any, public readonly curtainRef: CurtainRef) {}
 }

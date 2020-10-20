@@ -36,15 +36,6 @@
 				>
 			</mat-nav-list>
 		</mat-sidenav>
-		<mat-sidenav
-			#curtain
-			position="end"
-			mode="over"
-			class="app-curtain"
-			(closed)="onCurtainClosed()"
-		>
-			<router-outlet name="edit"></router-outlet>
-		</mat-sidenav>
 		<mat-sidenav-content>
 			<router-outlet></router-outlet>
 		</mat-sidenav-content>

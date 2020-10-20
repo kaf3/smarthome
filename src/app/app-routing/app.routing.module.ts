@@ -7,7 +7,6 @@ import { RoomListModule } from '../ui/mainContainer/room-list/room-list.module';
 import { CommandsModule } from '../ui/mainContainer/commands/commands.module';
 import { AuthGuard } from '../auth.guard';
 import { NotFoundComponent } from '../ui/not-found/not-found.component';
-import { EditComponent } from '../ui/edit/edit.component';
 
 const routes: Routes = [
 	{
@@ -35,11 +34,6 @@ const routes: Routes = [
 						(m) => m.CommandsModule,
 					),
 				canLoad: [AuthGuard],
-			},
-			{
-				path: 'edit',
-				component: EditComponent,
-				outlet: 'edit',
 			},
 		],
 	},
