@@ -24,7 +24,10 @@ export interface CurtainConfig<CurtainData = any> {
 	keycodesForClose?: string[];
 }
 
-export type CurtainState = 'opened' | 'closed';
+export enum CurtainState {
+	OPENED = 'opened',
+	CLOSED = 'closed',
+}
 
 interface CurtainContainer<Component, CurtainData = any> {
 	componentRef: ComponentType<Component>;
@@ -195,7 +198,7 @@ export class CurtainService<Component> {
 		keycodesForClose: [ESCAPE],
 	};
 
-	private readonly _curtainState = new BehaviorSubject<CurtainState>('closed');
+	private readonly _curtainState = new BehaviorSubject<CurtainState>(CurtainState.CLOSED);
 
 	get curtainState(): Observable<CurtainState> {
 		return this._curtainState.pipe();
@@ -266,10 +269,10 @@ export class CurtainService<Component> {
 		this.closeStrategy(this.overlayRef, curtainConfig);
 
 		if (this.overlayRef.hasAttached()) {
-			this.setCurtainState('opened');
+			this.setCurtainState(CurtainState.OPENED);
 		}
 
-		this.overlayRef.detachments().subscribe((_) => this.setCurtainState('closed'));
+		this.overlayRef.detachments().subscribe((_) => this.setCurtainState(CurtainState.CLOSED));
 
 		return curtainRef;
 	}
