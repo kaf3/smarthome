@@ -2,10 +2,10 @@
 	<mat-expansion-panel (opened)="onOpen(equipment)">
 		<mat-expansion-panel-header>
 			<mat-panel-title>
-				{{ equipment.name || equipment.id }}
+				{{ equipment.name || equipment.id }} ({{ equipment.value | unit: equipment }})
 			</mat-panel-title>
 			<mat-panel-description>
-				{{ equipment.value | unit: equipment }}
+
 			</mat-panel-description>
 		</mat-expansion-panel-header>
 		<ng-container *ngTemplateOutlet="detailListTmp"></ng-container>
