@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { AuthService, SidenavService } from '@services';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { UserLoggedIn } from '@models/user';
-import { filter } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { EditComponent } from '../edit/edit.component';
 import { CurtainRef, CurtainService } from '../curtain/curtain.component';
@@ -15,8 +15,8 @@ import { CurtainRef, CurtainService } from '../curtain/curtain.component';
 })
 export class MainContainerComponent implements OnDestroy, OnInit {
 	@ViewChild('sidenav') sideNav: MatSidenav;
-	@ViewChild('curtain') curtain: MatSidenav;
 	user$: Observable<UserLoggedIn | null>;
+	destroy$ = new Subject();
 
 	curtainRef: CurtainRef | undefined;
 
@@ -59,7 +59,10 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 	onCurtainOpen(): void {
 		this.curtainRef = this.curtainService.open(EditComponent, { data: 'hello' });
 
-		this.curtainRef.backdropClickEvent().subscribe((_) => this.curtainRef?.close());
+		this.curtainRef
+			.backdropClickEvent()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((_) => this.curtainRef?.close());
 	}
 
 	onCurtainClose(): void {
@@ -69,7 +72,7 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 	}
 
 	onCurtainClosed(): void {
-		this.router.navigate(['/home', { outlets: { edit: null } }]);
+		this.router.navigate(['/home', { outlets: { edit: null } }]).then();
 	}
 
 	ngOnInit(): void {
@@ -80,5 +83,8 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 		if (this.sidenavService.sidenavSubject) {
 			this.sidenavService.sidenavSubject.complete();
 		}
+
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 }

@@ -210,7 +210,7 @@
 
 	<mat-menu #hardwaresMenu>
 		<ng-template let-room="room" let-stage="stage" matMenuContent>
-			<ng-container *ngFor="let hardware of getHardwares(room)">
+			<ng-container *ngFor="let hardware of room | mapper: getHardwares">
 				<button
 					[matMenuTriggerData]="{
 						hardware: hardware,
@@ -230,7 +230,7 @@
 		<ng-template let-hardware="hardware" let-room="room" let-stage="stage" matMenuContent>
 			<button
 				(click)="createAboutEquipment(stage, room, hardware, equipment)"
-				*ngFor="let equipment of getEquipments(hardware)"
+				*ngFor="let equipment of hardware | mapper: getEquipments"
 				mat-menu-item
 			>
 				{{ equipment?.name || equipment?.id }}
