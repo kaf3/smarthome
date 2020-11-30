@@ -29,19 +29,13 @@ export enum CurtainState {
 	CLOSED = 'closed',
 }
 
-interface CurtainContainer<Component, CurtainData = any> {
-	componentRef: ComponentType<Component>;
-	overlayRef: OverlayRef;
-	curtainConfig: CurtainConfig<CurtainData>;
-}
-
 // Keycode for ESCAPE
 const ESCAPE = 'Escape';
 export const CURTAIN_DATA = new InjectionToken<any>('curtain_data');
 export const _INTERNAL_CURTAIN_DATA = new InjectionToken<any>('internal_curtain_data');
 export const CURTAIN_DEFAULT_CONFIG = new InjectionToken<CurtainConfig>('curtain_config');
 
-export class CurtainRef<Cmp = any> {
+export class CurtainRemote<Cmp = any> {
 	constructor(private overlayRef: OverlayRef, public component: ComponentType<Cmp>) {}
 
 	close(): void {
@@ -147,15 +141,15 @@ export class CurtainComponent implements AfterContentInit {
 
 	constructor(
 		@Inject(_INTERNAL_CURTAIN_DATA) public data: any,
-		private curtainRef: CurtainRef,
+		private curtainRemote: CurtainRemote,
 		private injector: Injector,
 	) {}
 
 	ngAfterContentInit(): void {
 		const injector = this.createInjector();
-		this.portal = new ComponentPortal(this.curtainRef.component, null, injector);
+		this.portal = new ComponentPortal(this.curtainRemote.component, null, injector);
 
-		this.curtainRef.beforeClose.pipe(take(1)).subscribe(() => {
+		this.curtainRemote.beforeClose.pipe(take(1)).subscribe(() => {
 			this.startExitAnimation();
 		});
 	}
@@ -166,7 +160,7 @@ export class CurtainComponent implements AfterContentInit {
 
 		// Set custom injection tokens
 		injectionTokens.set(CURTAIN_DATA, this.data);
-		injectionTokens.set(CurtainRef, this.curtainRef);
+		injectionTokens.set(CurtainRemote, this.curtainRemote);
 
 		// Instantiate new PortalInjector
 		return new PortalInjector(this.injector, injectionTokens);
@@ -177,11 +171,11 @@ export class CurtainComponent implements AfterContentInit {
 	}
 
 	onAnimationStart(event: AnimationEvent): void {
-		this.curtainRef.setAnimationStarted(event);
+		this.curtainRemote.setAnimationStarted(event);
 	}
 
 	onAnimationDone(event: AnimationEvent): void {
-		this.curtainRef.setAnimationDone(event);
+		this.curtainRemote.setAnimationDone(event);
 	}
 }
 
@@ -189,8 +183,6 @@ export class CurtainComponent implements AfterContentInit {
 	providedIn: 'root',
 })
 export class CurtainService<Component> {
-	public overlayRef?: OverlayRef;
-
 	static DEFAULT_CONFIG: CurtainConfig = {
 		hasBackdrop: true,
 		//backdropClass: 'dark-backdrop',
@@ -225,7 +217,7 @@ export class CurtainService<Component> {
 	}
 
 	private createOverlay<CurtainData = any>(config: CurtainConfig<CurtainData>): OverlayRef {
-		const overlayConfig = this.getOverlayConfig<CurtainData>(config);
+		const overlayConfig = this.createOverlayConfig<CurtainData>(config);
 
 		return this.overlay.create(overlayConfig);
 	}
@@ -234,50 +226,52 @@ export class CurtainService<Component> {
 		if (overlayRef?.hasAttached()) {
 			overlayRef?.keydownEvents().subscribe((event: KeyboardEvent) => {
 				if (config.keycodesForClose?.find((keycode) => event.key === keycode)) {
-					this.overlayRef?.detach();
+					overlayRef.detach();
 				}
 			});
 		}
 	}
 
-	private attachCurtainContainer<Cmp, CurtainData = any>(
-		container: CurtainContainer<Cmp, CurtainData>,
-	): { curtainRef: CurtainRef; curtainComponent: CurtainComponent } {
-		const { componentRef, curtainConfig, overlayRef } = container;
-		const curtainRef = new CurtainRef<Cmp>(overlayRef, componentRef);
-		const injector = this.createInjector<CurtainData>(curtainConfig, curtainRef);
+	private createRemote<Component>(
+		overlayRef: OverlayRef,
+		componentRef: ComponentType<Component>,
+	): CurtainRemote {
+		return new CurtainRemote<Component>(overlayRef, componentRef);
+	}
 
-		const curtainComponent = overlayRef.attach(
-			new ComponentPortal(CurtainComponent, null, injector),
-		).instance;
-
-		return { curtainRef, curtainComponent };
+	private createComponentPortal(injector): ComponentPortal<any> {
+		return new ComponentPortal(CurtainComponent, null, injector);
 	}
 
 	public open<CurtainData = any>(
 		componentRef: ComponentType<Component>,
 		config: CurtainConfig<CurtainData> = {},
-	): CurtainRef {
+	): CurtainRemote {
 		const curtainConfig: CurtainConfig = { ...this.curtainDefaultConfig, ...config };
-		this.overlayRef = this.createOverlay(curtainConfig);
-		const { curtainRef } = this.attachCurtainContainer<Component, CurtainData>({
-			curtainConfig,
-			componentRef,
-			overlayRef: this.overlayRef,
-		});
+		const overlayRef = this.createOverlay(curtainConfig);
 
-		this.closeStrategy(this.overlayRef, curtainConfig);
+		const curtainRemote = this.createRemote(overlayRef, componentRef); /// poly
+		const injector = this.createInjector<CurtainData | undefined>(
+			curtainConfig.data,
+			curtainRemote,
+		); ///poly
 
-		if (this.overlayRef.hasAttached()) {
+		overlayRef.attach(this.createComponentPortal(injector));
+
+		this.closeStrategy(overlayRef, curtainConfig);
+
+		if (overlayRef.hasAttached()) {
 			this.setCurtainState(CurtainState.OPENED);
 		}
 
-		this.overlayRef.detachments().subscribe((_) => this.setCurtainState(CurtainState.CLOSED));
+		overlayRef.detachments().subscribe((_) => this.setCurtainState(CurtainState.CLOSED));
 
-		return curtainRef;
+		return curtainRemote;
 	}
 
-	private getOverlayConfig<CurtainData = any>(config: CurtainConfig<CurtainData>): OverlayConfig {
+	private createOverlayConfig<CurtainData = any>(
+		config: CurtainConfig<CurtainData>,
+	): OverlayConfig {
 		const positionStrategy = this.overlay.position().global().centerVertically().right('0px');
 
 		return new OverlayConfig({
@@ -290,15 +284,15 @@ export class CurtainService<Component> {
 	}
 
 	private createInjector<CurtainData = any>(
-		config: CurtainConfig<CurtainData>,
-		curtainRef: CurtainRef,
+		data: CurtainData,
+		curtainRef: CurtainRemote,
 	): PortalInjector {
 		// Instantiate new WeakMap for our custom injection tokens
 		const injectionTokens = new WeakMap();
 
 		// Set custom injection tokens
-		injectionTokens.set(CurtainRef, curtainRef);
-		injectionTokens.set(_INTERNAL_CURTAIN_DATA, config.data);
+		injectionTokens.set(CurtainRemote, curtainRef);
+		injectionTokens.set(_INTERNAL_CURTAIN_DATA, data);
 
 		// Instantiate new PortalInjector
 		return new PortalInjector(this.injector, injectionTokens);

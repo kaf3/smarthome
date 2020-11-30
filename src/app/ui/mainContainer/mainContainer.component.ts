@@ -6,7 +6,7 @@ import { UserLoggedIn } from '@models/user';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { EditComponent } from '../edit/edit.component';
-import { CurtainRef, CurtainService } from '../curtain/curtain.component';
+import { CurtainRemote, CurtainService } from '../curtain/curtain.component';
 
 @Component({
 	selector: 'app-ui',
@@ -18,7 +18,7 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 	user$: Observable<UserLoggedIn | null>;
 	destroy$ = new Subject();
 
-	curtainRef: CurtainRef | undefined;
+	curtainRef: CurtainRemote | undefined;
 
 	title = 'Smart Home';
 
