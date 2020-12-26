@@ -235,7 +235,7 @@ export class RoomListEffects extends ErrorEffects {
 				ofType(RoomListActionsTypes.DeleteRoomSuccess),
 				withLatestFrom(this.roomListFacade.rooms$),
 				map(([_deletedRoom, rooms]) => {
-					this.router.navigate([`/rooms/${rooms[0].id}`]);
+					this.router.navigate([`/home/rooms/${rooms[0].id}`]);
 				}),
 			),
 		{ dispatch: false },
