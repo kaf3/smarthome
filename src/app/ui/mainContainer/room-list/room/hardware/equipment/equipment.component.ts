@@ -1,8 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Optional, Output } from '@angular/core';
-import { Equipment, EquipmentComponentInputs, EquipmentComponentSize } from '@models/equipment';
+import {
+	Activity,
+	AdditionalEquipmentVal,
+	Equipment,
+	EquipmentComponentInputs,
+	EquipmentComponentSize,
+} from '@models/equipment';
 import { Hardware } from '@models/hardware';
 import { Room } from '@models/room';
 import { UnitPipe } from '@pipes';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
 	selector: 'app-equipment',
@@ -24,7 +31,14 @@ export class EquipmentComponent implements OnInit {
 
 	detailList: { key: string; value: string }[];
 
-	constructor(@Optional() public readonly inputs: EquipmentComponentInputs) {}
+	deviceForm = this.fb.group({
+		value: [null],
+	});
+
+	constructor(
+		@Optional() public readonly inputs: EquipmentComponentInputs,
+		private fb: FormBuilder,
+	) {}
 
 	ngOnInit(): void {
 		if (!this.equipment) this.equipment = this.inputs?.equipment;
@@ -32,7 +46,27 @@ export class EquipmentComponent implements OnInit {
 		if (!this.room) this.room = this.inputs?.room;
 		if (!this.size) this.size = this.inputs?.size;
 
+		const editableValues = this.equipment?.additionalValues?.filter((v) => v.editable);
+		const nonEditableValues = this.equipment?.additionalValues?.filter((v) => !v.editable);
+
+		const getVal = (v: AdditionalEquipmentVal) => {
+			if (typeof v.value === 'boolean' || v.value === 'true' || v.value === 'false') {
+				return v.value === true || v.value === 'true' ? Activity.ON : Activity.OFF;
+			}
+			return v.value + `${v.unit}`;
+		};
+
+		const nonEditableDetailList = nonEditableValues?.map((v) => ({
+			key: v.type,
+			value: getVal(v),
+		}));
+
+		editableValues?.forEach((v) => {
+			this.deviceForm.addControl(v.type, this.fb.control(v.value));
+		});
+
 		this.detailList = [
+			...(nonEditableDetailList ?? []),
 			{
 				key: 'значение',
 				value: this.unit.transform(this.equipment?.value, this.equipment),

@@ -1,9 +1,18 @@
-import { OmitByPropType } from '@models/common';
+import { BaseDomain, OmitByPropType } from '@models/common';
 import { createDictionary, toDomainDictionary, toDTODictionary } from '@helpers';
 import { Hardware } from '@models/hardware';
 import { Room } from '../room';
 
 export type EquipmentComponentSize = 'small' | 'large' | 'expand';
+
+export interface AdditionalEquipmentVal {
+	value: Equipment['value'];
+	type: string;
+	unit: string;
+	editable: boolean;
+	step?: number;
+	range?: number[];
+}
 
 export enum EquipmentGroup {
 	SENSOR = 'sensor',
@@ -17,6 +26,8 @@ export enum EquipmentType {
 	CURRENT = 'current',
 	VOLTAGE = 'voltage',
 	USERTYPE = 'userType',
+	BRIGHTNESS = 'brightness',
+	SWITCHER = 'switcher',
 }
 
 export enum EquipmentDTOType {
@@ -26,6 +37,8 @@ export enum EquipmentDTOType {
 	CURRENT = 'curr',
 	VOLTAGE = 'volt',
 	USERTYPE = 'user',
+	BRIGHTNESS = 'brightness',
+	SWITCHER = 'switcher',
 }
 
 export enum Activity {
@@ -56,6 +69,8 @@ export class EquipmentDTO {
 
 	public readonly value: boolean | string | number | null;
 
+	public readonly additionalValues?: AdditionalEquipmentVal[];
+
 	public createDomain: (id: Equipment['id'], oldEquipment?: Equipment) => Equipment;
 
 	constructor(source: EquipmentDTO | EquipmentDTOProps) {
@@ -71,26 +86,24 @@ export class EquipmentDTO {
 
 type EquipmentProps = OmitByPropType<Equipment, Function>;
 
-export class Equipment {
-	public name: string;
-
+export class Equipment extends BaseDomain {
 	public readonly value: string | number | boolean | null;
+
+	public readonly additionalValues?: AdditionalEquipmentVal[];
 
 	public readonly type: string | null;
 
 	public readonly group: string | null;
 
-	public readonly id: string | null;
-
 	public readonly status: boolean;
 
 	constructor(source: Equipment | EquipmentProps) {
-		this.name = source.name;
+		super(source.id, source.name);
 		this.group = source.group;
-		this.id = source.id;
 		this.status = source.status;
 		this.value = source.value;
 		this.type = source.type;
+		this.additionalValues = source.additionalValues;
 	}
 
 	public static setValue(equipment: Equipment, val?: Equipment['value']): Equipment {
@@ -107,16 +120,17 @@ export class Equipment {
 			status: equipment.status,
 			type: this.convertToDTOType[equipment.type ?? ''],
 			group: equipment.group,
+			additionalValues: equipment.additionalValues,
 		});
 	}
 
 	static readonly initial = new Equipment({
-		name: '',
+		...BaseDomain.initial,
 		group: null,
-		id: null,
 		status: false,
 		value: null,
 		type: null,
+		additionalValues: undefined,
 	});
 
 	static readonly convertToDTOType = toDTODictionary(equipmentTypeDictionary);
@@ -133,6 +147,7 @@ EquipmentDTO.prototype.createDomain = function (
 		status: this.status,
 		value: this.value,
 		id,
+		additionalValues: this.additionalValues,
 	});
 };
 

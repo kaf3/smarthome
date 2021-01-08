@@ -15,7 +15,7 @@ const FIREBASE_DATABASE_URL = environment.firebaseConfig.databaseURL;
 @Injectable()
 export class HttpRoomsService {
 	constructor(private readonly http: HttpClient, private authService: AuthService) {}
-
+	//первичная загрузка комнат
 	public loadRoomList(): Observable<RoomList> {
 		return this.authService.user$.pipe(
 			take(1),
@@ -32,7 +32,7 @@ export class HttpRoomsService {
 			),
 		);
 	}
-
+	//запрос на обновление устройства
 	public patchHardware(hardware: Hardware, roomId: Room['id']): Observable<Hardware> {
 		return this.authService.user$.pipe(
 			take(1),
@@ -50,7 +50,7 @@ export class HttpRoomsService {
 			),
 		);
 	}
-
+	//запрос на обновление части устройства
 	public patchEquipment(
 		equipment: Equipment,
 		hardwareId: Hardware['id'],
@@ -72,7 +72,7 @@ export class HttpRoomsService {
 			),
 		);
 	}
-
+	//запрос на обновление комнат
 	public patchRoom(room: Room): Observable<Room> {
 		return this.authService.user$.pipe(
 			take(1),
@@ -88,7 +88,7 @@ export class HttpRoomsService {
 			),
 		);
 	}
-
+	//запрос на создание комнаты
 	public postRoom(room: Room): Observable<Room> {
 		return this.authService.user$.pipe(
 			take(1),
@@ -102,7 +102,7 @@ export class HttpRoomsService {
 			),
 		);
 	}
-
+	//запрос на удаление комнаты
 	public deleteRoom(room: Room): Observable<{ room: Room; response: null }> {
 		return this.authService.user$.pipe(
 			take(1),
@@ -115,7 +115,7 @@ export class HttpRoomsService {
 			),
 		);
 	}
-
+	//запрос на обновление списка комнат
 	public patchRoomList(roomList: RoomList): Observable<RoomList> {
 		return this.authService.user$.pipe(
 			take(1),

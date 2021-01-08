@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/smart-home-app2",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

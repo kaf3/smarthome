@@ -21,6 +21,10 @@ export class EquipmentFormComponent implements OnDestroy {
 		}
 	}
 
+	isTypeof(value: any, type: string) {
+		return typeof value === type;
+	}
+
 	get equipment$(): Observable<Equipment> {
 		return this.eqpSubject.asObservable().pipe(distinctUntilKeyChanged<Equipment>('id'));
 	}

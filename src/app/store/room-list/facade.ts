@@ -8,14 +8,7 @@ import { Dictionary } from '@ngrx/entity';
 import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
 import { RoomListState } from './reducer';
-import {
-	AddRoom,
-	DeleteRoom,
-	LoadRoomList,
-	UpdateRoom,
-	UpsertRoomListWhenLeft,
-	UpsertRoomWhenLeft,
-} from './actions';
+import { AddRoom, DeleteRoom, LoadRoomList, UpdateRoom } from './actions';
 import {
 	selectCallState,
 	selectEquipmentById,
@@ -30,14 +23,15 @@ import {
 
 @Injectable()
 export class RoomListFacade extends LoadableFacade<RoomListState> {
+	//комнаты
 	public readonly rooms$: Observable<Room[]>;
-
+	//объект для работы над списком комнат
 	public readonly roomListEntities$: Observable<Dictionary<Room>>;
-
+	//список комнат
 	public readonly roomList$: Observable<RoomList>;
-
+	//комната
 	public readonly room$: Observable<Room | undefined>;
-
+	//устройство
 	public readonly hardware$: Observable<Hardware | undefined>;
 
 	constructor(store: Store<RoomListState>) {
@@ -49,15 +43,15 @@ export class RoomListFacade extends LoadableFacade<RoomListState> {
 		this.room$ = this.store.pipe(select(selectRoom));
 		this.hardware$ = this.store.pipe(select(selectHardware));
 	}
-
+	//получение комнаты по id
 	public roomById$(id: Room['id']): Observable<Room> {
 		return this.store.pipe(select(selectRoomById, id));
 	}
-
+	//получение устройства по id
 	public hardwareById$(roomId: Room['id'], hardwareId: Hardware['id']): Observable<Hardware> {
 		return this.store.pipe(select(selectHardwareById, { roomId, hardwareId }));
 	}
-
+	//получение части устройства по id
 	public equipmentById$(
 		roomId: Room['id'],
 		hardwareId: Hardware['id'],
@@ -65,27 +59,19 @@ export class RoomListFacade extends LoadableFacade<RoomListState> {
 	): Observable<Equipment> {
 		return this.store.pipe(select(selectEquipmentById, { roomId, hardwareId, equipmentId }));
 	}
-
+	//обновить комнату
 	public updateRoom(room: Room): void {
 		this.store.dispatch(new UpdateRoom({ room }));
 	}
-
+	//добавить комнату
 	public addRoom(room: Room): void {
 		this.store.dispatch(new AddRoom({ room }));
 	}
-
+	//удалить комнату
 	public deleteRoom(room: Room): void {
 		this.store.dispatch(new DeleteRoom({ room }));
 	}
-
-	public upsertRoomWhenLeft(room: Room): void {
-		this.store.dispatch(new UpsertRoomWhenLeft({ room }));
-	}
-
-	public upsertRoomListWhenLeft(roomList: RoomList): void {
-		this.store.dispatch(new UpsertRoomListWhenLeft({ roomList }));
-	}
-
+	//загрузить комнаты
 	public loadRooms(): void {
 		this.store.dispatch(new LoadRoomList());
 	}

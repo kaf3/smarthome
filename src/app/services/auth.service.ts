@@ -16,7 +16,13 @@ export class AuthService {
 	) {
 		this.startSession();
 	}
-
+	//набор ошибок
+	static ErrorMessage = {
+		'auth/invalid-email': 'Не правильный логин и (или) пароль',
+		'auth/user-disabled': 'Пользователь заблокирован',
+		'auth/user-not-found': 'Пользователь не найден',
+		'auth/wrong-password': 'Не правильный логин и (или) пароль',
+	};
 	private _authState = new BehaviorSubject<AuthState>({
 		user: null,
 		redirectUrl: '',
@@ -27,11 +33,11 @@ export class AuthService {
 		filter((state) => state.callState === LoadingState.LOADED),
 		map((state) => !!state.user),
 	);
-
+	//состояние авторизации
 	get authState(): AuthState {
 		return this._authState.getValue();
 	}
-
+	//произвести вход в аккаунт
 	login(email: UserLogIn['email'], password: UserLogIn['password']): void {
 		this.setState({ callState: LoadingState.LOADING });
 		this.fireAuth
@@ -44,11 +50,11 @@ export class AuthService {
 				this.openSnackBar(AuthService.ErrorMessage[code] ?? 'Неизвестная ошибка', 'Error');
 			});
 	}
-
+	//задать состояние
 	setState(authState: Partial<AuthState>): void {
 		this._authState.next({ ...this.authState, ...authState });
 	}
-
+	//выйти из аккаунта
 	logout(): void {
 		this.setState({ callState: LoadingState.LOADING });
 
@@ -70,7 +76,7 @@ export class AuthService {
 				this.router.navigate(['/login']);
 			});
 	}
-
+	//начать сессию
 	startSession(): void {
 		this.fireAuth.authState.subscribe((user) => {
 			this.setState({
@@ -79,7 +85,7 @@ export class AuthService {
 			});
 		});
 	}
-
+	//запомнить какая была страница перед переходом на страницу входа
 	public manageRoute(prevUrl: string, nextUrl: string): Observable<boolean | UrlTree> {
 		return this.isAuthorized$.pipe(
 			take(1),
@@ -89,7 +95,7 @@ export class AuthService {
 			}),
 		);
 	}
-
+	//вернуться на страницу с которой произошел уход после успешной авторизации
 	public loginNavigate(prevUrl: string): Observable<boolean | UrlTree> {
 		return this.isAuthorized$.pipe(
 			take(1),
@@ -98,17 +104,10 @@ export class AuthService {
 			}),
 		);
 	}
-
+	//показать сообщение ошибки
 	private openSnackBar(message: string, action: string): void {
 		this.snackBar.open(message, action, {
 			duration: 2000,
 		});
 	}
-
-	static ErrorMessage = {
-		'auth/invalid-email': 'Не правильный логин и (или) пароль',
-		'auth/user-disabled': 'Пользователь заблокирован',
-		'auth/user-not-found': 'Пользователь не найден',
-		'auth/wrong-password': 'Не правильный логин и (или) пароль',
-	};
 }

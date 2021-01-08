@@ -17,11 +17,20 @@
 					/>
 				</mat-form-field>
 				<mat-slide-toggle
-					*ngIf="!!fs?.controls.value"
+					*ngIf="!!fs?.controls.value && isTypeof(fs.value.value, 'boolean')"
 					class="form-toggle"
 					(change)="submitForm()"
 					[ngrxFormControlState]="fs?.controls.value"
 				></mat-slide-toggle>
+				<mat-slider
+					class="form-slider"
+					*ngIf="!!fs?.controls.value && isTypeof(fs.value.value, 'number')"
+					thumbLabel
+					[max]="100"
+					[min]="0"
+					[step]="5"
+					[ngrxFormControlState]="fs?.controls.value"
+				></mat-slider>
 			</mat-card-content>
 			<mat-card-footer>
 				<button

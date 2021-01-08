@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { NgrxMaterialModule } from '@helpers';
 import { EquipmentFormComponent } from './equipment-form.component';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
 	declarations: [EquipmentFormComponent],
@@ -23,6 +24,7 @@ import { EquipmentFormComponent } from './equipment-form.component';
 		MatCardModule,
 		FormsModule,
 		NgrxMaterialModule,
+		MatSliderModule,
 	],
 })
 export class EquipmentFormModule {}

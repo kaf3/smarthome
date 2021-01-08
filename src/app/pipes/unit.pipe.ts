@@ -1,13 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Activity, Equipment, EquipmentGroup, EquipmentType } from '@models/equipment';
+import { Activity, Equipment, EquipmentType } from '@models/equipment';
 
 @Pipe({
 	name: 'unit',
 })
 export class UnitPipe implements PipeTransform {
 	transform(value: Equipment['value'], equipment: Equipment): string {
-		if (equipment.group === EquipmentGroup.DEVICE) {
-			return value ? Activity.ON : Activity.OFF;
+		if (typeof value === 'boolean' || value === 'true' || value === 'false') {
+			return value === 'true' || value ? Activity.ON : Activity.OFF;
 		}
 
 		switch (equipment.type) {
@@ -22,6 +22,12 @@ export class UnitPipe implements PipeTransform {
 				return `${value}A`;
 			case EquipmentType.USERTYPE: // doesnt work
 				return `${value}`;
+			case EquipmentType.BRIGHTNESS:
+				return `${value}%`;
+			case EquipmentType.SWITCHER:
+				return value === 'true' || value === 1 || value === '1' || value
+					? Activity.ON
+					: Activity.OFF;
 			default:
 				return `${value}`;
 		}
