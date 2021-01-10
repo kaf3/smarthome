@@ -24,20 +24,12 @@ export class MainContainerComponent implements OnDestroy, OnInit {
 
 	sidenavLinks: { name: string; path: string }[] = [
 		{
-			name: 'Rooms',
+			name: 'Комнаты',
 			path: 'rooms',
 		},
 		{
-			name: 'Commands',
+			name: 'Сценарии',
 			path: 'commands',
-		},
-		{
-			name: 'Analytics',
-			path: 'analytics',
-		},
-		{
-			name: 'Safety',
-			path: 'safety',
 		},
 	];
 
