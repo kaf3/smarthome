@@ -5,17 +5,23 @@ cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
         - .npm/
-
+stages:
+    - test
+    - build
+    - deploy
 
 before_script:
     - npm ci --cache .npm --prefer-offline
+    - npm i -g firebase-tools
 
 build:
-    script: npm run cd
-
-
+    script: npm run build:prod
 
 test:
-    script: npm run lint && npm test
+    script: npm run lint
+
+deploy:
+    script: firebase deploy --token $FIREBASE_TOKEN
+
 
 
