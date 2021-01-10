@@ -72,7 +72,7 @@ export class EquipmentComponent implements OnInit {
 				value: this.unit.transform(this.equipment?.value, this.equipment),
 			},
 			{
-				key: 'тип устройства',
+				key: 'измеряемая величина',
 				value: this.equipment?.type ?? '',
 			},
 			{

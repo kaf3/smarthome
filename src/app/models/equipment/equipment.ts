@@ -20,14 +20,16 @@ export enum EquipmentGroup {
 }
 
 export enum EquipmentType {
-	TEMPERATURE = 'temperature',
+	TEMPERATURE = 'температура',
 	CO2 = 'co2',
-	HUMIDITY = 'humidity',
-	CURRENT = 'current',
-	VOLTAGE = 'voltage',
-	USERTYPE = 'userType',
-	BRIGHTNESS = 'brightness',
-	SWITCHER = 'switcher',
+	HUMIDITY = 'влажность',
+	CURRENT = 'ток',
+	VOLTAGE = 'напряжение',
+	USERTYPE = 'пользовательский тип',
+	BRIGHTNESS = 'яркость',
+	SWITCHER = 'выключатель',
+	POWER = 'мощность',
+	PHOTODETECTOR = 'освещенность',
 }
 
 export enum EquipmentDTOType {
@@ -39,6 +41,8 @@ export enum EquipmentDTOType {
 	USERTYPE = 'user',
 	BRIGHTNESS = 'brightness',
 	SWITCHER = 'switcher',
+	POWER = 'powe',
+	PHOTODETECTOR = 'photoDetector',
 }
 
 export enum Activity {

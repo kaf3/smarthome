@@ -1,4 +1,4 @@
-<ng-container *ngIf="{ hardware: hardware$ | async } as data">
+<ng-container *ngIf="{ hardware: hardware$ | async, room: room$ | async } as data">
 	<div class="hardware-container">
 		<mat-toolbar>{{ data.hardware.name }}</mat-toolbar>
 		<div class="hardware">
@@ -7,6 +7,7 @@
 					*ngFor="let equipment of getEquipments(data.hardware)"
 					[equipment]="equipment"
 					[hardware]="data.hardware"
+					[room]="data.room"
 					[size]="'expand'"
 					(opened)="onOpen($event)"
 					><app-equipment-form [equipment]="equipment" expand></app-equipment-form

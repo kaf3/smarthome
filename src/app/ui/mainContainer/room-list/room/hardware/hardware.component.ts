@@ -4,6 +4,7 @@ import { Hardware } from '@models/hardware';
 import { Equipment } from '@models/equipment';
 import { EquipmentFormFacade } from '@store/equipment-form';
 import { RoomListFacade } from '@store/room-list';
+import { Room } from '@models/room';
 
 @Component({
 	selector: 'app-hardware',
@@ -12,6 +13,7 @@ import { RoomListFacade } from '@store/room-list';
 })
 export class HardwareComponent implements OnInit {
 	public hardware$: Observable<Hardware | undefined>;
+	public room$: Observable<Room | undefined>;
 
 	constructor(
 		public readonly equipmentFormFacade: EquipmentFormFacade,
@@ -20,6 +22,7 @@ export class HardwareComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.hardware$ = this.roomListFacade.hardware$;
+		this.room$ = this.roomListFacade.room$;
 	}
 
 	onOpen(equipment: Equipment): void {
