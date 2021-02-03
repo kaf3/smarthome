@@ -15,12 +15,15 @@ before_script:
     - npm i -g firebase-tools
 
 build:
+    stage: build
     script: npm run build:prod
 
 test:
+    stage: test
     script: npm run lint
 
 deploy:
+    stage: deploy
     script: firebase deploy --token $FIREBASE_TOKEN
 
 
